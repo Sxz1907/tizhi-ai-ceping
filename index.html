@@ -1,0 +1,3595 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="5gMHE5QHniYr3mMP7dtPha">
+<head data-page-node-id="fkYo5JFPsxxe5KBqiPTzbo">
+<meta charset="UTF-8" data-page-node-id="TsVWg45ykW7dsnrhKp85aq">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="VGTyCM7Uc1jZZUna0PDV42">
+<title>体质健康 AI 测评与个性化运动处方系统 · 参赛演示版</title>
+<style>
+:root{
+  --bg:#eef2f8;
+  --panel:#ffffff;
+  --sidebar:#132338;
+  --sidebar-2:#1c2f49;
+  --side-txt:#93a7c0;
+  --side-txt-on:#ffffff;
+  --text:#16202f;
+  --text-2:#5d6d85;
+  --text-3:#8b99ad;
+  --line:#e2e9f3;
+  --line-2:#d3ddec;
+  --brand:#2563eb;
+  --brand-d:#1d4ed8;
+  --brand-l:#e8f0ff;
+  --cyan:#0891b2;
+  --cyan-l:#e0f6fa;
+  --ok:#15803d;
+  --ok-l:#e7f6ed;
+  --warn:#b45309;
+  --warn-l:#fef3c7;
+  --bad:#b91c1c;
+  --bad-l:#fee2e2;
+  --purple:#6d28d9;
+  --purple-l:#f1e9fe;
+  --r:14px;
+  --sh:0 1px 3px rgba(19,35,56,.06),0 6px 22px rgba(19,35,56,.06);
+  --sh-2:0 4px 14px rgba(19,35,56,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Source Han Sans SC",sans-serif;
+  background:var(--bg);color:var(--text);
+  font-size:15px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:#c3cedd;border-radius:9px}
+::-webkit-scrollbar-thumb:hover{background:#a8b6cb}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ============ 布局 ============ */
+#app{display:flex;height:100vh;width:100vw;overflow:hidden}
+#sidebar{
+  width:236px;flex:0 0 236px;height:100vh;
+  background:linear-gradient(178deg,#132338 0%,#16283f 62%,#182f4b 100%);
+  display:flex;flex-direction:column;
+  color:var(--side-txt);
+  box-shadow:2px 0 18px rgba(19,35,56,.16);
+  z-index:20;
+}
+.sb-brand{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-logo{display:flex;align-items:center;gap:11px}
+.sb-mark{
+  width:38px;height:38px;border-radius:11px;flex:0 0 38px;
+  background:linear-gradient(140deg,#3b82f6,#06b6d4);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px rgba(37,99,235,.4);
+}
+.sb-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.3px;line-height:1.3}
+.sb-sub{font-size:11px;color:#7f95b3;margin-top:2px;letter-spacing:.5px}
+.sb-nav{flex:1;padding:12px 10px;overflow-y:auto;overflow-x:hidden}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14)}
+.sb-cap{
+  font-size:11px;color:#5f7594;letter-spacing:1.4px;
+  padding:14px 10px 7px;font-weight:600;text-transform:uppercase;
+}
+.nav-item{
+  display:flex;align-items:center;gap:11px;
+  padding:10px 11px;margin:2px 0;border-radius:10px;
+  cursor:pointer;user-select:none;position:relative;
+  transition:background .16s,color .16s,transform .16s;
+  font-size:14.5px;color:var(--side-txt);
+}
+.nav-item:hover{background:rgba(255,255,255,.055);color:#dbe6f5}
+.nav-item.on{
+  background:linear-gradient(92deg,rgba(37,99,235,.94),rgba(14,165,233,.72));
+  color:#fff;font-weight:600;
+  box-shadow:0 3px 12px rgba(37,99,235,.34);
+}
+.nav-item.on::before{
+  content:"";position:absolute;left:-10px;top:50%;transform:translateY(-50%);
+  width:3px;height:22px;background:#38bdf8;border-radius:0 3px 3px 0;
+}
+.nav-ico{width:20px;height:20px;flex:0 0 20px;display:flex;align-items:center;justify-content:center}
+.nav-ico svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+.nav-item.on .nav-ico svg{opacity:1;stroke-width:1.9}
+.nav-badge{
+  margin-left:auto;font-size:10.5px;padding:1px 6px;border-radius:20px;
+  background:rgba(245,158,11,.18);color:#fbbf24;font-weight:600;letter-spacing:.2px;
+}
+.nav-item.on .nav-badge{background:rgba(255,255,255,.22);color:#fff}
+.sb-foot{padding:12px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:#5f7594;line-height:1.65}
+.sb-foot b{color:#8ea6c6;font-weight:600}
+
+/* ============ 主区 ============ */
+#main{flex:1;display:flex;flex-direction:column;height:100vh;min-width:0;overflow:hidden}
+#topbar{
+  height:60px;flex:0 0 60px;background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;padding:0 24px;gap:16px;z-index:10;
+}
+.tb-title{font-size:19px;font-weight:700;letter-spacing:.2px}
+.tb-desc{font-size:12.5px;color:var(--text-3);margin-left:2px}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.demo-chip{
+  display:flex;align-items:center;gap:6px;
+  background:var(--warn-l);color:var(--warn);
+  border:1px solid #fcd9a0;border-radius:20px;
+  padding:5px 13px;font-size:12.5px;font-weight:600;
+}
+.role-sw{display:flex;background:#eaf0f9;border-radius:10px;padding:3px;gap:2px}
+.role-b{
+  border:none;background:transparent;cursor:pointer;
+  padding:6px 14px;border-radius:8px;font-size:13px;color:var(--text-2);
+  font-family:inherit;transition:all .15s;font-weight:500;
+}
+.role-b:hover{color:var(--brand)}
+.role-b.on{background:#fff;color:var(--brand);font-weight:700;box-shadow:0 1px 4px rgba(19,35,56,.12)}
+#view{
+  flex:1;overflow-y:auto;overflow-x:hidden;padding:22px 26px 40px;
+  scroll-behavior:smooth;
+}
+
+/* ============ 通用元件 ============ */
+.card{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--r);box-shadow:var(--sh);
+  padding:20px 22px;
+}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.card-h h3{font-size:16.5px;font-weight:700;letter-spacing:.2px}
+.card-h .sub{font-size:12.5px;color:var(--text-3);font-weight:400;margin-left:auto}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--brand);flex:0 0 7px}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g21{grid-template-columns:1.55fr 1fr}
+.g12{grid-template-columns:1fr 1.55fr}
+.mb16{margin-bottom:16px}
+.mb20{margin-bottom:20px}
+.mt12{margin-top:12px}
+.row{display:flex;align-items:center;gap:12px}
+.wrap{flex-wrap:wrap}
+
+.kpi{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+  padding:17px 18px;box-shadow:var(--sh);position:relative;overflow:hidden;
+}
+.kpi::after{
+  content:"";position:absolute;right:-24px;top:-24px;width:78px;height:78px;
+  border-radius:50%;background:var(--brand-l);opacity:.62;
+}
+.kpi.blue::after{background:var(--brand-l)}
+.kpi.green::after{background:var(--ok-l)}
+.kpi.amber::after{background:var(--warn-l)}
+.kpi.cyan::after{background:var(--cyan-l)}
+.kpi.purple::after{background:var(--purple-l)}
+.kpi-l{font-size:12.5px;color:var(--text-2);font-weight:500;position:relative;z-index:1}
+.kpi-v{font-size:31px;font-weight:800;letter-spacing:-.5px;margin:3px 0 1px;position:relative;z-index:1;line-height:1.1}
+.kpi-u{font-size:13px;font-weight:600;color:var(--text-3);margin-left:3px}
+.kpi-s{font-size:11.5px;color:var(--text-3);position:relative;z-index:1}
+.kpi-v.b{color:var(--brand)} .kpi-v.g{color:var(--ok)} .kpi-v.a{color:var(--warn)}
+.kpi-v.c{color:var(--cyan)} .kpi-v.p{color:var(--purple)}
+
+.tag{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;line-height:1.5;
+}
+.t-b{background:var(--brand-l);color:var(--brand-d)}
+.t-g{background:var(--ok-l);color:var(--ok)}
+.t-a{background:var(--warn-l);color:var(--warn)}
+.t-r{background:var(--bad-l);color:var(--bad)}
+.t-c{background:var(--cyan-l);color:var(--cyan)}
+.t-p{background:var(--purple-l);color:var(--purple)}
+.t-n{background:#eef2f8;color:var(--text-2)}
+
+.btn{
+  border:1px solid var(--line-2);background:#fff;color:var(--text);
+  padding:8px 16px;border-radius:9px;cursor:pointer;
+  font-size:13.5px;font-family:inherit;font-weight:500;
+  transition:all .15s;display:inline-flex;align-items:center;gap:7px;
+}
+.btn:hover{border-color:var(--brand);color:var(--brand);box-shadow:0 2px 8px rgba(37,99,235,.14)}
+.btn.pri{background:var(--brand);color:#fff;border-color:var(--brand)}
+.btn.pri:hover{background:var(--brand-d);color:#fff;box-shadow:0 4px 14px rgba(37,99,235,.3)}
+.btn.sm{padding:5px 11px;font-size:12.5px;border-radius:7px}
+.btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+table.tb{width:100%;border-collapse:collapse;font-size:14px}
+table.tb th{
+  text-align:left;padding:10px 12px;font-size:12.5px;font-weight:600;
+  color:var(--text-2);border-bottom:2px solid var(--line-2);white-space:nowrap;
+  background:#f7fafd;
+}
+table.tb td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.tb tbody tr{transition:background .13s}
+table.tb tbody tr:hover{background:#f6f9fd}
+table.tb tbody tr.sel{background:var(--brand-l)}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.tbl-wrap{max-height:420px;overflow-y:auto;border-radius:10px;border:1px solid var(--line)}
+.tbl-wrap table.tb th{position:sticky;top:0;z-index:2;background:#f7fafd}
+
+.bar-out{height:7px;background:#eaf0f9;border-radius:7px;overflow:hidden;min-width:56px}
+.bar-in{height:100%;border-radius:7px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+
+.empty{
+  text-align:center;padding:44px 20px;color:var(--text-3);font-size:14px;
+}
+.empty svg{width:44px;height:44px;stroke:#cbd7e6;fill:none;stroke-width:1.4;margin-bottom:10px}
+
+.note{
+  background:var(--brand-l);border-left:3px solid var(--brand);
+  padding:11px 15px;border-radius:0 9px 9px 0;font-size:13px;color:#1e40af;line-height:1.62;
+}
+.note.amber{background:var(--warn-l);border-color:var(--warn);color:#92400e}
+.note.cyan{background:var(--cyan-l);border-color:var(--cyan);color:#155e75}
+.note.purple{background:var(--purple-l);border-color:var(--purple);color:#5b21b6}
+.note b{font-weight:700}
+
+/* ---- 训练打卡模块 ---- */
+.ck-item{display:flex;align-items:center;gap:9px;padding:8px 12px;background:#f7fafd;border:1px solid var(--line);border-radius:9px;margin-bottom:8px;font-size:13.5px}
+.ck-dot{width:9px;height:9px;border-radius:50%;flex:none}
+.ck-name{flex:1;font-weight:600}
+.ck-sc{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.ck-label{font-size:12.5px;color:var(--text-2);font-weight:600;margin:6px 0 8px}
+.ck-btns{display:flex;gap:10px;flex-wrap:wrap}
+.ck-b{flex:1;min-width:92px;border:1px solid var(--line-2);background:#fff;color:var(--text);padding:11px 8px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;transition:all .15s}
+.ck-b:hover{border-color:var(--brand);color:var(--brand)}
+.ck-b.on{background:var(--brand);color:#fff;border-color:var(--brand);box-shadow:0 4px 14px rgba(37,99,235,.28)}
+.ck-input{width:100%;margin-top:12px;padding:10px 12px;border:1px solid var(--line-2);border-radius:9px;font-size:13.5px;font-family:inherit;background:#fff;color:var(--text)}
+.ck-input::placeholder{color:var(--text-3)}
+.ck-done{margin-top:12px;background:var(--ok-l);border:1px solid var(--ok);border-radius:10px;padding:13px 15px}
+.ck-badge{display:inline-flex;align-items:center;gap:6px;background:var(--ok);color:#fff;font-weight:700;font-size:13px;padding:5px 12px;border-radius:20px;margin-bottom:10px}
+.ck-done-row{font-size:13.5px;color:#14532d;margin-top:5px;line-height:1.55}
+.ck-done-row b{color:#166534}
+.ck-time{font-size:11.5px;color:#3f7a52;margin-top:7px}
+.ck-exec-foot{margin-top:14px;border-top:1px dashed var(--line-2);padding-top:13px}
+.ck-sub{font-size:12.5px;color:var(--text-2);font-weight:600;margin-bottom:9px;display:flex;align-items:center;gap:10px}
+.ck-toggle{border:1px solid var(--line-2);background:#fff;color:var(--brand);padding:3px 12px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit}
+.ck-list{display:flex;flex-wrap:wrap;gap:8px;max-height:92px;overflow:hidden;transition:max-height .25s ease}
+.ck-list.open{max-height:560px;overflow-y:auto}
+.ck-chip{display:inline-flex;flex-direction:column;gap:1px;background:var(--warn-l);color:#92400e;border:1px solid var(--warn);border-radius:9px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;line-height:1.3;transition:all .15s}
+.ck-chip:hover{box-shadow:0 2px 10px rgba(245,158,11,.25);transform:translateY(-1px)}
+.ck-chip i{font-style:normal;font-size:11px;font-weight:500;opacity:.8}
+.ck-all{color:var(--ok);font-weight:600;font-size:13.5px}
+
+/* 步骤条 */
+.steps{display:flex;align-items:center;gap:0;margin:6px 0 4px;flex-wrap:wrap}
+.step{display:flex;align-items:center;gap:9px}
+.step-n{
+  width:27px;height:27px;border-radius:50%;flex:0 0 27px;
+  background:var(--brand);color:#fff;font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.step-t{font-size:13.5px;color:var(--text-2);font-weight:500}
+.step-line{width:34px;height:2px;background:var(--line-2);margin:0 11px;border-radius:2px}
+
+/* 学生卡 */
+.stu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:11px}
+.stu-c{
+  border:1px solid var(--line);border-radius:11px;padding:12px 14px;cursor:pointer;
+  transition:all .15s;background:#fff;position:relative;
+}
+.stu-c:hover{border-color:var(--brand);box-shadow:0 3px 12px rgba(37,99,235,.13);transform:translateY(-1px)}
+.stu-c.on{border-color:var(--brand);background:var(--brand-l);box-shadow:0 3px 12px rgba(37,99,235,.16)}
+.stu-nm{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px}
+.stu-id{font-size:11.5px;color:var(--text-3);margin-top:1px}
+.stu-sc{font-size:23px;font-weight:800;line-height:1.15;margin-top:7px}
+.stu-meta{font-size:11.5px;color:var(--text-3);margin-top:2px}
+
+/* 对话 */
+.chat-box{
+  background:linear-gradient(180deg,#fbfdff,#f6fafd);
+  border:1px solid var(--line);border-radius:12px;
+  padding:16px;height:352px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;
+}
+.msg{max-width:78%;padding:10px 14px;border-radius:13px;font-size:14px;line-height:1.68;white-space:pre-wrap;word-break:break-word}
+.msg.ai{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px;box-shadow:0 1px 4px rgba(19,35,56,.05)}
+.msg.me{background:var(--brand);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.msg-who{font-size:11px;color:var(--text-3);margin-bottom:3px;font-weight:600}
+.chat-in{display:flex;gap:9px;align-items:flex-end}
+.chat-in textarea{
+  flex:1;border:1px solid var(--line-2);border-radius:10px;padding:10px 13px;
+  font-family:inherit;font-size:14px;resize:none;height:44px;outline:none;
+  transition:border-color .15s;background:#fff;color:var(--text);line-height:1.5;
+}
+.chat-in textarea:focus{border-color:var(--brand)}
+.q-chips{display:flex;gap:7px;flex-wrap:wrap}
+.q-chip{
+  border:1px solid var(--line-2);background:#fff;border-radius:20px;
+  padding:6px 13px;font-size:12.5px;cursor:pointer;color:var(--text-2);
+  transition:all .15s;font-family:inherit;
+}
+.q-chip:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-l)}
+
+/* 处方 */
+.rx-sec{border:1px solid var(--line);border-radius:11px;overflow:hidden;margin-bottom:12px}
+.rx-h{
+  background:linear-gradient(92deg,#f7fafd,#eef4fc);padding:9px 15px;
+  font-size:13.5px;font-weight:700;color:var(--brand-d);
+  display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);
+}
+.rx-b{padding:13px 16px;font-size:14px;line-height:1.75;background:#fff}
+.rx-item{
+  display:flex;gap:11px;padding:8px 0;border-bottom:1px dashed var(--line);
+}
+.rx-item:last-child{border-bottom:none}
+.rx-item-n{
+  flex:0 0 22px;width:22px;height:22px;border-radius:6px;background:var(--brand-l);
+  color:var(--brand-d);font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;margin-top:2px;
+}
+.rx-item-t{flex:1}
+.rx-item-t b{font-weight:700}
+.rx-dose{font-size:12px;color:var(--text-3);margin-top:2px}
+
+/* 溯源 */
+.tl{position:relative;padding-left:26px}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line-2);border-radius:2px}
+.tl-i{position:relative;padding-bottom:18px}
+.tl-i::before{
+  content:"";position:absolute;left:-23px;top:5px;width:12px;height:12px;border-radius:50%;
+  background:#fff;border:2.5px solid var(--brand);
+}
+.tl-i.ai::before{border-color:var(--cyan)}
+.tl-i.hu::before{border-color:var(--purple)}
+.tl-t{font-size:14.5px;font-weight:700;margin-bottom:3px}
+.tl-d{font-size:13px;color:var(--text-2);line-height:1.65}
+
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--text-2)}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px}
+
+.hint{font-size:12.5px;color:var(--text-3);line-height:1.65}
+.footnote{
+  margin-top:22px;padding:14px 17px;border-radius:11px;
+  background:#f7fafd;border:1px dashed var(--line-2);
+  font-size:12.5px;color:var(--text-2);line-height:1.7;
+}
+kbd{
+  background:#fff;border:1px solid var(--line-2);border-bottom-width:2px;
+  border-radius:5px;padding:1px 6px;font-size:11.5px;font-family:ui-monospace,Consolas,monospace;color:var(--text-2);
+}
+.scroll-x{overflow-x:auto}
+.mini-in{
+  width:100%;border:1px solid var(--line-2);border-radius:6px;
+  padding:5px 7px;font-family:inherit;font-size:13px;color:var(--text);
+  text-align:right;outline:none;background:#fff;transition:border-color .14s,box-shadow .14s;
+  font-variant-numeric:tabular-nums;
+}
+.mini-in:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.mini-in:hover{border-color:#a9bad2}
+.mini-in.ro{background:#f7fafd;color:var(--text-2);border-style:dashed}
+.flash{animation:flashBg .9s ease-out}
+@keyframes flashBg{0%{background:#fff9e6}100%{background:#fff}}
+.seg{display:flex;background:#eaf0f9;border-radius:10px;padding:3px;gap:2px}
+.seg-b{border:none;background:transparent;cursor:pointer;padding:6px 14px;border-radius:8px;
+  font-size:13px;color:var(--text-2);font-family:inherit;transition:all .15s;font-weight:500}
+.seg-b.on{background:#fff;color:var(--brand);font-weight:700;box-shadow:0 1px 4px rgba(19,35,56,.12)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+.fade{animation:fadeUp .34s cubic-bezier(.2,.7,.3,1) both}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.42}}
+.puls{animation:pulse 1.5s ease-in-out infinite}
+@media print{#sidebar,#topbar{display:none}#main{overflow:visible}#view{overflow:visible;padding:0}}
+
+/* ---------- 纯净 / 讲解 双模式 ---------- */
+body.clean .note-ex{display:none !important}
+.mode-sw{display:flex;align-items:center;border:1px solid #dfe7f1;border-radius:8px;overflow:hidden;background:#fff;flex:none}
+.mode-sw button{border:none;background:#fff;padding:5px 10px;font-size:11.5px;font-weight:700;
+  color:#6b7d95;cursor:pointer;font-family:inherit;line-height:1.4}
+.mode-sw button+button{border-left:1px solid #dfe7f1}
+.mode-sw button.on{background:#1d4ed8;color:#fff}
+.user-chip{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#3d5067;
+  background:#f1f5fb;border:1px solid #dfe7f1;border-radius:15px;padding:4px 11px;flex:none;white-space:nowrap}
+.user-chip .out{color:#2563eb;cursor:pointer;font-weight:800;margin-left:3px}
+.user-chip .out:hover{text-decoration:underline}
+
+/* ---------- 登录 ---------- */
+.login-mask{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(125deg,#0f2f5c 0%,#1d4ed8 55%,#0e7490 100%);padding:24px;
+  font-family:"Microsoft YaHei","PingFang SC",sans-serif}
+.login-mask.off{display:none}
+.login-box{width:100%;max-width:920px;background:#fff;border-radius:18px;overflow:hidden;
+  display:grid;grid-template-columns:1.08fr .92fr;box-shadow:0 26px 70px rgba(8,25,50,.36)}
+.login-l{background:#f6f9fd;padding:34px 32px;border-right:1px solid #e6edf6}
+.login-brand{display:flex;align-items:center;gap:12px;color:#1d4ed8;margin-bottom:18px}
+.login-note{font-size:13px;line-height:1.9;color:#5d6d85;margin-bottom:20px}
+.login-note b{color:#1d4ed8}
+.login-roles{display:flex;flex-direction:column;gap:9px}
+.lr-c{border:1px solid #dfe7f1;border-radius:11px;padding:12px 14px;cursor:pointer;background:#fff;
+  transition:border-color .16s,box-shadow .16s}
+.lr-c:hover{border-color:#93b4f5;box-shadow:0 3px 12px rgba(29,78,216,.1)}
+.lr-c.on{border-color:#1d4ed8;box-shadow:0 0 0 2px rgba(29,78,216,.14)}
+.lr-t{font-size:14px;font-weight:800;color:#12202f;display:flex;align-items:center;gap:8px}
+.lr-t .tagx{font-size:10.5px;font-weight:700;border-radius:5px;padding:2px 7px;margin-left:auto}
+.lr-d{font-size:12px;color:#6b7d95;margin-top:5px;line-height:1.65}
+.lr-a{font-size:11.5px;color:#94a3b8;margin-top:6px;font-family:Consolas,monospace}
+.login-tip{font-size:11.5px;color:#94a3b8;margin-top:16px;line-height:1.7}
+.login-r{padding:34px 32px;display:flex;flex-direction:column;justify-content:center}
+.login-h{font-size:19px;font-weight:800;color:#12202f}
+.login-sub{font-size:12.5px;color:#8b99ad;margin:5px 0 22px}
+.login-lb{font-size:12px;font-weight:700;color:#3d5067;margin-bottom:6px}
+.login-in{width:100%;border:1px solid #d8e2ef;border-radius:9px;padding:11px 13px;font-size:14px;
+  font-family:inherit;color:#12202f;outline:none;margin-bottom:15px;background:#fbfcfe}
+.login-in:focus{border-color:#2563eb;background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.11)}
+.login-err{min-height:19px;font-size:12.5px;color:#dc2626;font-weight:600;margin-bottom:8px}
+.login-btn{width:100%;background:#1d4ed8;color:#fff;border:none;border-radius:9px;padding:12px;
+  font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:2px}
+.login-btn:hover{background:#1e40af}
+.login-foot{font-size:11.5px;color:#94a3b8;text-align:center;margin-top:16px;line-height:1.7}
+
+/* ---------- 扫码进入 / 手机实时上传 ---------- */
+.qr-btn{display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border:1px solid #d3ddec;border-radius:15px;
+  background:#fff;color:#1d4ed8;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.qr-btn:hover{background:#eef3ff;border-color:#b9ccf6}
+.qr-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px;border:1px solid #e6edf6;
+  border-radius:12px;background:#fbfdff;margin-top:14px}
+.qr-card svg{display:block;width:172px;height:172px;border:1px solid #eef2f8;border-radius:8px;background:#fff}
+.qr-cap{font-size:13px;font-weight:800;color:#12202f}
+.qr-url{font-size:11px;color:#6b7d95;font-family:Consolas,monospace;word-break:break-all;text-align:center;line-height:1.5}
+.qr-tip{font-size:11px;color:#94a3b8;text-align:center;line-height:1.6}
+.qr-note{font-size:12px;color:#b45309;background:#fdf3e3;border:1px solid #f6dca0;border-radius:10px;padding:11px 13px;line-height:1.75}
+.qr-modal{position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;
+  background:rgba(10,20,40,.55);padding:20px}
+.qr-modal.on{display:flex}
+.qr-modal-box{background:#fff;border-radius:16px;padding:22px 24px;max-width:340px;width:100%;box-shadow:0 24px 60px rgba(8,25,50,.4)}
+.qr-modal-h{display:flex;align-items:center;font-size:17px;font-weight:800;color:#12202f;margin-bottom:14px}
+.qr-modal-x{margin-left:auto;cursor:pointer;font-size:22px;color:#94a3b8;line-height:1;padding:0 4px}
+.qr-modal-box svg{display:block;width:240px;height:240px;margin:0 auto;border:1px solid #eef2f8;border-radius:10px;background:#fff}
+.feed-wall{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.feed-empty{font-size:13px;color:#94a3b8;padding:18px 0;text-align:center;width:100%}
+.feed-item{width:152px;border:1px solid #e6edf6;border-radius:10px;overflow:hidden;background:#fff}
+.feed-item img{display:block;width:100%;height:106px;object-fit:cover;background:#0f172a}
+.feed-meta{font-size:11.5px;color:#3d5067;padding:7px 9px;line-height:1.5}
+.feed-meta span{display:block;color:#94a3b8;font-size:10.5px;margin-top:2px}
+.feed-demo .feed-meta span{color:#0ea5e9;font-weight:600}
+
+/* ---------- 处方追问 ---------- */
+.ask-bar{display:flex;gap:8px;margin-top:12px}
+.ask-bar input{flex:1;border:1px solid #d8e2ef;border-radius:9px;padding:10px 13px;font-size:13.5px;
+  font-family:inherit;outline:none;background:#fbfcfe}
+.ask-bar input:focus{border-color:#2563eb;background:#fff}
+.ask-bar button{background:#1d4ed8;color:#fff;border:none;border-radius:9px;padding:0 18px;
+  font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;flex:none}
+.ask-log{margin-top:12px;display:flex;flex-direction:column;gap:9px}
+.ask-log .qb{align-self:flex-end;background:#1d4ed8;color:#fff;border-radius:11px 11px 3px 11px;
+  padding:8px 13px;font-size:13px;max-width:82%;line-height:1.7}
+.ask-log .ab{align-self:flex-start;background:#f1f5fb;border:1px solid #e2e9f3;border-radius:11px 11px 11px 3px;
+  padding:9px 13px;font-size:13px;max-width:88%;line-height:1.85;color:#253247;white-space:pre-wrap}
+.ask-quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.ask-quick span{font-size:12px;color:#2563eb;background:#e8f0ff;border-radius:14px;padding:4px 11px;
+  cursor:pointer;border:1px solid #d3e2ff}
+.ask-quick span:hover{background:#d8e6ff}
+@media (max-width:820px){
+  .login-box{grid-template-columns:1fr;max-width:440px}
+  .login-l{display:none}
+}
+.vline{display:flex;gap:8px;padding:6px 8px;border-radius:7px;font-size:13px;line-height:1.6}
+.vline-n{flex:none;width:14px;color:#8b99ad;font-size:12px;text-align:right}
+.sel{width:100%;height:32px;padding:0 8px;border:1px solid #d3ddec;border-radius:8px;background:#fff;color:#16202f;font-size:13px;font-family:inherit}
+.photo-box{border:1px solid #d3ddec;border-radius:10px;overflow:hidden;background:#0f172a;position:relative}
+.photo-box img,.photo-box video{display:block;width:100%;height:auto}
+.plog{border:1px solid #e2e9f3;border-radius:10px;margin-bottom:8px;overflow:hidden;background:#fff}
+.plog.on{border-color:#b5d4f4}
+.plog-h{display:flex;align-items:center;gap:9px;padding:10px 12px;cursor:pointer;font-size:13.5px}
+.plog-h:hover{background:#f4f8ff}
+.plog-n{flex:none;width:20px;height:20px;border-radius:6px;background:#e8f0ff;color:#1d4ed8;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:600}
+.plog-s{font-weight:600;color:#16202f}
+.plog-a{flex:none;font-size:12px;color:#8b99ad}
+.plog-b{padding:0 12px 12px;border-top:1px solid #eef2f8}
+.plog-raw{background:#f7f9fc;border:1px solid #e2e9f3;border-radius:8px;padding:10px 11px;font-size:12px;line-height:1.72;color:#334155;white-space:pre-wrap;word-break:break-word;margin:10px 0 8px;font-family:ui-monospace,Menlo,Consolas,monospace;max-height:190px;overflow:auto}
+.plog-row{display:flex;gap:9px;padding:8px 0;font-size:12.5px;line-height:1.72;color:#5d6d85;border-top:1px dashed #eef2f8}
+.plog-k{flex:none;width:58px;color:#1d4ed8;font-weight:600}
+.plog-k.hu{color:#6d28d9}
+.save-chip{display:flex;align-items:center;gap:6px;height:28px;padding:0 6px 0 10px;border-radius:14px;background:#eaf3de;border:1px solid #c0dd97;color:#3b6d11;font-size:12px;white-space:nowrap;line-height:1}
+.save-chip.warn{background:#faeeda;border-color:#fac775;color:#854f0b}
+.save-dot{width:6px;height:6px;border-radius:50%;background:#639922;flex:none}
+.save-dot.warn{background:#ba7517}
+.save-x{margin-left:2px;padding:3px 7px;border-radius:9px;background:rgba(59,109,17,.12);color:#3b6d11;font-size:11.5px;cursor:pointer;line-height:1.2}
+.save-x:hover{background:rgba(59,109,17,.24)}
+.save-x:active{background:rgba(59,109,17,.34)}
+/* 访客模式提示条（底部浮层，可关闭） */
+.guest-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:60;max-width:min(700px,92vw);background:#0f172a;color:#e2e8f0;border:1px solid #1e293b;box-shadow:0 12px 32px rgba(2,6,23,.38);border-radius:12px;padding:11px 40px 11px 16px;font-size:12.5px;line-height:1.65}
+.guest-bar b{color:#7dd3fc;font-weight:700}
+.gb-x{position:absolute;top:5px;right:10px;cursor:pointer;color:#94a3b8;font-size:17px;line-height:1;padding:0 3px}
+.gb-x:hover{color:#e2e8f0}
+.role-b.on[style]{cursor:default}
+/* 演示路线导览（首页顶部，评委一键跟随） */
+.tour{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tour-t{display:flex;align-items:center;font-size:12.5px;color:#5d6d85;font-weight:700;padding-right:4px;white-space:nowrap}
+.tour-step{flex:1;min-width:150px;display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #dce4f0;border-radius:11px;padding:10px 13px;cursor:pointer;transition:.15s;box-shadow:0 1px 2px rgba(16,35,56,.04)}
+.tour-step:hover{border-color:#2563eb;box-shadow:0 4px 14px rgba(37,99,235,.12);transform:translateY(-1px)}
+.tour-n{flex:none;width:24px;height:24px;border-radius:50%;background:#e8f0ff;color:#1d4ed8;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+.tour-step b{font-size:13px;color:#16202f;display:block;line-height:1.2}
+.tour-step span{font-size:11.5px;color:#8b99ad}
+/* 处方已推送提示 */
+.rx-pushed{display:flex;align-items:center;gap:8px;background:#eaf3de;border:1px solid #c0dd97;color:#3b6d11;border-radius:10px;padding:9px 12px;font-size:13px;font-weight:600;margin-bottom:12px}
+.rx-pushed .ic{flex:none}
+</style>
+</head>
+<body data-page-node-id="rueupgLJWuotmX2xLBkSLK">
+<div id="app" data-page-node-id="fuZW8fFdyEw9dfeVxITZj7">
+  <aside id="sidebar" data-page-node-id="A8aaAfk7EcuIYDZAUc7KHu">
+    <div class="sb-brand" data-page-node-id="WD0xnmkpnGcIxhnPKUlgld">
+      <div class="sb-logo" data-page-node-id="gMD7eZxBAkp0QN3D3xqJRB">
+        <div class="sb-mark" data-page-node-id="NJFyOHAGejfYDKHIvWX1lU">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="nXOozOzyRmipyXZmoPjulu">
+            <path d="M13 2L4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5z" data-page-node-id="xx0xQygRyZXT2VuQA5UdcL"/>
+          </svg>
+        </div>
+        <div data-page-node-id="9upBMCbpWkMNTGgVHFAlPG">
+          <div class="sb-title" data-page-node-id="0XbaF5UFBqQyX1ErTGJPdf">体质健康 AI 测评</div>
+          <div class="sb-sub" data-page-node-id="h3AUz2StGxbvMLvO0INwkw">智能运动处方系统</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sb-nav" id="nav" data-page-node-id="bFI8xrI979SouuvEgXUaK9"></nav>
+    <div class="sb-foot" data-page-node-id="JXKTx1Dycis9CGS1uqQaHg">
+      <b data-page-node-id="Mf2i8EYGQfEe30td3G5ZPi">参赛演示版 v1.0</b><br data-page-node-id="MH6uzQfnYVA4V7nzbFI711">
+      全部数据为虚构脱敏示例<br data-page-node-id="jB6wDeZxNhH1PDhqRBS2XQ">
+      与校内生产系统物理隔离
+    </div>
+  </aside>
+  <main id="main" data-page-node-id="9u2ntZTHgbh1ZluytGUhFI">
+    <header id="topbar" data-page-node-id="sdoZ5ByJZY4L5AXMU47ENZ">
+      <div data-page-node-id="GzlJ3WGV14QQBa830WI0e0">
+        <div class="tb-title" id="pgTitle" data-page-node-id="2zBsCuFYOdYJsAv0DzQv6B">系统总览</div>
+      </div>
+      <div class="tb-desc" id="pgDesc" data-page-node-id="xI1IIPrhPb2jsdI6EPfVnr"></div>
+      <div class="tb-right" data-page-node-id="4BTqBDsmD3jGRSGavygNyj">
+        <div class="demo-chip" data-page-node-id="Lx5AHAujHU1hxNPF20JY1O">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" data-page-node-id="9xxsHKr1beoLGwmmKiU4Pt">
+            <circle cx="12" cy="12" r="9" data-page-node-id="hvvnkMwKCb6Fo56IZO3NPR"/><path d="M12 8v5M12 16.5v.01" data-page-node-id="LsFFYwsdibG1Ytp1yxMx2N"/>
+          </svg>
+          演示数据 · 已脱敏
+        </div>
+        <div id="userChip"></div>
+        <div id="saveChip"></div>
+        <button class="qr-btn" onclick="UI.openQR()" title="生成局域网二维码，手机/平板扫码进入">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM21 21h-1M17 21v-1"/></svg>
+          扫码进入
+        </button>
+        <div class="mode-sw" id="modeSw"></div>
+        <div class="role-sw" id="roleSw" data-page-node-id="dsgbGmSQJwSOoGXLZoTBAs"></div>
+      </div>
+    </header>
+    <div id="view" data-page-node-id="ZIMzrZmA7tMXqce7BhtRQj"></div>
+  </main>
+</div>
+
+<div id="loginMask" class="login-mask">
+  <div class="login-box">
+    <div class="login-l">
+      <div class="login-brand">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M3 12h4l2.5-7 4 14L16 12h5"/></svg>
+        <div>
+          <div style="font-size:17.5px;font-weight:800;letter-spacing:.2px">体质健康 AI 测评系统</div>
+          <div style="font-size:12px;opacity:.72;margin-top:2px">测评 · 处方 · 追踪　校园网本地部署</div>
+        </div>
+      </div>
+      <div class="login-note">
+        本系统按<b>角色</b>开放数据范围。教师与管理员可查看并维护全班数据；学生仅能查看本人的测评结果与运动处方。
+      </div>
+      <div class="login-roles" id="loginRoles"></div>
+      <div class="login-tip">演示环境，账号与密码已在右侧列出，点选角色即可自动填入。</div>
+      <div id="loginQR"></div>
+    </div>
+    <div class="login-r">
+      <div class="login-h">账号登录</div>
+      <div class="login-sub">请选择身份后登录</div>
+      <label class="login-lb">账号</label>
+      <input class="login-in" id="lgUser" type="text" autocomplete="off" placeholder="请输入账号">
+      <label class="login-lb">密码</label>
+      <input class="login-in" id="lgPwd" type="password" autocomplete="off" placeholder="请输入密码">
+      <div class="login-err" id="lgErr"></div>
+      <button class="login-btn" onclick="UI.doLogin()">登 录</button>
+      <div class="login-foot">数据全部保存在本机，不上传任何外部服务；可完全离线运行。</div>
+    </div>
+  </div>
+</div>
+
+<div id="qrModal" class="qr-modal" onclick="UI.closeQR()">
+  <div class="qr-modal-box" onclick="event.stopPropagation()">
+    <div class="qr-modal-h">扫码进入系统<div class="qr-modal-x" onclick="UI.closeQR()">&times;</div></div>
+    <div id="qrModalBody"></div>
+  </div>
+</div>
+
+<div id="guestBar" class="guest-bar" style="display:none"></div>
+
+<script>
+"use strict";
+/* =====================================================================
+   体质健康 AI 测评与个性化运动处方系统 · 参赛演示版
+   ---------------------------------------------------------------------
+   数据来源说明：
+   评分标准取自教育部《国家学生体质健康标准（2014 年修订）》
+   高中一年级（男 / 女）单项评分表，含 100~10 共 20 个分数档。
+   内部全部学生成绩为算法生成的虚构数据，用于演示，非真实学生数据。
+   ===================================================================== */
+
+/* ---------------- 1. 国标评分表（2014修订 · 高中一年级） ---------------- */
+// 键为单项得分，值为该档对应的达标成绩
+const STD = {
+  M: {
+    vc:      {100:4540,95:4420,90:4300,85:4050,80:3800,78:3680,76:3560,74:3440,72:3320,70:3200,68:3080,66:2960,64:2840,62:2720,60:2600,50:2470,40:2340,30:2210,20:2080,10:1950},
+    run50:   {100:7.1,95:7.2,90:7.3,85:7.4,80:7.5,78:7.7,76:7.9,74:8.1,72:8.3,70:8.5,68:8.7,66:8.9,64:9.1,62:9.3,60:9.5,50:9.7,40:9.9,30:10.1,20:10.3,10:10.5},
+    reach:   {100:23.6,95:21.5,90:19.4,85:17.2,80:15.0,78:13.6,76:12.2,74:10.8,72:9.4,70:8.0,68:6.6,66:5.2,64:3.8,62:2.4,60:1.0,50:0.0,40:-1.0,30:-2.0,20:-3.0,10:-4.0},
+    jump:    {100:260,95:255,90:250,85:243,80:235,78:231,76:227,74:223,72:219,70:215,68:211,66:207,64:203,62:199,60:195,50:190,40:185,30:180,20:175,10:170},
+    pullup:  {100:16,95:15,90:14,85:13,80:12,76:11,72:10,68:9,64:8,60:7,50:6,40:5,30:4,20:3,10:2},
+    endur:   {100:210,95:215,90:220,85:227,80:235,78:240,76:245,74:250,72:255,70:260,68:265,66:270,64:275,62:280,60:285,50:305,40:325,30:345,20:365,10:385} // 单位：秒（1000米）
+  },
+  F: {
+    vc:      {100:3150,95:3100,90:3050,85:2900,80:2750,78:2650,76:2550,74:2450,72:2350,70:2250,68:2150,66:2050,64:1950,62:1850,60:1750,50:1710,40:1670,30:1630,20:1590,10:1550},
+    run50:   {100:7.8,95:7.9,90:8.0,85:8.3,80:8.6,78:8.8,76:9.0,74:9.2,72:9.4,70:9.6,68:9.8,66:10.0,64:10.2,62:10.4,60:10.6,50:10.8,40:11.0,30:11.2,20:11.4,10:11.6},
+    reach:   {100:24.2,95:22.5,90:20.8,85:19.1,80:17.4,78:16.1,76:14.8,74:13.5,72:12.2,70:10.9,68:9.6,66:8.3,64:7.0,62:5.7,60:4.4,50:3.6,40:2.8,30:2.0,20:1.2,10:0.4},
+    jump:    {100:204,95:198,90:192,85:185,80:178,78:175,76:172,74:169,72:166,70:163,68:160,66:157,64:154,62:151,60:148,50:143,40:138,30:133,20:128,10:123},
+    situp:   {100:53,95:51,90:49,85:46,80:43,78:41,76:39,74:37,72:35,70:33,68:31,66:29,64:27,62:25,60:23,50:21,40:19,30:17,20:15,10:13},
+    endur:   {100:204,95:210,90:216,85:223,80:230,78:235,76:240,74:245,72:250,70:255,68:260,66:265,64:270,62:275,60:280,50:290,40:300,30:310,20:320,10:330} // 单位：秒（800米）
+  }
+};
+
+// BMI 评分（高一）：正常100 / 低体重、超重80 / 肥胖60
+const BMI_STD = {
+  M: { normalLow:16.5, normalHigh:23.2, over:26.3 },
+  F: { normalLow:16.5, normalHigh:22.7, over:25.2 }
+};
+
+// 项目权重（%）
+const WEIGHT = { bmi:15, vc:15, run50:20, reach:10, jump:10, strength:10, endur:20 };
+
+const ITEMS = [
+  { key:"bmi",     name:"体重指数 BMI", unit:"",            better:"range", w:15 },
+  { key:"vc",      name:"肺活量",       unit:"ml",          better:"high",  w:15 },
+  { key:"run50",   name:"50 米跑",      unit:"s",           better:"low",   w:20 },
+  { key:"reach",   name:"坐位体前屈",   unit:"cm",          better:"high",  w:10 },
+  { key:"jump",    name:"立定跳远",     unit:"cm",          better:"high",  w:10 },
+  { key:"strength",name:"力量项目",     unit:"个",          better:"high",  w:10 },
+  { key:"endur",   name:"耐力跑",       unit:"s",           better:"low",   w:20 }
+];
+
+function itemName(gender, key){
+  const nm = { strength: gender==="M" ? "引体向上" : "仰卧起坐",
+               endur:    gender==="M" ? "1000 米跑" : "800 米跑" };
+  const base = ITEMS.find(i=>i.key===key);
+  return nm[key] || (base ? base.name : key);
+}
+
+/* ---------------- 2. 评分引擎 ---------------- */
+const SCORE_KEYS = [100,95,90,85,80,78,76,74,72,70,68,66,64,62,60,50,40,30,20,10];
+
+function lookupScore(table, val, better){
+  if (val === null || val === undefined || val === "" || isNaN(val)) return null;
+  val = Number(val);
+  for (let i=0;i<SCORE_KEYS.length;i++){
+    const k = SCORE_KEYS[i];
+    const t = table[k];
+    if (t === undefined) continue;
+    if (better === "high"  && val >= t) return k;
+    if (better === "low"   && val <= t) return k;
+  }
+  return 0; // 低于最低档，记 0 分
+}
+
+function bmiScore(gender, bmi){
+  const s = BMI_STD[gender];
+  let score, grade;
+  if (bmi < s.normalLow)      { score = 80; grade = "低体重"; }
+  else if (bmi <= s.normalHigh){ score = 100; grade = "正常"; }
+  else if (bmi <= s.over)     { score = 80; grade = "超重"; }
+  else                        { score = 60; grade = "肥胖"; }
+  return { score, grade };
+}
+
+/**
+ * 计算单个学生单次测评的成绩
+ * rec: { height, weight, vc, run50, reach, jump, strength, endur }
+ */
+function scoreOne(gender, rec){
+  const T = STD[gender];
+  const h = Number(rec.height)/100, w = Number(rec.weight);
+  const bmi = (h>0 && w>0) ? +(w/(h*h)).toFixed(1) : null;
+  const bip = bmi!=null ? bmiScore(gender, bmi) : {score:0,grade:"未测"};
+
+  const parts = {
+    bmi:      { score: bip.score,  raw: bmi,     better:"range", grade: bip.grade },
+    vc:       { score: lookupScore(T.vc, rec.vc, "high"),        raw: Number(rec.vc)||0,       better:"high" },
+    run50:    { score: lookupScore(T.run50, rec.run50, "low"),   raw: Number(rec.run50)||0,    better:"low"  },
+    reach:    { score: lookupScore(T.reach, rec.reach, "high"),  raw: Number(rec.reach)||0,    better:"high" },
+    jump:     { score: lookupScore(T.jump, rec.jump, "high"),    raw: Number(rec.jump)||0,     better:"high" },
+    strength: { score: lookupScore(T[gender==="M"?"pullup":"situp"], rec.strength, "high"), raw: Number(rec.strength)||0, better:"high" },
+    endur:    { score: lookupScore(T.endur, rec.endur, "low"),   raw: Number(rec.endur)||0,    better:"low"  }
+  };
+
+  let total = 0, done = 0;
+  ITEMS.forEach(it=>{
+    const p = parts[it.key];
+    if (p && typeof p.score === "number") { total += p.score * it.w / 100; done++; }
+  });
+  total = Math.round(total*10)/10;
+
+  let level;
+  if      (total >= 90) level = "优秀";
+  else if (total >= 80) level = "良好";
+  else if (total >= 60) level = "及格";
+  else                  level = "不及格";
+
+  return { parts, bmi, bmiGrade: bip.grade, total, level, valid: done===ITEMS.length };
+}
+
+/* ---------------- 3. 演示数据生成（确定性，每次打开一致） ---------------- */
+function lcg(seed){
+  let s = seed >>> 0;
+  return function(){ s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+}
+
+const NAMES_M = ["李思远","陈屹然","周子墨","吴亦帆","郑云舟","王慕白","孙景行","林知远","徐则安","何锦程","高行健","马跃然","罗天翊","谢临风","唐予安","顾星河","韩逸尘","曹书言","邓启明","彭向阳","曾默存","苏逸辰"];
+const NAMES_F = ["王晨曦","张语桐","刘清越","赵安然","孙诗涵","陈知微","林宛白","周静姝","吴映雪","郑南乔","何嘉言","许清和","钱柳依","李若初","冯听晚","蒋月白","沈知暖","韩露微","杨书颜","朱明溪"];
+
+const TERMS = [
+  { id:"t1", name:"2024 秋季", label:"高一上" },
+  { id:"t2", name:"2025 春季", label:"高一下" },
+  { id:"t3", name:"2025 秋季", label:"高二上" }
+];
+
+// 围绕 0 的近似正态抖动（多均匀分布叠加）
+function jitter(rnd, scale){
+  return (rnd()+rnd()+rnd()-1.5) / 1.5 * scale;
+}
+
+function buildStudents(){
+  const rnd = lcg(20260909);
+  const list = [];
+  let seqM = 0, seqF = 0;
+
+  function makeRecord(gender, base, prog){
+    // prog: 0/1/2 表示第几次测评，能力随时间小幅提升
+    const g = 0.06 * prog;
+    const r = {
+      height: gender==="M" ? base.height : base.height,
+      weight: Math.round((base.weight + jitter(rnd,1.0) + prog*0.55)*10)/10,
+      vc:     Math.round(base.vc   * (1 + g) + jitter(rnd,  gender==="M"?190:120)),
+      run50:  Math.round((base.run50 * (1 - g*0.42) + jitter(rnd, 0.26))*10)/10,
+      reach:  Math.round((base.reach + jitter(rnd,1.9) + prog*0.85)*10)/10,
+      jump:   Math.round(base.jump * (1 + g*0.62) + jitter(rnd, 7)),
+      strength: Math.round(base.strength * (1 + g*1.05) + jitter(rnd, 1.15)),
+      endur:  Math.round(base.endur * (1 - g*0.46) + jitter(rnd, gender==="M"?11:8))
+    };
+    if (gender==="M"){ r.strength = Math.max(0, Math.min(28, r.strength)); }
+    else             { r.strength = Math.max(0, Math.min(70, r.strength)); }
+    r.run50 = Math.max(6.4, Math.min(13, r.run50));
+    r.endur = Math.max(120, Math.min(400, r.endur));
+    r.vc    = Math.max(1000, r.vc);
+    r.jump  = Math.max(110, r.jump);
+    return r;
+  }
+
+  function push(gender, nameFn, idxFn){
+    const arr = gender==="M" ? NAMES_M : NAMES_F;
+    for (let i=0;i<arr.length;i++){
+      const name = arr[i];
+      const talent = rnd();                       // 运动基础
+      const heavy  = rnd();                       // 体型倾向
+      const base = gender==="M" ? {
+        height: Math.round(166 + rnd()*20),
+        weight: Math.round((52 + heavy*32 + (talent-0.5)*7)*10)/10,
+        vc:     3000 + talent*1900 + heavy*520,
+        run50:  9.2 - talent*2.0 + heavy*0.85,
+        reach:  4  + talent*18 - heavy*4.5,
+        jump:   176 + talent*72 + (talent>0.78?12:0),
+        strength: Math.round(1 + talent*14 + (talent>0.86?4:0)),
+        endur:  320 - talent*85 + heavy*38
+      } : {
+        height: Math.round(154 + rnd()*17),
+        weight: Math.round((43 + heavy*23 + (talent-0.5)*5)*10)/10,
+        vc:     2000 + talent*1250 + heavy*300,
+        run50:  10.6 - talent*2.3 + heavy*0.9,
+        reach:  7  + talent*18 - heavy*3.2,
+        jump:   132 + talent*62 + (talent>0.78?10:0),
+        strength: Math.round(13 + talent*36 + (talent>0.86?7:0)),
+        endur:  305 - talent*80 + heavy*34
+      };
+      const id = (gender==="M" ? "25" : "26") + String(101 + i).padStart(3,"0");
+      const recs = {};
+      TERMS.forEach((t,ti)=>{ recs[t.id] = makeRecord(gender, base, ti); });
+      list.push({
+        id, name, gender,
+        cls: "高一(10)班",
+        avatarColor: ["#3b82f6","#0891b2","#7c3aed","#db2777","#ea580c","#16a34a"][Math.floor(rnd()*6)],
+        recs
+      });
+    }
+  }
+  push("M");
+  push("F");
+  return list;
+}
+
+const STUDENTS = buildStudents();
+const TERM_CURRENT = "t3";
+
+/* ---------------- 4. 派生：批量算分与班级统计 ---------------- */
+const SCORECACHE = {};
+function getScore(stu, termId){
+  const k = stu.id + "@" + termId;
+  if (!SCORECACHE[k]) SCORECACHE[k] = scoreOne(stu.gender, stu.recs[termId]);
+  return SCORECACHE[k];
+}
+function invalidateCache(stuId, termId){
+  Object.keys(SCORECACHE).forEach(k=>{
+    if (k.indexOf(stuId+"@")===0) delete SCORECACHE[k];
+  });
+}
+
+function fmtTime(sec){
+  if (sec===null||sec===undefined||isNaN(sec)) return "—";
+  const m = Math.floor(sec/60), s = Math.round(sec%60);
+  return m + "'" + String(s).padStart(2,"0") + '"';
+}
+function levelTag(lv){
+  const m = {"优秀":"t-g","良好":"t-b","及格":"t-a","不及格":"t-r"};
+  return '<span class="tag '+(m[lv]||"t-n")+'">'+lv+'</span>';
+}
+function scoreColor(sc){
+  if (sc>=90) return "#15803d"; if (sc>=80) return "#2563eb";
+  if (sc>=60) return "#b45309"; return "#b91c1c";
+}
+
+function classStats(termId, genderFilter){
+  let arr = STUDENTS.map(s=>({s, sc:getScore(s, termId)}));
+  if (genderFilter) arr = arr.filter(o=>o.s.gender===genderFilter);
+  const n = arr.length || 1;
+  const lv = {优秀:0,良好:0,及格:0,不及格:0};
+  let total = 0;
+  const partSum = {}; ITEMS.forEach(i=>partSum[i.key]=0);
+  arr.forEach(o=>{
+    total += o.sc.total;
+    lv[o.sc.level] = (lv[o.sc.level]||0)+1;
+    ITEMS.forEach(i=>{ partSum[i.key] += (o.sc.parts[i.key] ? o.sc.parts[i.key].score : 0); });
+  });
+  const partAvg = {}; ITEMS.forEach(i=>partAvg[i.key] = Math.round(partSum[i.key]/n*10)/10);
+  return {
+    n: arr.length,
+    avg: Math.round(total/n*10)/10,
+    lv,
+    goodRate: Math.round((lv.优秀+lv.良好)/n*1000)/10,
+    passRate: Math.round((n-lv.不及格)/n*1000)/10,
+    partAvg
+  };
+}
+
+/* ---------------- 5. 运动处方知识库 ---------------- */
+const RX_LIB = {
+  bmi_high: {
+    title:"体重管理：有氧为主 + 能量负平衡",
+    items:[
+      { n:"持续有氧", t:"中低强度匀速跑或快走", d:"每周 4 次，每次 30–45 分钟，心率控制在 130–150 次/分" },
+      { n:"间歇刺激", t:"400 米重复跑", d:"6 组，组间慢跑或走动恢复 90 秒，每周 1–2 次" },
+      { n:"减少静坐", t:"课间与居家活动量补充", d:"每日额外步行不少于 6000 步，避免久坐超过 60 分钟" }
+    ],
+    tip:"以“提升体能、改善身体成分”为表述口径，避免体形评价；配合规律作息与三餐定时。"
+  },
+  bmi_low: {
+    title:"体重偏低：力量刺激 + 营养补充",
+    items:[
+      { n:"抗阻训练", t:"徒手下肢与核心力量", d:"深蹲、弓步蹲、俯卧撑，每周 3 次，每次 3 组 × 10–12 次" },
+      { n:"控时有氧", t:"短时低强度有氧", d:"每次不超过 20 分钟，避免长时间空腹有氧消耗" },
+      { n:"能量补充", t:"训练后加餐", d:"训练结束后 30 分钟内补充优质蛋白与碳水" }
+    ],
+    tip:"以增强体质为首要目标，不对体型作任何负面评价。"
+  },
+  vc: {
+    title:"心肺功能：呼吸肌训练 + 有氧耐力",
+    items:[
+      { n:"呼吸练习", t:"深呼吸 / 吹气球", d:"每日 3 次，每次 10 个，缓慢呼气至极限" },
+      { n:"有氧耐力", t:"慢跑或游泳", d:"每周 3 次，每次 25–35 分钟，心率 140–160 次/分" },
+      { n:"胸廓活动", t:"扩胸与转体拉伸", d:"准备活动环节必做，每节 4 个 8 拍" }
+    ],
+    tip:"肺活量提升周期较长，建议以 4 周为一个观察单元，避免短期加量。"
+  },
+  run50: {
+    title:"速度素质：起跑反应 + 加速能力",
+    items:[
+      { n:"反应起跑", t:"听（看）信号起动跑", d:"10 组 × 20 米，组间充分休息 60 秒以上" },
+      { n:"加速跑", t:"30 米加速跑", d:"8 组，注重步频递增与前 10 米身体前倾角度" },
+      { n:"技术练习", t:"高抬腿、小步跑、后蹬跑", d:"准备环节各 2 组 × 20 米，强调落地部位" }
+    ],
+    tip:"速度练习须在充分热身后、机体状态良好时进行，疲劳状态下不安排。"
+  },
+  reach: {
+    title:"柔韧素质：动静结合拉伸",
+    items:[
+      { n:"动态拉伸", t:"弓步转体、摆腿", d:"准备环节各 2 组 × 8 拍" },
+      { n:"静态拉伸", t:"坐姿体前屈保持", d:"每次保持 30 秒 × 4 组，缓慢加力不弹震" },
+      { n:"PNF 拉伸", t:"同伴辅助腿后侧拉伸", d:"收紧—放松循环 4 次/侧，每周 3 次" }
+    ],
+    tip:"柔韧练习安排在课的基本部分之后或结束部分，肌肉温度较高时效果更好。"
+  },
+  jump: {
+    title:"下肢爆发力：快速力量 + 蹬摆协调",
+    items:[
+      { n:"深蹲跳", t:"徒手深蹲跳", d:"3 组 × 12 次，落地下蹲缓冲，组间休息 2 分钟" },
+      { n:"台阶交换跳", t:"台阶或跳箱换腿跳", d:"3 组 × 10 次，注意落地稳定与膝踝对齐" },
+      { n:"连续蛙跳", t:"20 米连续蛙跳", d:"4 组，强调摆臂与蹬地的同步发力" }
+    ],
+    tip:"爆发力练习前须完成充分热身，出现膝痛立即停止并改换低冲击练习。"
+  },
+  pullup: {
+    title:"上肢力量：离心优先 + 渐进负荷",
+    items:[
+      { n:"离心下放", t:"跳起后缓慢下落", d:"3 组 × 8 次，下放过程控制在 4–6 秒" },
+      { n:"弹力带辅助", t:"弹力带辅助引体向上", d:"3 组 × 10 次，随力量增长逐步减阻" },
+      { n:"悬垂静力", t:"单杠悬垂", d:"30 秒 × 3 组，同步提升握力" }
+    ],
+    tip:"一个做不到完整动作时，先以离心和悬垂建立基础力量，不急于追求次数。"
+  },
+  situp: {
+    title:"核心力量：腹部耐力 + 避免代偿",
+    items:[
+      { n:"卷腹", t:"屈膝卷腹", d:"3 组 × 20 次，下颌微收，颈肩放松不抱头硬拉" },
+      { n:"俄罗斯转体", t:"躯干旋转控制", d:"3 组 × 20 次（左右各 10），可徒手或持轻物" },
+      { n:"平板支撑", t:"核心静力支撑", d:"60 秒 × 3 组，腰背保持平直不下塌" },
+      { n:"髋屈肌拉伸", t:"结束部分拉伸", d:"每侧 30 秒，减少髂腰肌代偿导致的腰部不适" }
+    ],
+    tip:"出现腰部明显酸胀应减少次数并加强髋屈肌拉伸，必要时调整动作幅度。"
+  },
+  endur: {
+    title:"耐力素质：有氧基础 + 配速控制",
+    items:[
+      { n:"持续跑", t:"匀速持续跑", d:"每周 3 次，每次 20–30 分钟，心率 140–160 次/分" },
+      { n:"间歇跑", t:"600 米重复跑", d:"4 组，组间休息 3 分钟，用于控制配速感" },
+      { n:"呼吸节奏", t:"两步一吸、两步一呼", d:"全程固定节律，最后 100 米转为加深呼吸" },
+      { n:"终点冲刺", t:"最后 100 米加速", d:"每周安排 1 次冲刺练习，建立终点意识" }
+    ],
+    tip:"耐力提升须循序渐进，周增量控制在 10% 以内，出现持续疲劳应减量。"
+  }
+};
+
+/**
+ * 依据测评结果生成个性化运动处方
+ */
+function makePrescription(stu, termId){
+  const sc = getScore(stu, termId);
+  const G = stu.gender;
+
+  // 薄弱项：得分低于 72 分的项目，按得分升序
+  const weak = ITEMS.map(it=>{
+    const p = sc.parts[it.key];
+    return { key: it.key, name: itemName(G, it.key), score: p.score, w: it.w };
+  }).filter(x=>typeof x.score === "number" && x.score < 72)
+    .sort((a,b)=>a.score-b.score);
+
+  const focus = weak.slice(0,3);
+  if (focus.length === 0){
+    return { keep:true, items:[], focus:[] };
+  }
+
+  const sections = focus.map(f=>{
+    let libKey = f.key;
+    if (f.key === "bmi"){
+      libKey = (sc.bmiGrade === "超重" || sc.bmiGrade === "肥胖") ? "bmi_high"
+             : (sc.bmiGrade === "低体重") ? "bmi_low" : "bmi_high";
+      if (sc.bmiGrade === "正常") libKey = "vc";
+    }
+    if (f.key === "strength") libKey = G === "M" ? "pullup" : "situp";
+    const lib = RX_LIB[libKey];
+    return { key: f.key, name: f.name, score: f.score, lib };
+  });
+
+  // 优势项（用于保持性练习）
+  const strong = ITEMS.map(it=>({key:it.key,name:itemName(G,it.key),score:sc.parts[it.key].score}))
+    .filter(x=>x.score>=85).sort((a,b)=>b.score-a.score).slice(0,2);
+
+  return { keep:false, items:sections, focus, strong, total: sc.total, level: sc.level };
+}
+
+/* ---------------- 6. 图标 ---------------- */
+const ICO = {
+  mic:'<rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3M8.5 21h7"/>',
+  vol:'<path d="M11 5 6.5 9H3v6h3.5L11 19V5z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18.5 6.5a7.5 7.5 0 0 1 0 11"/>',
+  stop:'<rect x="6" y="6" width="12" height="12" rx="2"/>',
+  shot:'<path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.4"/>',
+  home:'<rect x="3" y="3" width="7" height="9" rx="1.2"/><rect x="14" y="3" width="7" height="5" rx="1.2"/><rect x="14" y="12" width="7" height="9" rx="1.2"/><rect x="3" y="16" width="7" height="5" rx="1.2"/>',
+  cap:'<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/>',
+  score:'<path d="M3 17l4.5-4.5 3.5 3L16 9l5 4.5"/><path d="M21 8V4h-4"/>',
+  rx:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8z"/>',
+  chat:'<path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/>',
+  track:'<path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-4 4"/>',
+  trace:'<rect x="9" y="9" width="6" height="6" rx="1.2"/><path d="M9 2v5M15 2v5M9 17v5M15 17v5M2 9h5M2 15h5M17 9h5M17 15h5"/>',
+  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  edit:'<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',
+  dl:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/>',
+  cam:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+  sheet:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/>',
+  send:'<path d="M22 2 11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/>',
+  bulb:'<path d="M9 18h6M10 22h4"/><path d="M15.1 14c.6-1.1 1-2.3 1-3.5A6.1 6.1 0 0 0 6 10.5C6 12 6.5 13.3 7.3 14.4c.3.4.7.9.7 1.6v1h8v-1c0-.7.4-1.2.7-1.6"/>',
+  cpu:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/>',
+  hand:'<path d="M18 11V6a2 2 0 0 0-4 0v4M14 10V4a2 2 0 0 0-4 0v6M10 10.5V8a2 2 0 0 0-4 0v6"/><path d="M18 11a4 4 0 0 1-4 4h-2.5l-2.6 3.2a1.6 1.6 0 0 1-2.9-1V15a4 4 0 0 1 2-3.5"/>'
+};
+function icon(name, size){
+  const s = size || 19;
+  return '<svg viewBox="0 0 24 24" style="width:'+s+'px;height:'+s+'px" stroke="currentColor" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+(ICO[name]||'')+'</svg>';
+}
+
+/* ---------------- 7. 手写 SVG 图表 ---------------- */
+function radar(partAvg, size){
+  const S = size||276, cx = S/2, cy = S/2 + 6, R = S/2 - 42;
+  const keys = ITEMS.map(i=>i.key);
+  const G = "高一";
+  let axis = "", grid = "", dots = "", labels = "", pts = [];
+  for (let ring=1; ring<=4; ring++){
+    const r = R*ring/4; let pts=[];
+    keys.forEach((k,i)=>{
+      const a = -Math.PI/2 + i*2*Math.PI/keys.length;
+      pts.push((cx+r*Math.cos(a)).toFixed(1)+","+(cy+r*Math.sin(a)).toFixed(1));
+    });
+    grid += '<polygon points="'+pts.join(" ")+'" fill="'+(ring===4?"#fbfdff":"none")+'" stroke="#dfe7f2" stroke-width="1"/>';
+  }
+  keys.forEach((k,i)=>{
+    const a = -Math.PI/2 + i*2*Math.PI/keys.length;
+    axis += '<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+R*Math.cos(a)).toFixed(1)+'" y2="'+(cy+R*Math.sin(a)).toFixed(1)+'" stroke="#e3e9f3" stroke-width="1"/>';
+    const v = Math.max(0, Math.min(100, partAvg[k]||0));
+    const r = R*v/100;
+    const px = cx+r*Math.cos(a), py = cy+r*Math.sin(a);
+    pts.push(px.toFixed(1)+","+py.toFixed(1));
+    dots +=  '<circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="3.6" fill="#fff" stroke="#2563eb" stroke-width="2"/>';
+    const lx = cx+(R+26)*Math.cos(a), ly = cy+(R+26)*Math.sin(a);
+    const label = itemName("M", k).replace("体重指数 BMI","BMI").replace("力量项目","力量");
+    let anchor = "middle";
+    if (lx > cx+6) anchor="start"; else if (lx < cx-6) anchor="end";
+    labels += '<text x="'+lx.toFixed(1)+'" y="'+(ly+4).toFixed(1)+'" font-size="12" fill="#5d6d85" text-anchor="'+anchor+'" font-weight="600">'+label+'</text>';
+  });
+  const poly = pts.join(" ");
+  return '<svg viewBox="0 0 '+S+' '+(S+8)+'" style="width:100%;max-width:'+S+'px;height:auto">'
+    + grid + axis
+    + '<polygon points="'+poly+'" fill="rgba(37,99,235,.17)" stroke="#2563eb" stroke-width="2.2" stroke-linejoin="round"/>'
+    + dots + labels
+    + '</svg>';
+}
+
+function donut(lv, total, size){
+  const S = size||196, cx=S/2, cy=S/2, r=S/2-14, sw=24;
+  const C = 2*Math.PI*r;
+  const map = [["优秀","#15803d"],["良好","#2563eb"],["及格","#f59e0b"],["不及格","#dc2626"]];
+  let off = 0, seg = "";
+  map.forEach(m=>{
+    const c = lv[m[0]]||0; if (!c) return;
+    const len = C*c/total;
+    seg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+m[1]+'" stroke-width="'+sw+'" '
+         + 'stroke-dasharray="'+len.toFixed(2)+' '+(C-len).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'" transform="rotate(-90 '+cx+' '+cy+')"/>';
+    off += len;
+  });
+  const rate = Math.round((lv.优秀+lv.良好)/total*1000)/10;
+  return '<svg viewBox="0 0 '+S+' '+S+'" style="width:'+S+'px;height:'+S+'px">'
+    + '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="#eaf0f9" stroke-width="'+sw+'"/>' + seg
+    + '<text x="'+cx+'" y="'+(cy-2)+'" text-anchor="middle" font-size="30" font-weight="800" fill="#16202f">'+rate+'</text>'
+    + '<text x="'+cx+'" y="'+(cy+18)+'" text-anchor="middle" font-size="12" fill="#5d6d85">优良率 %</text>'
+    + '</svg>';
+}
+
+function hbarRow(label, val, color, extra){
+  const pct = Math.max(0, Math.min(100, val));
+  return '<div style="margin-bottom:11px">'
+    + '<div class="row" style="margin-bottom:5px"><span style="font-size:13.5px;color:#16202f;font-weight:600;min-width:96px">'+label+'</span>'
+    + '<span class="num" style="font-size:14px;font-weight:800;color:'+(color||"#2563eb")+'">'+val+'</span>'
+    + (extra?'<span style="font-size:11.5px;color:#8b99ad;margin-left:auto">'+extra+'</span>':'') + '</div>'
+    + '<div class="bar-out"><div class="bar-in" style="width:'+pct+'%;background:'+(color||"#2563eb")+'"></div></div></div>';
+}
+
+function lineChart(series, labels, w, h){
+  const W = w||560, H = h||210;
+  const padL = 42, padR = 16, padT = 14, padB = 30;
+  const all = [].concat.apply([], series.map(s=>s.data)).filter(v=>typeof v==="number");
+  let mn = Math.min.apply(null, all), mx = Math.max.apply(null, all);
+  if (mn===mx){ mn = mn-5; mx = mx+5; }
+  const pad = (mx-mn)*0.18; mn = mn-pad; mx = mx+pad;
+  const n = labels.length;
+  const X = i => padL + (W-padL-padR) * (n===1?0.5:i/(n-1));
+  const Y = v => padT + (H-padT-padB) * (1 - (v-mn)/(mx-mn));
+  let grid = "", ylab = "";
+  for (let gi=0; gi<=4; gi++){
+    const v = mn + (mx-mn)*gi/4, y = Y(v);
+    grid += '<line x1="'+padL+'" y1="'+y.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+y.toFixed(1)+'" stroke="#eef2f8" stroke-width="1"/>';
+    ylab += '<text x="'+(padL-8)+'" y="'+(y+4).toFixed(1)+'" text-anchor="end" font-size="10.5" fill="#8b99ad">'+v.toFixed(0)+'</text>';
+  }
+  let xlab = "", paths = "", dots = "";
+  labels.forEach((lb,i)=>{
+    xlab += '<text x="'+X(i).toFixed(1)+'" y="'+(H-9)+'" text-anchor="middle" font-size="11.5" fill="#5d6d85" font-weight="600">'+lb+'</text>';
+  });
+  series.forEach(s=>{
+    let d = "";
+    s.data.forEach((v,i)=>{ d += (i===0?"M":"L") + X(i).toFixed(1) + " " + Y(v).toFixed(1) + " "; });
+    paths += '<path d="'+d+'" fill="none" stroke="'+s.color+'" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>';
+    s.data.forEach((v,i)=>{
+      dots += '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(v).toFixed(1)+'" r="4.2" fill="#fff" stroke="'+s.color+'" stroke-width="2.4"/>';
+      dots += '<text x="'+X(i).toFixed(1)+'" y="'+(Y(v)-11).toFixed(1)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+s.color+'">'+v+'</text>';
+    });
+  });
+  return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto">'+grid+ylab+xlab+paths+dots+'</svg>';
+}
+
+function groupBar(g1, g2, labels, w, h){
+  const W = w||420, H = h||196;
+  const padL = 34, padB = 30, padT = 12;
+  const mx = 100, n = labels.length;
+  const bw = (W-padL-12)/n;
+  let s = "", xlab="";
+  for (let gi=0; gi<=4; gi++){
+    const y = padT + (H-padT-padB)*(1-gi/4);
+    s += '<line x1="'+padL+'" y1="'+y.toFixed(1)+'" x2="'+(W-8)+'" y2="'+y.toFixed(1)+'" stroke="#eef2f8"/>';
+    s += '<text x="'+(padL-6)+'" y="'+(y+4).toFixed(1)+'" text-anchor="end" font-size="10" fill="#8b99ad">'+(gi*25)+'</text>';
+  }
+  labels.forEach((lb,i)=>{
+    const x0 = padL + i*bw;
+    const bh1 = (H-padT-padB)*g1[i]/mx, bh2 = (H-padT-padB)*g2[i]/mx;
+    s += '<rect x="'+(x0+bw*0.16).toFixed(1)+'" y="'+(H-padB-bh1).toFixed(1)+'" width="'+(bw*0.3).toFixed(1)+'" height="'+Math.max(1,bh1).toFixed(1)+'" rx="3" fill="#2563eb"/>';
+    s += '<rect x="'+(x0+bw*0.52).toFixed(1)+'" y="'+(H-padB-bh2).toFixed(1)+'" width="'+(bw*0.3).toFixed(1)+'" height="'+Math.max(1,bh2).toFixed(1)+'" rx="3" fill="#f59e0b"/>';
+    xlab += '<text x="'+(x0+bw/2).toFixed(1)+'" y="'+(H-10)+'" text-anchor="middle" font-size="10.5" fill="#5d6d85" font-weight="600">'+lb+'</text>';
+  });
+  return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto">'+s+xlab+'</svg>';
+}
+
+/* ---------------- 8. 页面状态 ---------------- */
+const PAGES = [
+  { id:"home",    name:"系统总览",   ico:"home",  desc:"班级体质画像与关键指标" },
+  { id:"capture", name:"多模态采集", ico:"cap",   desc:"课堂录入、批量导入与拍照/语音通道", badge:"含原型" },
+  { id:"score",   name:"国标测评",   ico:"score", desc:"按 2014 修订国标自动评分评级" },
+  { id:"rx",      name:"AI 运动处方", ico:"rx",   desc:"薄弱项识别与一人一策处方生成" },
+  { id:"coach",   name:"处方顾问",   ico:"chat",  desc:"多轮问答 · 体测数据问答" },
+  { id:"track",   name:"成长追踪",   ico:"track", desc:"跨学期纵向对比与趋势" },
+  { id:"trace",   name:"AI 溯源",    ico:"trace", desc:"AI 参与范围与人工干预说明" }
+];
+
+const ROLES = [
+  { id:"teacher", name:"教师" },
+  { id:"student", name:"学生" },
+  { id:"admin",   name:"管理者" }
+];
+
+const STATE = {
+  page: "home",
+  role: "teacher",
+  term: TERM_CURRENT,
+  stuId: STUDENTS[0].id,
+  genderFilter: "",
+  chat: [],
+  capMode: "field",
+  ocrStage: 0,
+  editNote: "",
+  /* —— 新增：登录、双模式、处方追问 —— */
+  user: null,          // 登录账号对象，未登录为 null
+  clean: true,         // true = 纯净模式（隐藏自我说明文字）
+  askLog: [],          // 处方页追问记录
+  imp: null,           // 导入预览数据（解析后、写入前）
+  importErr: "",       // 导入错误提示
+  importResult: null,  // 上一次导入的结果
+  /* —— 多模态：摄像头与语音合成 —— */
+  photo: null,         // 拍照留档：{ src, w, h, time, kb }（仅内存，不入存档）
+  camLive: false,      // 摄像头预览是否已开启
+  camBusy: false,      // 正在请求摄像头权限
+  camErr: "",          // 摄像头/读取失败时的降级提示
+  voiceOn: false,      // 是否正在朗读
+  voiceMsg: "",        // 语音模块状态提示
+  voiceStu: "",        // 语音复核对象学号（空则跟随 STATE.stuId）
+  plOpen: [],          // Prompt 台账展开的条目序号
+  copyMsg: "",          // 复制反馈
+  pushedRx: "",         // 最近一次「推送到学生端」的学生 id（演示确认用）
+  /* —— 扫码进入 / 手机实时上传 —— */
+  served: false,       // 是否经本地服务(http/https)打开（决定能否生成局域网二维码与上传同步）
+  feedTimer: null,     // 大屏轮询手机上传的定时器
+  feedAfter: 0         // 已拉取到的最新时间戳（增量拉取）
+};
+
+/* ---------------- 8.4 数据存档（本地持久化） ----------------
+   改动写入 localStorage，只存「差量」而非整份数据：演示数据由
+   buildStudents() 确定性生成，重开页面必然还原，无需整体序列化。
+   这样存档体积始终很小（几十条记录），也避免 localStorage 配额风险。
+   照片不进存档（体积大且无必要），仅保留在当前会话内存中。        */
+var LS_KEY = "fitness_demo_edits_v1";
+var Store = {
+  ok: false,
+  edits: {},
+  init(){
+    var raw = null;
+    try {
+      raw = window.localStorage.getItem(LS_KEY);
+      this.ok = true;
+    } catch(e){ this.ok = false; }
+    if (raw){
+      try {
+        var d = JSON.parse(raw);
+        if (d && d.v === 1 && d.edits && typeof d.edits === "object") this.edits = d.edits;
+      } catch(e){ this.edits = {}; }
+    }
+    this.apply();
+  },
+  apply(){
+    var ts = Object.keys(this.edits);
+    for (var i=0;i<ts.length;i++){
+      var term = ts[i], byId = this.edits[term];
+      var sids = Object.keys(byId);
+      for (var j=0;j<sids.length;j++){
+        var sid = sids[j], s = STUDENTS.find(function(x){ return x.id === sid; });
+        if (!s || !s.recs || !s.recs[term]) continue;
+        var ks = Object.keys(byId[sid]);
+        for (var k=0;k<ks.length;k++) s.recs[term][ks[k]] = byId[sid][ks[k]];
+        invalidateCache(sid, term);
+      }
+    }
+  },
+  put(term, sid, key, val){
+    var v = parseFloat(val);
+    if (isNaN(v)) return;
+    if (!this.edits[term]) this.edits[term] = {};
+    if (!this.edits[term][sid]) this.edits[term][sid] = {};
+    this.edits[term][sid][key] = v;
+    this.flush();
+  },
+  flush(){
+    if (!this.ok) return false;
+    try {
+      window.localStorage.setItem(LS_KEY, JSON.stringify({ v:1, edits:this.edits }));
+      return true;
+    } catch(e){ this.ok = false; return false; }
+  },
+  count(){
+    var n = 0, ts = Object.keys(this.edits);
+    for (var i=0;i<ts.length;i++){
+      var sids = Object.keys(this.edits[ts[i]]);
+      for (var j=0;j<sids.length;j++) n += Object.keys(this.edits[ts[i]][sids[j]]).length;
+    }
+    return n;
+  },
+  /* 受影响的学生数（按人计，比按项计更贴近教师的感知） */
+  students(){
+    var set = {}, ts = Object.keys(this.edits);
+    for (var i=0;i<ts.length;i++){
+      var sids = Object.keys(this.edits[ts[i]]);
+      for (var j=0;j<sids.length;j++) set[sids[j]] = 1;
+    }
+    return Object.keys(set).length;
+  },
+  clear(){
+    this.edits = {};
+    if (this.ok){ try { window.localStorage.removeItem(LS_KEY); } catch(e){} }
+  }
+};
+
+/* ---------------- 8.4b 训练打卡（本地持久化，与 Store 同构） ----------------
+   打卡记录使用独立命名空间、单键 JSON 存储，与 Store 的「差量成绩存档」互不干扰：
+   - 重置成绩存档不会清掉打卡；两类数据各自独立、互不影响。
+   - 日期用本地时区 YYYY-MM-DD，避免直接用 toISOString() 在跨午夜/夏令时偏一天。 */
+var LS_CHECKIN = "fitness_demo_checkin_v1";
+var CK_STATUS = { done:"已完成", part:"部分完成", none:"未执行" };
+var Checkin = {
+  ok:false,
+  records:{},
+  init(){
+    var raw=null;
+    try { raw=window.localStorage.getItem(LS_CHECKIN); this.ok=true; } catch(e){ this.ok=false; }
+    if (raw){
+      try { var d=JSON.parse(raw); if (d&&d.v===1&&d.records&&typeof d.records==="object") this.records=d.records; }
+      catch(e){ this.records={}; }
+    }
+  },
+  get(sid,date){ return this.records[date+"_"+sid] || null; },
+  put(sid,date,data){
+    data.sid=sid; data.date=date;
+    this.records[date+"_"+sid]=data;
+    this.flush();
+  },
+  flush(){
+    if (!this.ok) return false;
+    try { window.localStorage.setItem(LS_CHECKIN, JSON.stringify({v:1,records:this.records})); return true; }
+    catch(e){ this.ok=false; return false; }
+  },
+  /* 返回 [from,to] 闭区间内的全部打卡记录（用于按周筛选） */
+  range(from,to){
+    var out=[], keys=Object.keys(this.records);
+    for (var i=0;i<keys.length;i++){
+      var rec=this.records[keys[i]];
+      if (rec && rec.date>=from && rec.date<=to) out.push(rec);
+    }
+    return out;
+  }
+};
+function todayStr(){
+  var d=new Date(), m=("0"+(d.getMonth()+1)).slice(-2), a=("0"+d.getDate()).slice(-2);
+  return d.getFullYear()+"-"+m+"-"+a;
+}
+function nowStr(){
+  var d=new Date(); function p(x){return ("0"+x).slice(-2);} return p(d.getHours())+":"+p(d.getMinutes())+":"+p(d.getSeconds());
+}
+/* 返回包含 ref 的周一~周日的本地日期区间 [mon, sun] */
+function weekRange(ref){
+  var d=new Date(ref+"T00:00:00");
+  var dow=(d.getDay()+6)%7; // 周一=0 …… 周日=6
+  var mon=new Date(d); mon.setDate(d.getDate()-dow);
+  var sun=new Date(mon); sun.setDate(mon.getDate()+6);
+  function f(x){ var m=("0"+(x.getMonth()+1)).slice(-2), a=("0"+x.getDate()).slice(-2); return x.getFullYear()+"-"+m+"-"+a; }
+  return [f(mon), f(sun)];
+}
+function escapeHtml(s){
+  return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+/* ---------------- 8.5 账号与权限 ---------------- */
+const ACCOUNTS = [
+  { id:"teacher", user:"teacher", pwd:"123456", name:"教师",  role:"teacher",
+    scope:"全班", color:"#1d4ed8",
+    desc:"查看并维护全班 42 名学生的体测数据，可录入、修改、生成与导出处方。",
+    demo:"演示账号 teacher / 123456" },
+  { id:"student", user:"student", pwd:"123456", name:"学生",  role:"student",
+    scope:"仅本人", color:"#0891b2",
+    desc:"仅可查看本人的测评结果、运动处方与成长曲线，不能查看他人数据，不能修改成绩。",
+    demo:"演示账号 student / 123456（演示身份：李思远 25101）" },
+  { id:"admin",   user:"admin",   pwd:"123456", name:"管理员", role:"admin",
+    scope:"全校", color:"#6d28d9",
+    desc:"在教师权限基础上，负责账号与数据源管理、评分标准版本维护。",
+    demo:"演示账号 admin / 123456" }
+];
+/* 学生角色绑定到的演示身份 */
+const STUDENT_SELF = "李思远";
+
+/* 权限以「当前视图角色」为准：顶部切换角色即切换权限，登录只决定进门身份 */
+function isStudent(){ return STATE.role === "student"; }
+function canEdit(){ return STATE.role === "teacher" || STATE.role === "admin"; }
+/* 学生角色下，可见学生仅本人 */
+function visibleStudents(){
+  if (!isStudent()) return STUDENTS;
+  const me = STUDENTS.find(s => s.name === STUDENT_SELF) || STUDENTS[0];
+  return [me];
+}
+function selfStudent(){
+  return STUDENTS.find(s => s.name === STUDENT_SELF) || STUDENTS[0];
+}
+
+/* ---------------- 9. 页面渲染 ---------------- */
+/* 学生角色可见的板块（其余不进入侧栏，也不允许直达） */
+const STUDENT_PAGES = ["rx","track","coach"];
+function pageAllowed(id){
+  return !isStudent() || STUDENT_PAGES.indexOf(id) >= 0;
+}
+
+function renderHome(){
+  const st = classStats(STATE.term);
+  const sm = classStats(STATE.term, "M");
+  const sf = classStats(STATE.term, "F");
+  const stPrev = classStats("t1");
+  const delta = Math.round((st.avg - stPrev.avg)*10)/10;
+  const term = TERMS.find(t=>t.id===STATE.term);
+
+  const weakList = ITEMS.map(i=>({ key:i.key, name:i.name, v:st.partAvg[i.key], w:i.w }))
+    .sort((a,b)=>a.v-b.v);
+  const weak1 = weakList[0], weak2 = weakList[1];
+
+  let lvRow = ["优秀","良好","及格","不及格"].map(k=>{
+    const c = st.lv[k]||0;
+    const pct = Math.round(c/st.n*1000)/10;
+    const col = {优秀:"#15803d",良好:"#2563eb",及格:"#f59e0b",不及格:"#dc2626"}[k];
+    return '<div style="flex:1;min-width:112px">'
+      + '<div class="row" style="gap:6px"><span style="width:9px;height:9px;border-radius:3px;background:'+col+';display:inline-block"></span>'
+      + '<span style="font-size:13px;color:#5d6d85;font-weight:600">'+k+'</span>'
+      + '<span class="num" style="margin-left:auto;font-size:15px;font-weight:800">'+c+' 人</span></div>'
+      + '<div style="font-size:11.5px;color:#8b99ad;margin:2px 0 7px">占比 '+pct+'%</div>'
+      + '<div class="bar-out"><div class="bar-in" style="width:'+pct+'%;background:'+col+'"></div></div></div>';
+  }).join("");
+
+  let top = STUDENTS.map(s=>({s, sc:getScore(s, STATE.term)}))
+    .sort((a,b)=>b.sc.total-a.sc.total).slice(0,6);
+  let topHtml = top.map((o,i)=>{
+    return '<tr><td style="width:34px"><span class="tag '+(i<3?"t-b":"t-n")+'">'+(i+1)+'</span></td>'
+      + '<td><b>'+o.s.name+'</b><div style="font-size:11.5px;color:#8b99ad">'+o.s.id+' · '+(o.s.gender==="M"?"男":"女")+'</div></td>'
+      + '<td class="num" style="text-align:right;font-size:19px;font-weight:800;color:'+scoreColor(o.sc.total)+'">'+o.sc.total+'</td>'
+      + '<td style="text-align:right">'+levelTag(o.sc.level)+'</td></tr>';
+  }).join("");
+
+  const tourStu = (function(){ var s = STUDENTS.find(x=>x.name==="李思远"); return s ? s.id : STUDENTS[0].id; })();
+  const tour = ''
+  + '<div class="tour">'
+    + '<div class="tour-t">演示路线 ▸</div>'
+    + '<div class="tour-step" onclick="UI.go(\'home\')"><span class="tour-n">1</span><div><b>班级体质画像</b><span>总览·等级分布</span></div></div>'
+    + '<div class="tour-step" onclick="UI.pick(\''+tourStu+'\');UI.go(\'rx\')"><span class="tour-n">2</span><div><b>看一名学生处方</b><span>李思远·一人一策</span></div></div>'
+    + '<div class="tour-step" onclick="UI.pick(\''+tourStu+'\');UI.go(\'rx\')"><span class="tour-n">3</span><div><b>今日训练打卡</b><span>手机扫码即练即记</span></div></div>'
+    + '<div class="tour-step" onclick="UI.pick(\''+tourStu+'\');UI.go(\'track\')"><span class="tour-n">4</span><div><b>成长追踪</b><span>跨学期进步</span></div></div>'
+    + '<div class="tour-step" onclick="UI.go(\'capture\')"><span class="tour-n">5</span><div><b>手机拍照上大屏</b><span>多模态采集</span></div></div>'
+  + '</div>';
+
+  return ''
+  + tour
+  + '<div class="grid g4 mb16">'
+    + '<div class="kpi blue"><div class="kpi-l">班级平均分</div><div class="kpi-v b">'+st.avg+'</div><div class="kpi-s">'+term.name+' · 共 '+st.n+' 人</div></div>'
+    + '<div class="kpi green"><div class="kpi-l">优良率（80 分以上）</div><div class="kpi-v g">'+st.goodRate+'<span class="kpi-u">%</span></div><div class="kpi-s">优秀 '+st.lv.优秀+' 人 · 良好 '+st.lv.良好+' 人</div></div>'
+    + '<div class="kpi amber"><div class="kpi-l">及格率（60 分以上）</div><div class="kpi-v a">'+st.passRate+'<span class="kpi-u">%</span></div><div class="kpi-s">不及格 '+st.lv.不及格+' 人</div></div>'
+    + '<div class="kpi purple"><div class="kpi-l">较首次测评变化</div><div class="kpi-v p">'+(delta>=0?"+":"")+delta+'</div><div class="kpi-s">对照 '+TERMS[0].name+'（'+stPrev.avg+' 分）</div></div>'
+  + '</div>'
+
+  + '<div class="grid g21 mb16">'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>班级体质画像</h3><span class="sub">'+term.name+' · 各项目平均得分（满分 100）</span></div>'
+      + '<div style="display:flex;justify-content:center">'+radar(st.partAvg, 300)+'</div>'
+      + '<div class="note note-ex mt12">雷达面积越小、越靠内侧的项目为班级共性薄弱环节。当前最薄弱项为 <b>'+weak1.name+'</b>（'+weak1.v+' 分，权重 '+weak1.w+'%）与 <b>'+weak2.name+'</b>（'+weak2.v+' 分）。按“高分顶向=a 加权平均”自动计算总分。</div>'
+    + '</div>'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>等级分布</h3></div>'
+      + '<div style="display:flex;justify-content:center;padding:4px 0 10px">'+donut(st.lv, st.n, 200)+'</div>'
+      + '<div class="row wrap" style="gap:12px 16px;margin-bottom:14px">'+lvRow+'</div>'
+      + '<div class="note cyan"><b>读法</b>：国标规定学年总分 90.0 分及以上为优秀，80.0–89.9 为良好，60.0–79.9 为及格，59.9 及以下不及格；良好及以上方可参加评优评奖。</div>'
+    + '</div>'
+  + '</div>'
+
+  + '<div class="grid g12 mb16">'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>项目平均分明细</h3></div>'
+      + ITEMS.map(i=>{
+          const v = st.partAvg[i.key];
+          const col = v>=90?"#15803d":v>=80?"#2563eb":v>=60?"#f59e0b":"#dc2626";
+          return hbarRow(i.name, v, col, "权重 "+i.w+"%");
+        }).join("")
+    + '</div>'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>男女分组对比</h3><span class="sub">男 '+sm.n+' 人 · 女 '+sf.n+' 人</span></div>'
+      + '<div class="legend mb12"><span><i style="background:#2563eb"></i>男生</span><span><i style="background:#f59e0b"></i>女生</span></div>'
+      + groupBar(ITEMS.map(i=>Math.round(sm.partAvg[i.key])), ITEMS.map(i=>Math.round(sf.partAvg[i.key])),
+                 ITEMS.map(i=>({bmi:"BMI",vc:"肺活量",run50:"50米",reach:"体前屈",jump:"跳远",strength:"力量",endur:"耐力"})[i.key]), 440, 188)
+      + '<div class="grid g2 mt12" style="gap:10px">'
+        + '<div style="background:#f7fafd;border-radius:10px;padding:11px 13px"><div style="font-size:12px;color:#5d6d85">男生平均分</div><div class="num" style="font-size:22px;font-weight:800;color:#2563eb">'+sm.avg+'</div><div style="font-size:11.5px;color:#8b99ad">优良率 '+sm.goodRate+'%</div></div>'
+        + '<div style="background:#fffbf3;border-radius:10px;padding:11px 13px"><div style="font-size:12px;color:#5d6d85">女生平均分</div><div class="num" style="font-size:22px;font-weight:800;color:#b45309">'+sf.avg+'</div><div style="font-size:11.5px;color:#8b99ad">优良率 '+sf.goodRate+'%</div></div>'
+      + '</div>'
+    + '</div>'
+  + '</div>'
+
+  + '<div class="card"><div class="card-h"><span class="dot"></span><h3>总分排名（前 6）</h3><span class="sub">点击「国标测评」查看全班明细</span></div>'
+    + '<div class="tbl-wrap"><table class="tb"><thead><tr><th>名次</th><th>学生</th><th style="text-align:right">总分</th><th style="text-align:right">等级</th></tr></thead><tbody>'+topHtml+'</tbody></table></div>'
+  + '</div>';
+}
+
+// —— 通道一：现场网页录入（可编辑，改数即重算）——
+function panelField(noteId){
+  const Gsel = STATE.genderFilter;
+  const list = visibleStudents().filter(s=>!Gsel || s.gender===Gsel).slice(0,7);
+  const inp = (sid,k,val,width,step)=> canEdit()
+    ? ('<input class="mini-in" type="number" step="'+step+'" value="'+val+'" style="width:'+width+'px" '
+       + 'onchange="UI.edit(\''+sid+'\',\''+k+'\',this.value)">')
+    : ('<span class="num" style="color:#8b99ad">'+val+'</span>');
+  const rows = list.map(s=>{
+    const r = s.recs[STATE.term];
+    const sc = getScore(s, STATE.term);
+    const hi = (noteId===s.id) ? ' style="background:#fff9e6"' : '';
+    return '<tr'+hi+'>'
+      + '<td><b>'+s.name+'</b><div style="font-size:11px;color:#8b99ad">'+(s.gender==="M"?"男":"女")+'</div></td>'
+      + '<td>'+inp(s.id,"height",r.height,62,0.1)+'</td>'
+      + '<td>'+inp(s.id,"weight",r.weight,62,0.1)+'</td>'
+      + '<td class="num" style="text-align:right"><b>'+sc.bmi+'</b><div style="font-size:11px;color:#8b99ad">'+sc.bmiGrade+'</div></td>'
+      + '<td>'+inp(s.id,"vc",r.vc,68,10)+'</td>'
+      + '<td>'+inp(s.id,"run50",r.run50,58,0.1)+'</td>'
+      + '<td>'+inp(s.id,"reach",r.reach,58,0.1)+'</td>'
+      + '<td>'+inp(s.id,"jump",r.jump,60,1)+'</td>'
+      + '<td>'+inp(s.id,"strength",r.strength,52,1)+'</td>'
+      + '<td>'+inp(s.id,"endur",r.endur,60,1)+'</td>'
+      + '<td class="num" style="text-align:right;font-size:18px;font-weight:800;color:'+scoreColor(sc.total)+'">'+sc.total+'</td>'
+      + '<td style="text-align:right">'+levelTag(sc.level)+'</td>'
+      + '</tr>';
+  }).join("");
+  return '<div class="card"><div class="card-h"><span class="dot"></span><h3>现场录入 · 改一个数字看看会发生什么</h3>'
+      + '<span class="sub">输入框可直接编辑，失焦即重算</span>'
+      + '<div class="seg" style="margin-left:12px">'
+        + '<button class="seg-b '+(Gsel===""?"on":"")+'" onclick="UI.filter(\'\')">全部</button>'
+        + '<button class="seg-b '+(Gsel==="M"?"on":"")+'" onclick="UI.filter(\'M\')">男生</button>'
+        + '<button class="seg-b '+(Gsel==="F"?"on":"")+'" onclick="UI.filter(\'F\')">女生</button>'
+      + '</div></div>'
+    + '<div class="scroll-x"><table class="tb" style="min-width:900px;white-space:nowrap"><thead><tr>'
+      + '<th>姓名</th><th>身高 cm</th><th>体重 kg</th><th style="text-align:right">BMI</th><th>肺活量 ml</th>'
+      + '<th>50 米 s</th><th>体前屈 cm</th><th>跳远 cm</th><th>力量 个</th><th>耐力 秒</th>'
+      + '<th style="text-align:right">总分</th><th style="text-align:right">等级</th></tr></thead>'
+      + '<tbody>'+rows+'</tbody></table></div>'
+    + '<div class="note note-ex cyan mt12"><b>演示建议</b>：把某位同学的「50 米」改慢 1 秒（例如 8.3 → 9.3），右侧总分与等级会立刻变化——因为 50 米权重 20%，是七个项目里权重最高的两项之一。<br>'
+      + 'BMI 一栏是<b>无法直接编辑</b>的，它由身高体重实时算出（"+重量/身高²" 后按国标区间判定），这正是人工环节最容易算错、也最值得交给机器的地方。</div>'
+    + (noteId ? '<div class="note note-ex amber mt12">刚刚改动的行已高亮。<b>本次改动只存在于当前页面的内存中</b>，刷新浏览器即恢复原始演示数据，不会写入任何文件。</div>' : '')
+    + '</div>';
+}
+
+// —— 通道二：Excel 批量导入 ——
+/* ---- 通道二：Excel / CSV 批量导入（真实现） ---- */
+const IMP_FIELDS = [
+  { key:"height",   name:"身高",    unit:"cm", min:100, max:250,  alias:["身高","height"] },
+  { key:"weight",   name:"体重",    unit:"kg", min:20,  max:200,  alias:["体重","weight"] },
+  { key:"vc",       name:"肺活量",  unit:"ml", min:500, max:9000, alias:["肺活量","vc"] },
+  { key:"run50",    name:"50米跑",  unit:"s",  min:4,   max:20,   alias:["50米","50米跑","run50"] },
+  { key:"reach",    name:"体前屈",  unit:"cm", min:-30, max:40,   alias:["体前屈","坐位体前屈","reach"] },
+  { key:"jump",     name:"立定跳远",unit:"cm", min:50,  max:350,  alias:["跳远","立定跳远","jump"] },
+  { key:"strength", name:"力量",    unit:"个", min:0,   max:100,  alias:["力量","引体向上","仰卧起坐","strength"] },
+  { key:"endur",    name:"耐力跑",  unit:"s",  min:60,  max:900,  alias:["耐力","耐力跑","1000米","800米","endur"] }
+];
+
+function parseCSV(text){
+  text = String(text || "").replace(/^\uFEFF/, "");
+  const lines = text.split(/\r?\n/).filter(l => l.replace(/[,\t]/g, "").trim() !== "");
+  const rows = [];
+  for (let n = 0; n < lines.length; n++){
+    const line = lines[n];
+    const out = []; let cur = "", inQ = false;
+    for (let i = 0; i < line.length; i++){
+      const ch = line[i];
+      if (ch === '"'){
+        if (inQ && line[i+1] === '"'){ cur += '"'; i++; } else inQ = !inQ;
+      } else if ((ch === "," || ch === "\t") && !inQ){ out.push(cur); cur = ""; }
+      else cur += ch;
+    }
+    out.push(cur);
+    rows.push(out.map(s => String(s).trim()));
+  }
+  return rows;
+}
+
+function mapDefault(){
+  const fmap = {};
+  IMP_FIELDS.forEach((f, i) => { fmap[f.key] = i + 2; });   // 0 学号 1 姓名
+  return { idCol: 0, nameCol: 1, fmap: fmap, byName: false };
+}
+
+function mapColumns(header){
+  const h = (header || []).map(s => String(s || "").trim().toLowerCase());
+  let idCol = -1, nameCol = -1;
+  for (let i = 0; i < h.length; i++){
+    if (idCol < 0 && /学号|学籍号|考号|编号/.test(h[i])) idCol = i;
+    if (nameCol < 0 && /姓名|名字|学生/.test(h[i])) nameCol = i;
+  }
+  if (idCol < 0) idCol = 0;
+  if (nameCol < 0) nameCol = 1;
+  const fmap = {};
+  let hit = 0;
+  IMP_FIELDS.forEach(f => {
+    let idx = -1;
+    for (let i = 0; i < h.length; i++){
+      for (let a = 0; a < f.alias.length; a++){
+        if (h[i].indexOf(String(f.alias[a]).toLowerCase()) >= 0){ idx = i; break; }
+      }
+      if (idx >= 0) break;
+    }
+    fmap[f.key] = idx;
+    if (idx >= 0) hit++;
+  });
+  return (hit < 4) ? mapDefault() : { idCol: idCol, nameCol: nameCol, fmap: fmap, byName: true };
+}
+
+function buildImport(rows){
+  if (!rows || !rows.length) return { rows: [], err: "文件里没有读到内容。" };
+  const joined = (rows[0] || []).join("|");
+  const hasHeader = /学号|姓名|身高|name|height/i.test(joined);
+  const mm = hasHeader ? mapColumns(rows[0]) : mapDefault();
+  const start = hasHeader ? 1 : 0;
+  const out = [];
+  for (let i = start; i < rows.length; i++){
+    const r = rows[i];
+    if (!r || !r.length) continue;
+    const sid = String(r[mm.idCol] || "").trim();
+    const nm  = String(r[mm.nameCol] || "").trim();
+    if (!sid && !nm){ continue; }
+    const stu = STUDENTS.find(s => (sid && s.id === sid) || (!sid && false)) ||
+                STUDENTS.find(s => (nm && s.name === nm)) || null;
+    const rec = {}, errs = [];
+    IMP_FIELDS.forEach(f => {
+      const ci = mm.fmap[f.key];
+      const raw = (ci >= 0 && ci < r.length) ? String(r[ci]).trim() : "";
+      if (raw === ""){ errs.push(f.name + "缺失"); rec[f.key] = null; return; }
+      const v = parseFloat(raw);
+      if (isNaN(v)){ errs.push(f.name + "不是数字"); rec[f.key] = null; return; }
+      if (v < f.min || v > f.max){ errs.push(f.name + "超出合理范围（" + f.min + "–" + f.max + f.unit + "）"); rec[f.key] = v; return; }
+      rec[f.key] = v;
+    });
+    if (!stu) errs.push("未找到该学生（学号或姓名对不上）");
+    out.push({ line: i + 1, sid: sid, name: nm, stu: stu, rec: rec, errs: errs });
+  }
+  if (!out.length) return { rows: [], err: "没有解析到有效数据行，请检查文件格式。" };
+  return { rows: out, err: null, map: mm, header: hasHeader };
+}
+
+function downloadTpl(){
+  const head = ["学号","姓名","身高(cm)","体重(kg)","肺活量(ml)","50米(s)","体前屈(cm)","跳远(cm)","力量(个)","耐力(s)"];
+  const rows = [head];
+  STUDENTS.slice(0, 5).forEach(s => {
+    const r = s.recs[STATE.term];
+    rows.push([s.id, s.name, r.height, r.weight, r.vc, r.run50, r.reach, r.jump, r.strength, r.endur]);
+  });
+  const csv = "\uFEFF" + rows.map(r => r.join(",")).join("\r\n");
+  try{
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "体测成绩导入模板.csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1200);
+  }catch(e){
+    STATE.importErr = "模板下载失败：" + (e && e.message ? e.message : e);
+    UI.go("capture");
+  }
+}
+
+/* xlsx：尝试用浏览器原生解压读取，不支持时给出明确提示 */
+async function readXlsx(file){
+  if (typeof DecompressionStream === "undefined")
+    throw new Error("当前浏览器不支持直接读取 .xlsx。请在 Excel 中「文件 → 另存为 → CSV UTF-8」后重新选择。");
+  const u8 = new Uint8Array(await file.arrayBuffer());
+  const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+  let eocd = -1;
+  for (let i = u8.length - 22; i >= 0 && i > u8.length - 66000; i--){
+    if (u8[i] === 0x50 && u8[i+1] === 0x4b && u8[i+2] === 0x05 && u8[i+3] === 0x06){ eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error("不是有效的 .xlsx 文件，请改用 CSV。");
+  const cnt = dv.getUint16(eocd + 10, true);
+  let off = dv.getUint32(eocd + 16, true);
+  const entries = {};
+  for (let i = 0; i < cnt; i++){
+    if (dv.getUint32(off, true) !== 0x02014b50) break;
+    const csize = dv.getUint32(off + 20, true);
+    const nlen  = dv.getUint16(off + 28, true);
+    const elen  = dv.getUint16(off + 30, true);
+    const clen  = dv.getUint16(off + 32, true);
+    const lho   = dv.getUint32(off + 42, true);
+    const name  = new TextDecoder().decode(u8.subarray(off + 46, off + 46 + nlen));
+    const lnlen = dv.getUint16(lho + 26, true);
+    const lelen = dv.getUint16(lho + 28, true);
+    const ds    = lho + 30 + lnlen + lelen;
+    entries[name] = u8.subarray(ds, ds + csize);
+    off += 46 + nlen + elen + clen;
+  }
+  async function inflate(part){
+    const s = new Blob([part]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+    return await new Response(s).text();
+  }
+  let shared = [];
+  if (entries["xl/sharedStrings.xml"]){
+    const sx = await inflate(entries["xl/sharedStrings.xml"]);
+    const sd = new DOMParser().parseFromString(sx, "text/xml");
+    const sis = sd.getElementsByTagName("si");
+    for (let i = 0; i < sis.length; i++) shared.push(sis[i].textContent || "");
+  }
+  const key = entries["xl/worksheets/sheet1.xml"] ? "xl/worksheets/sheet1.xml"
+            : Object.keys(entries).filter(k => /worksheets\/sheet1\.xml$/.test(k))[0];
+  if (!key) throw new Error("未找到工作表，请改用 CSV。");
+  const xml = await inflate(entries[key]);
+  const doc = new DOMParser().parseFromString(xml, "text/xml");
+  const rs = doc.getElementsByTagName("row");
+  const rows = [];
+  for (let i = 0; i < rs.length; i++){
+    const cells = rs[i].getElementsByTagName("c");
+    const arr = [];
+    for (let j = 0; j < cells.length; j++){
+      const c = cells[j];
+      const ref = c.getAttribute("r") || "";
+      let ci = 0, cc = ref.replace(/[^A-Z]/g, "");
+      for (let k = 0; k < cc.length; k++) ci = ci * 26 + (cc.charCodeAt(k) - 64);
+      ci = Math.max(0, ci - 1);
+      const t = c.getAttribute("t");
+      let v = "";
+      const vEl = c.getElementsByTagName("v")[0];
+      if (vEl) v = vEl.textContent || "";
+      if (t === "s") v = shared[parseInt(v, 10)] || "";
+      while (arr.length < ci) arr.push("");
+      arr[ci] = v;
+    }
+    rows.push(arr);
+  }
+  return rows;
+}
+
+function onImpFile(input){
+  const f = input && input.files && input.files[0];
+  if (!f) return;
+  STATE.importErr = "";
+  const isXlsx = /\.xlsx$/i.test(f.name || "");
+  const finish = function(rows){
+    try{
+      const im = buildImport(rows);
+      if (im.err){ STATE.imp = null; STATE.importErr = im.err; }
+      else { STATE.imp = im; STATE.importErr = ""; }
+    }catch(e){ STATE.imp = null; STATE.importErr = "解析失败：" + (e && e.message ? e.message : e); }
+    UI.go("capture");
+  };
+  if (isXlsx){
+    readXlsx(f).then(finish).catch(function(e){
+      STATE.imp = null;
+      STATE.importErr = (e && e.message) ? e.message : ("读取 .xlsx 失败：" + e);
+      UI.go("capture");
+    });
+    return;
+  }
+  const rd = new FileReader();
+  rd.onload = function(){
+    finish(parseCSV(String(rd.result || "")));
+  };
+  rd.onerror = function(){ STATE.importErr = "文件读取失败，请重试。"; UI.go("capture"); };
+  rd.readAsText(f, "UTF-8");
+}
+
+function applyImport(){
+  const im = STATE.imp;
+  if (!im || !im.rows) return;
+  let n = 0;
+  im.rows.forEach(r => {
+    if (!r.stu || r.errs.length) return;
+    const t = STATE.term;
+    r.stu.recs[t] = Object.assign({}, r.stu.recs[t], r.rec);
+    invalidateCache(r.stu.id, t);
+    Object.keys(r.rec).forEach(function(k){ Store.put(t, r.stu.id, k, r.rec[k]); });
+    n++;
+  });
+  STATE.importResult = { ok: n, skip: im.rows.length - n, byName: !!(im.map && im.map.byName) };
+  STATE.imp = null;
+  UI.go("capture");
+}
+function cancelImport(){ STATE.imp = null; STATE.importErr = ""; UI.go("capture"); }
+
+function panelBatch(){
+  const im = STATE.imp;
+  const res = STATE.importResult;
+
+  /* —— 已解析：显示预览与校验 —— */
+  if (im && im.rows){
+    const good = im.rows.filter(r => !r.errs.length && r.stu);
+    const bad  = im.rows.filter(r => r.errs.length || !r.stu);
+    const rowsHtml = im.rows.slice(0, 60).map(r => {
+      const status = (!r.stu || r.errs.length)
+        ? '<span class="tag t-r" title="' + r.errs.join("；") + '">' + (r.errs[0] || "未匹配") + '</span>'
+        : '<span class="tag t-g">通过</span>';
+      const f = r.rec;
+      return '<tr><td class="num">' + r.line + '</td>'
+        + '<td>' + (r.stu ? ('<b>' + r.stu.name + '</b>') : (r.name || r.sid || "—")) + '</td>'
+        + '<td class="num">' + (f.height != null ? f.height : "—") + '</td>'
+        + '<td class="num">' + (f.weight != null ? f.weight : "—") + '</td>'
+        + '<td class="num">' + (f.vc != null ? f.vc : "—") + '</td>'
+        + '<td class="num">' + (f.run50 != null ? f.run50 : "—") + '</td>'
+        + '<td class="num">' + (f.jump != null ? f.jump : "—") + '</td>'
+        + '<td class="num">' + (f.endur != null ? f.endur : "—") + '</td>'
+        + '<td style="text-align:right">' + status + '</td></tr>';
+    }).join("");
+
+    return '<div class="card"><div class="card-h"><span class="dot"></span><h3>导入预览与校验</h3>'
+      + '<span class="sub">共识别 ' + im.rows.length + ' 行　可导入 ' + good.length + ' 行　待修正 ' + bad.length + ' 行</span></div>'
+      + '<div class="grid g4 mb16">'
+        + '<div class="kpi blue"><div class="kpi-l">识别行数</div><div class="kpi-v b">' + im.rows.length + '</div></div>'
+        + '<div class="kpi green"><div class="kpi-l">校验通过</div><div class="kpi-v g">' + good.length + '</div></div>'
+        + '<div class="kpi ' + (bad.length ? "amber" : "green") + '"><div class="kpi-l">待修正</div><div class="kpi-v ' + (bad.length ? "a" : "g") + '">' + bad.length + '</div></div>'
+        + '<div class="kpi blue"><div class="kpi-l">写入学期</div><div class="kpi-v b" style="font-size:19px">' + (TERMS.find(t => t.id === STATE.term) || {}).name + '</div></div>'
+      + '</div>'
+      + '<div class="scroll-x" style="max-height:340px;overflow-y:auto"><table class="tb"><thead><tr>'
+        + '<th>行</th><th>匹配学生</th><th>身高</th><th>体重</th><th>肺活量</th><th>50 米</th><th>跳远</th><th>耐力</th>'
+        + '<th style="text-align:right">校验</th></tr></thead><tbody>' + rowsHtml + '</tbody></table></div>'
+      + (bad.length ? '<div class="note amber mt12"><b>有 ' + bad.length + ' 行未通过校验</b>，导入时会被跳过，'
+          + '不会污染已有数据。把鼠标停在红色标签上可以看到具体原因。</div>' : '')
+      + '<div class="row wrap mt12" style="gap:8px">'
+        + '<button class="btn pri" onclick="UI.applyImp()">' + icon("dl", 15) + ' 确认导入 ' + good.length + ' 行</button>'
+        + '<button class="btn" onclick="UI.cancelImp()">取消</button>'
+        + '<span class="hint" style="margin-left:4px">导入后按国标立即重算总分，可到「国标测评」页查看</span>'
+      + '</div></div>';
+  }
+
+  /* —— 未选择文件：上传区 —— */
+  const tplRows = STUDENTS.slice(0, 3).map(s => {
+    const r = s.recs[STATE.term];
+    return '<tr><td>' + s.id + '</td><td>' + s.name + '</td><td class="num">' + r.height + '</td>'
+      + '<td class="num">' + r.weight + '</td><td class="num">' + r.vc + '</td><td class="num">' + r.run50.toFixed(1)
+      + '</td><td class="num">' + r.reach + '</td><td class="num">' + r.jump + '</td><td class="num">' + r.strength
+      + '</td><td class="num">' + r.endur + '</td></tr>';
+  }).join("");
+
+  return '<div class="grid g2">'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>选择成绩文件</h3>'
+      + '<span class="sub">CSV 最稳妥，xlsx 视浏览器而定</span></div>'
+      + (res ? '<div class="note green mb16"><b>上次导入完成</b>：成功写入 ' + res.ok + ' 人'
+          + (res.skip ? ('，跳过 ' + res.skip + ' 行') : '') + '。数据已按国标重新计算，可到「国标测评」页查看。</div>' : '')
+      + '<div style="border:2px dashed #cfdcec;border-radius:12px;padding:22px;text-align:center;background:#fafcff">'
+        + '<div style="color:#1d4ed8;margin-bottom:8px">' + icon("sheet", 26) + '</div>'
+        + '<div style="font-size:13.5px;color:#3d5067;font-weight:700;margin-bottom:4px">选择 CSV 或 Excel 文件</div>'
+        + '<div style="font-size:12px;color:#8b99ad;margin-bottom:12px">表头需包含学号或姓名，以及各项目列</div>'
+        + '<label class="btn pri" style="cursor:pointer;display:inline-flex">'
+          + icon("dl", 15) + ' 选择文件'
+          + '<input type="file" accept=".csv,.txt,.xlsx" style="display:none" onchange="UI.pickFile(this)">'
+        + '</label>'
+      + '</div>'
+      + (STATE.importErr ? '<div class="note amber mt12"><b>未能导入</b>：' + STATE.importErr + '</div>' : '')
+      + '<div class="row wrap mt12" style="gap:8px">'
+        + '<button class="btn" onclick="UI.tpl()">' + icon("sheet", 15) + ' 下载模板</button>'
+        + '<span class="hint">模板含 3 行示例数据，可直接删掉后填写</span>'
+      + '</div>'
+      + '<div class="note mt12">导入时做三类校验：<b>格式校验</b>（数值是否在合理区间）、'
+      + '<b>一致性校验</b>（学号或姓名能否对上）、<b>完整性校验</b>（八个项目是否齐全）。'
+      + '未通过的行会被<b>标出并跳过</b>，不会污染已有数据。</div>'
+    + '</div>'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>为什么保留表格入口</h3></div>'
+      + '<div style="font-size:13.5px;color:#5d6d85;line-height:1.78">'
+      + '很多学校的体测台账一直是 Excel，历史数据也在里面。如果新系统要求全部重新录入，等于把迁移成本推给教师。<br><br>'
+      + '保留表格入口的取舍很明确：牺牲一点数据实时性，换取<b>教师的迁移成本接近于零</b>——原来怎么填，现在还怎么填。'
+      + '这也是本系统能在校园里真正用起来的前提。'
+      + '</div>'
+      + '<div style="margin-top:14px;font-size:13px;font-weight:700;color:#3d5067">模板列顺序</div>'
+      + '<div class="scroll-x mt12"><table class="tb"><thead><tr><th>学号</th><th>姓名</th><th>身高</th><th>体重</th>'
+      + '<th>肺活量</th><th>50米</th><th>体前屈</th><th>跳远</th><th>力量</th><th>耐力</th></tr></thead>'
+      + '<tbody>' + tplRows + '</tbody></table></div>'
+      + '<div class="note cyan mt12"><b>现场演示建议</b>：先点「下载模板」，把某个学生的 50 米改慢 1 秒，'
+      + '再选文件导入——回到「国标测评」页能看到这个学生的总分立刻下降。这比讲解更能说明引擎是真的在算。</div>'
+    + '</div></div>';
+}
+
+// —— 通道四：语音报数（规划）——
+/* ---------------- 8.6 多模态：语音合成（离线）与摄像头（本地） ----------------
+   设计底线：只做「设备能力确定可用」的部分，不做的部分在页面上写清原因。
+   · 语音合成 speechSynthesis：调用设备自带语音引擎，音频不上传，可离线。
+   · 语音识别 SpeechRecognition：Chrome 实现会把音频送到云端，校内不可控，
+     因此本项目不使用，页面明确标注为未实现。
+   · 摄像头 getUserMedia：视频流只在本机预览与抓帧，不联网、不上传。  */
+
+/* ============================================================
+   扫码进入 · 零依赖二维码编码器（Byte 模式 · 版本 1–10 · RS 纠错）
+   分块表由 Python qrcode 库导出，已逐位比对校验；与独立生成器同源。
+   ============================================================ */
+var QR = (function () {
+  var EXP = new Array(512), LOG = new Array(256);
+  (function () { var x = 1; for (var i = 0; i < 255; i++) { EXP[i] = x; LOG[x] = i; x <<= 1; if (x & 0x100) x ^= 0x11d; } for (var i = 255; i < 512; i++) EXP[i] = EXP[i - 255]; })();
+  function mul(a, b) { return (a === 0 || b === 0) ? 0 : EXP[LOG[a] + LOG[b]]; }
+  function genPoly(n) { var g = [1]; for (var i = 0; i < n; i++) { var ng = new Array(g.length + 1); for (var k = 0; k < ng.length; k++) ng[k] = 0; for (var j = 0; j < g.length; j++) { ng[j] ^= g[j]; ng[j + 1] ^= mul(g[j], EXP[i]); } g = ng; } return g; }
+  function rsEncode(data, n) { var g = genPoly(n); var res = data.slice(); for (var i = 0; i < n; i++) res.push(0); for (var i = 0; i < data.length; i++) { var coef = res[i]; if (coef !== 0) for (var j = 0; j < g.length; j++) res[i + j] ^= mul(g[j], coef); } return res.slice(data.length); }
+  var RSB = {
+    "1L": [[26,19,1]],"1M": [[26,16,1]],"1Q": [[26,13,1]],"1H": [[26,9,1]],
+    "2L": [[44,34,1]],"2M": [[44,28,1]],"2Q": [[44,22,1]],"2H": [[44,16,1]],
+    "3L": [[70,55,1]],"3M": [[70,44,1]],"3Q": [[35,17,2]],"3H": [[35,13,2]],
+    "4L": [[100,80,1]],"4M": [[50,32,2]],"4Q": [[50,24,2]],"4H": [[25,9,4]],
+    "5L": [[134,108,1]],"5M": [[67,43,2]],"5Q": [[33,15,2],[34,16,2]],"5H": [[33,11,2],[34,12,2]],
+    "6L": [[86,68,2]],"6M": [[43,27,4]],"6Q": [[43,19,4]],"6H": [[43,15,4]],
+    "7L": [[98,78,2]],"7M": [[49,31,4]],"7Q": [[33,15,4],[32,14,2]],"7H": [[39,13,4],[40,14,1]],
+    "8L": [[121,97,2]],"8M": [[60,38,2],[61,39,2]],"8Q": [[40,18,4],[41,19,2]],"8H": [[40,14,4],[41,15,2]],
+    "9L": [[146,116,2]],"9M": [[58,36,3],[59,37,2]],"9Q": [[36,16,4],[37,17,4]],"9H": [[36,12,4],[37,13,4]],
+    "10L": [[86,68,2],[87,69,2]],"10M": [[69,43,4],[70,44,1]],"10Q": [[43,19,6],[44,20,2]],"10H": [[43,15,6],[44,16,2]]
+  };
+  var ALIGN = { 1: [], 2: [6, 18], 3: [6, 22], 4: [6, 26], 5: [6, 30], 6: [6, 34], 7: [6, 22, 38], 8: [6, 24, 42], 9: [6, 26, 46], 10: [6, 28, 50] };
+  var REM = { 1: 0, 2: 7, 3: 7, 4: 7, 5: 7, 6: 7, 7: 0, 8: 0, 9: 0, 10: 0 };
+  function blocksOf(v, ecl) { var spec = RSB["" + v + ecl], out = []; if (!spec) return out; for (var i = 0; i < spec.length; i++) for (var k = 0; k < spec[i][2]; k++) out.push({ total: spec[i][0], data: spec[i][1] }); return out; }
+  function totalCodewords(v, ecl) { var bs = blocksOf(v, ecl), t = 0; for (var i = 0; i < bs.length; i++) t += bs[i].total; return t; }
+  function dataCodewords(v, ecl) { var bs = blocksOf(v, ecl), t = 0; for (var i = 0; i < bs.length; i++) t += bs[i].data; return t; }
+  function toBytes(str) { var out = []; for (var i = 0; i < str.length; i++) { var c = str.charCodeAt(i); if (c < 0x80) out.push(c); else if (c < 0x800) { out.push(0xc0 | (c >> 6), 0x80 | (c & 63)); } else if (c >= 0xd800 && c <= 0xdbff && i + 1 < str.length) { var c2 = str.charCodeAt(i + 1); var cp = 0x10000 + ((c - 0xd800) << 10) + (c2 - 0xdc00); out.push(0xf0 | (cp >> 18), 0x80 | ((cp >> 12) & 63), 0x80 | ((cp >> 6) & 63), 0x80 | (cp & 63)); i++; } else { out.push(0xe0 | (c >> 12), 0x80 | ((c >> 6) & 63), 0x80 | (c & 63)); } } return out; }
+  function bitLen(x) { var n = 0; while (x) { n++; x >>>= 1; } return n; }
+  function makeCodewords(bytes, v, ecl) { var capBits = dataCodewords(v, ecl) * 8; var bits = []; function put(val, len) { for (var i = len - 1; i >= 0; i--) bits.push((val >> i) & 1); } put(4, 4); put(bytes.length, v < 10 ? 8 : 16); for (var i = 0; i < bytes.length; i++) put(bytes[i], 8); var n = Math.min(4, capBits - bits.length); for (var i = 0; i < n; i++) bits.push(0); while (bits.length % 8 !== 0) bits.push(0); var pads = [0xEC, 0x11], pi = 0; while (bits.length < capBits) { put(pads[pi % 2], 8); pi++; } var cw = []; for (var i = 0; i < bits.length; i += 8) { var x = 0; for (var j = 0; j < 8; j++) x = (x << 1) | bits[i + j]; cw.push(x); } return cw; }
+  function interleave(cw, v, ecl) { var bs = blocksOf(v, ecl); var ecLen = bs[0].total - bs[0].data; var dBlocks = [], eBlocks = [], off = 0; for (var i = 0; i < bs.length; i++) { var d = cw.slice(off, off + bs[i].data); off += bs[i].data; dBlocks.push(d); eBlocks.push(rsEncode(d, ecLen)); } var res = [], maxD = 0; for (var i = 0; i < dBlocks.length; i++) maxD = Math.max(maxD, dBlocks[i].length); for (var c = 0; c < maxD; c++) for (var b = 0; b < dBlocks.length; b++) if (c < dBlocks[b].length) res.push(dBlocks[b][c]); for (var c = 0; c < ecLen; c++) for (var b = 0; b < eBlocks.length; b++) res.push(eBlocks[b][c]); return res; }
+  function formatBits(ecl, mask) { var ecb = ({ L: 1, M: 0, Q: 3, H: 2 })[ecl]; var d = (ecb << 3) | mask; var v = d << 10; while (bitLen(v) >= 11) v ^= 0x537 << (bitLen(v) - 11); return ((d << 10) | v) ^ 0x5412; }
+  function versionBits(v) { var d = v << 12; while (bitLen(d) >= 13) d ^= 0x1F25 << (bitLen(d) - 13); return (v << 12) | d; }
+  function maskAt(m, r, c) { switch (m) { case 0: return (r + c) % 2 === 0; case 1: return r % 2 === 0; case 2: return c % 3 === 0; case 3: return (r + c) % 3 === 0; case 4: return (Math.floor(r / 2) + Math.floor(c / 3)) % 2 === 0; case 5: return ((r * c) % 2 + (r * c) % 3) === 0; case 6: return ((r * c) % 2 + (r * c) % 3) % 2 === 0; case 7: return ((r + c) % 2 + (r * c) % 3) % 2 === 0; } return false; }
+  function penalty(m, N) { var p = 0, r, c, i; function runLine(get) { var s = 0, last = -1, cnt = 0; for (var i = 0; i < N; i++) { var v = get(i); if (v === last) cnt++; else { if (cnt >= 5) s += 3 + (cnt - 5); cnt = 1; last = v; } } if (cnt >= 5) s += 3 + (cnt - 5); return s; } for (r = 0; r < N; r++) p += runLine(function (c) { return m[r][c]; }); for (c = 0; c < N; c++) p += runLine(function (r) { return m[r][c]; }); for (r = 0; r < N - 1; r++) for (c = 0; c < N - 1; c++) { var v = m[r][c]; if (v === m[r][c + 1] && v === m[r + 1][c] && v === m[r + 1][c + 1]) p += 3; } var patA = [1, 0, 1, 1, 1, 0, 1], patB = [0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1]; function scan(get) { var s = 0, seq = []; for (var i = 0; i < N; i++) seq.push(get(i)); for (var i = 0; i + 11 <= N; i++) { var hit = true; for (var j = 0; j < 11; j++) if (seq[i + j] !== patB[j]) { hit = false; break; } if (hit) s += 40; } for (var i = 0; i + 7 <= N; i++) { var h1 = true, h2 = true; for (var j = 0; j < 7; j++) { if (seq[i + j] !== patA[j]) h1 = false; if (seq[i + j] !== patA[6 - j]) h2 = false; } if (h1) s += 40; if (h2) s += 40; } return s; } for (r = 0; r < N; r++) p += scan(function (c) { return m[r][c]; }); for (c = 0; c < N; c++) p += scan(function (r) { return m[r][c]; }); var dark = 0; for (r = 0; r < N; r++) for (c = 0; c < N; c++) if (m[r][c]) dark++; var pct = dark * 100 / (N * N); p += 10 * Math.floor(Math.abs(pct - 50) / 5); return p; }
+  function build(cw, v, ecl, mask) { var N = 4 * v + 17; var mod = [], fn = []; for (var i = 0; i < N; i++) { mod.push(new Array(N).fill(0)); fn.push(new Array(N).fill(false)); } function put(r, c, val) { if (r >= 0 && c >= 0 && r < N && c < N) { mod[r][c] = val; fn[r][c] = true; } } var corners = [[0, 0], [0, N - 7], [N - 7, 0]]; for (var k = 0; k < 3; k++) { var r0 = corners[k][0], c0 = corners[k][1]; for (var r = -1; r <= 7; r++) for (var c = -1; c <= 7; c++) { var rr = r0 + r, cc = c0 + c; if (rr < 0 || cc < 0 || rr >= N || cc >= N) continue; var on = 0; if (r >= 0 && r <= 6 && c >= 0 && c <= 6) on = (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4)) ? 1 : 0; put(rr, cc, on); } } for (var i = 8; i < N - 8; i++) { var on = (i % 2 === 0) ? 1 : 0; put(6, i, on); put(i, 6, on); } var ap = ALIGN[v] || []; for (var a = 0; a < ap.length; a++) for (var b = 0; b < ap.length; b++) { var ar = ap[a], ac = ap[b]; if (fn[ar][ac]) continue; for (var r = -2; r <= 2; r++) for (var c = -2; c <= 2; c++) put(ar + r, ac + c, (Math.max(Math.abs(r), Math.abs(c)) !== 1) ? 1 : 0); } for (var i = 0; i <= 8; i++) { if (!fn[8][i]) put(8, i, 0); if (!fn[i][8]) put(i, 8, 0); } for (var i = 0; i < 8; i++) { if (!fn[8][N - 1 - i]) put(8, N - 1 - i, 0); if (!fn[N - 1 - i][8]) put(N - 1 - i, 8, 0); } if (v >= 7) { var vb = versionBits(v); for (var i = 0; i < 18; i++) { var b = (vb >> i) & 1; put(Math.floor(i / 3), N - 11 + (i % 3), b); put(N - 11 + (i % 3), Math.floor(i / 3), b); } } put(N - 8, 8, 1); var bits = []; for (var i = 0; i < cw.length; i++) for (var j = 7; j >= 0; j--) bits.push((cw[i] >> j) & 1); var bitIdx = 0, up = true; for (var col = N - 1; col >= 0; col -= 2) { if (col === 6) col = 5; for (var t = 0; t < N; t++) { var row = up ? (N - 1 - t) : t; for (var k = 0; k < 2; k++) { var cc = col - k; if (fn[row][cc]) continue; mod[row][cc] = bitIdx < bits.length ? bits[bitIdx] : 0; bitIdx++; } } up = !up; } for (var r = 0; r < N; r++) for (var c = 0; c < N; c++) if (!fn[r][c] && maskAt(mask, r, c)) mod[r][c] ^= 1; var fmt = formatBits(ecl, mask); for (var i = 0; i <= 5; i++) mod[i][8] = (fmt >> i) & 1; mod[7][8] = (fmt >> 6) & 1; mod[8][8] = (fmt >> 7) & 1; mod[8][7] = (fmt >> 8) & 1; for (var i = 9; i < 15; i++) mod[8][14 - i] = (fmt >> i) & 1; for (var i = 0; i < 8; i++) mod[8][N - 1 - i] = (fmt >> i) & 1; for (var i = 8; i < 15; i++) mod[N - 15 + i][8] = (fmt >> i) & 1; mod[N - 8][8] = 1; return mod; }
+  function encode(text, ecl, mask, forceVersion) { ecl = ecl || "M"; var bytes = toBytes(String(text)); var v = (forceVersion && forceVersion >= 1 && forceVersion <= 10) ? forceVersion : 0; if (!v) { for (var t = 1; t <= 10; t++) { var need = 4 + (t < 10 ? 8 : 16) + bytes.length * 8; if (need <= dataCodewords(t, ecl) * 8) { v = t; break; } } } if (!v) throw new Error("内容过长：超出版本 10 容量上限。"); var need2 = 4 + (v < 10 ? 8 : 16) + bytes.length * 8; if (need2 > dataCodewords(v, ecl) * 8) throw new Error("指定版本装不下这段内容。"); var cw = makeCodewords(bytes, v, ecl); var all = interleave(cw, v, ecl); var chosen = (mask === undefined || mask === null || mask < 0) ? autoMask(all, v, ecl) : mask; return { version: v, ecl: ecl, mask: chosen, size: 4 * v + 17, matrix: build(all, v, ecl, chosen) }; }
+  function autoMask(cw, v, ecl) { var best = 0, bestP = Infinity; for (var m = 0; m < 8; m++) { var p = penalty(build(cw, v, ecl, m), 4 * v + 17); if (p < bestP) { bestP = p; best = m; } } return best; }
+  function capacity(v, ecl) { var d = dataCodewords(v, ecl); var overhead = 4 + (v < 10 ? 8 : 16); return Math.floor((d * 8 - overhead) / 8); }
+  return { encode: encode, capacity: capacity, toBytes: toBytes };
+})();
+
+/* 分享地址：仅在经本地服务(http/https)打开时才有意义；file:// 直接打开无法被他人扫码访问 */
+function shareUrl(){
+  try { if (location.protocol === "http:" || location.protocol === "https:") return location.origin + location.pathname; } catch(e){}
+  return "";
+}
+/* 访客入口地址：优先用服务器注入的本机局域网地址（window.__LAN_BASE__），
+   这样无论大屏用 127.0.0.1 还是 localhost 打开，扫码出来的都是手机能连上的地址；
+   未注入时回退到当前页地址。路径统一用根路径 /?guest=1，避免出现中文文件名导致部分扫码器/微信打不开。 */
+function guestUrl(){
+  try { if (window.__LAN_BASE__) return window.__LAN_BASE__ + "/?guest=1"; } catch (e) {}
+  var base = shareUrl();
+  if (!base) return "";
+  return base + (base.indexOf("?") >= 0 ? "&" : "?") + "guest=1";
+}
+/* 生成二维码 SVG（默认纠错 M，自动选最小版本） */
+function qrSvg(text, px, border){
+  border = border || 4;
+  var q = QR.encode(String(text), "M");
+  var m = q.matrix, N = m.length, dim = N + border * 2, d = [];
+  for (var r = 0; r < N; r++) for (var c = 0; c < N; c++) if (m[r][c]) d.push("M" + (c + border) + " " + (r + border) + "h1v1h-1z");
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + dim + " " + dim + '" width="' + px + '" height="' + px + '" shape-rendering="crispEdges"><rect width="' + dim + '" height="' + dim + '" fill="#ffffff"/><path d="' + d.join("") + '" fill="#0f172a"/></svg>';
+}
+function escapeHtml(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]; }); }
+function fmtTime(ts){ try { var d = new Date(ts); var p = function (n) { return (n < 10 ? "0" : "") + n; }; return (d.getMonth() + 1) + "-" + p(d.getDate()) + " " + p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds()); } catch (e) { return ""; } }
+function curStuName(){ var s = STUDENTS.find(function (x) { return x.id === STATE.stuId; }); return s ? s.name : ""; }
+
+/* 手机拍照/选图后，实时同步到大屏（仅当经本地服务打开时） */
+function uploadPhoto(photo, meta){
+  if (!STATE.served || !photo || !photo.src) return;
+  try {
+    var body = JSON.stringify({ ts: Date.now(), name: (meta && meta.name) || "", stuId: (meta && meta.stuId) || "", img: photo.src, w: photo.w || 0, h: photo.h || 0 });
+    fetch("/api/upload", { method: "POST", headers: { "Content-Type": "application/json" }, body: body })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && j.ok) { STATE.camErr = "已同步到大屏（实时上传成功）。"; if (STATE.page === "capture") UI.go("capture"); }
+      })
+      .catch(function () { /* 静默失败，本机照片仍可用 */ });
+  } catch (e) {}
+}
+/* 大屏轮询手机上传 */
+function startFeed(){
+  if (STATE.feedTimer) { clearInterval(STATE.feedTimer); STATE.feedTimer = null; }
+  STATE.feedAfter = 0;
+  pollFeed();
+  STATE.feedTimer = setInterval(pollFeed, 2500);
+}
+function pollFeed(){
+  if (!STATE.served) return;
+  fetch("/api/feed?after=" + STATE.feedAfter)
+    .then(function (r) { return r.json(); })
+    .then(function (arr) {
+      if (!arr || !arr.length) return;
+      for (var i = 0; i < arr.length; i++) if (arr[i].ts > STATE.feedAfter) STATE.feedAfter = arr[i].ts;
+      var wall = document.getElementById("feedWall");
+      if (!wall) return;
+      var html = arr.map(function (it) {
+        return '<div class="feed-item"><img src="' + it.img + '" alt="上传"><div class="feed-meta">' + (it.name ? escapeHtml(it.name) : "手机上传") + '<span>' + fmtTime(it.ts) + '</span></div></div>';
+      }).join("");
+      wall.insertAdjacentHTML("afterbegin", html);
+    })
+    .catch(function () {});
+}
+
+/* 演示用示例照片：在无服务器（file://）或现场无网络时，让「大屏同步墙」也有内容可看，
+   不依赖任何校园网 / 外部服务。真实照片仅由手机扫码上传后追加。 */
+function demoPhotoSVG(title, sub, c1, c2){
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="220">'
+    + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+c1+'"/><stop offset="1" stop-color="'+c2+'"/></linearGradient></defs>'
+    + '<rect width="320" height="220" rx="10" fill="url(#g)"/>'
+    + '<circle cx="160" cy="82" r="32" fill="rgba(255,255,255,.92)"/>'
+    + '<path d="M148 82l9 9 16-18" stroke="#0f766e" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+    + '<text x="160" y="166" font-size="19" fill="#fff" text-anchor="middle" font-family="sans-serif" font-weight="700">'+title+'</text>'
+    + '<text x="160" y="192" font-size="12.5" fill="rgba(255,255,255,.85)" text-anchor="middle" font-family="sans-serif">'+sub+'</text></svg>';
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+function demoFeedHtml(){
+  var items = [
+    { name:"示例·立定跳远", sub:"抓拍示例", c1:"#0ea5e9", c2:"#6366f1" },
+    { name:"示例·50米跑终点", sub:"抓拍示例", c1:"#10b981", c2:"#0d9488" },
+    { name:"示例·坐位体前屈", sub:"抓拍示例", c1:"#f59e0b", c2:"#ef4444" }
+  ];
+  return items.map(function(it){
+    return '<div class="feed-item feed-demo"><img src="'+demoPhotoSVG(it.name, it.sub, it.c1, it.c2)+'" alt="示例">'
+      + '<div class="feed-meta">'+escapeHtml(it.name)+'<span>示例照片（非真实上传）</span></div></div>';
+  }).join("");
+}
+
+var CAM = null;
+
+function supportsSpeech(){
+  try { return !!(window.speechSynthesis && window.SpeechSynthesisUtterance); } catch(e){ return false; }
+}
+function pickVoice(){
+  try {
+    var vs = window.speechSynthesis.getVoices() || [];
+    for (var i=0;i<vs.length;i++) if (/^zh/i.test(vs[i].lang)) return vs[i];
+    for (var j=0;j<vs.length;j++) if (/CN|Chinese|中文/i.test((vs[j].lang||"") + " " + (vs[j].name||""))) return vs[j];
+  } catch(e){}
+  return null;
+}
+/* 口语数字：整数不带小数尾巴——朗读“15.0 厘米”听着像机器，人说的是“15 厘米” */
+function vnum(v, d){
+  var n = Number(v);
+  if (isNaN(n)) return null;
+  var s = n.toFixed(d === undefined ? 1 : d);
+  return /\.0+$/.test(s) ? s.replace(/\.0+$/, "") : s;
+}
+function voiceUnit(key, v){
+  if (v === null || v === undefined || v === "" || isNaN(v)) return "缺测";
+  v = Number(v);
+  switch (key){
+    case "height":   return vnum(v) + " 厘米";
+    case "weight":   return vnum(v) + " 公斤";
+    case "vc":       return Math.round(v) + " 毫升";
+    case "run50":    return vnum(v) + " 秒";
+    case "reach":    return (v < 0 ? "负 " + vnum(Math.abs(v)) : vnum(v)) + " 厘米";
+    case "jump":     return Math.round(v) + " 厘米";
+    case "strength": return Math.round(v) + " 个";
+    case "endur": {
+      var m = Math.floor(v / 60), sec = Math.round(v % 60);
+      if (sec >= 60){ m += 1; sec = 0; }
+      return m + "分" + sec + "秒";
+    }
+    default:         return String(v);
+  }
+}
+function voiceTarget(){
+  var id = STATE.voiceStu || STATE.stuId;
+  var list = (typeof visibleStudents === "function") ? visibleStudents() : STUDENTS;
+  if (STATE.voiceStu){
+    var hit = STUDENTS.find(function(s){ return s.id === id; });
+    if (hit) return hit;
+  }
+  return list.find(function(s){ return s.id === id; }) || list[0] || STUDENTS[0];
+}
+function voiceLines(stu){
+  var t = STATE.term, lines = [];
+  lines.push({ k:"head", t: stu.name + "，以下是本次体质测试的录入成绩，请逐项核对。" });
+  ITEMS.forEach(function(it){
+    if (it.key === "bmi") return;
+    var v = stu.recs[t][it.key];
+    lines.push({ k:"item", t: itemName(stu.gender, it.key) + "，" + voiceUnit(it.key, v) });
+  });
+  var sc = getScore(stu, t);
+  lines.push({ k:"end", t: "核对完毕。总分 " + sc.total.toFixed(1) + " 分，等级 " + sc.level + "。如与纸质记录不符，请当场更正。" });
+  return lines;
+}
+function voiceHighlight(idx){
+  try {
+    var els = document.querySelectorAll(".vline");
+    for (var i=0;i<els.length;i++){
+      var on = (i === idx);
+      if (els[i].style){
+        els[i].style.background  = on ? "#e8f0ff" : "transparent";
+        els[i].style.color       = on ? "#1d4ed8" : "";
+        els[i].style.fontWeight  = on ? "600" : "";
+      }
+    }
+  } catch(e){}
+}
+function speakSeq(lines, i){
+  if (i >= lines.length){
+    STATE.voiceOn = false;
+    STATE.voiceMsg = "朗读完毕，共 " + lines.length + " 条。请确认识别结果与纸质记录一致。";
+    UI.go("capture");
+    return;
+  }
+  STATE.voiceIdx = i;
+  voiceHighlight(i);
+  var u;
+  try { u = new window.SpeechSynthesisUtterance(lines[i].t); }
+  catch(e){ STATE.voiceOn=false; STATE.voiceMsg="此浏览器无法创建语音对象，朗读不可用。"; UI.go("capture"); return; }
+  var v = pickVoice();
+  if (v) u.voice = v;
+  u.lang = "zh-CN"; u.rate = 0.92; u.pitch = 1; u.volume = 1;
+  u.onend = function(){ speakSeq(lines, i+1); };
+  u.onerror = function(){
+    STATE.voiceOn = false;
+    STATE.voiceMsg = "朗读中断，或此设备没有可用的中文语音包。可在系统「语音设置」中安装中文语音后重试。";
+    UI.go("capture");
+  };
+  try { window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); }
+  catch(e){ STATE.voiceOn=false; STATE.voiceMsg="语音合成调用失败。"; UI.go("capture"); }
+}
+
+/* ---------- 摄像头：错误必须说人话 ---------- */
+function camErrText(e){
+  var n = (e && (e.name || e.code)) || "";
+  if (n === "NotAllowedError" || n === "SecurityError" || n === "PermissionDeniedError")
+    return "摄像头权限被拒绝。请在浏览器地址栏的权限入口允许摄像头后重试；也可以改用「从相册选择」。" ;
+  if (n === "NotFoundError" || n === "DevicesNotFoundError")
+    return "未检测到可用摄像头。请确认平板或外接摄像头已连接，或改用「从相册选择」。";
+  if (n === "NotReadableError" || n === "TrackStartError")
+    return "摄像头被其他程序占用（例如正在开视频会议）。关闭那些程序后重试。";
+  if (n === "OverconstrainedError")
+    return "摄像头不支持所选分辨率。请改用「从相册选择」。";
+  return "摄像头调用失败：" + ((e && e.message) || n || "未知原因") + "。可改用「从相册选择」。";
+}
+function newCanvas(){
+  try { return document.createElement("canvas"); } catch(e){ return null; }
+}
+
+/* ---------- 拍照区渲染 ---------- */
+function photoBox(){
+  if (STATE.camLive || STATE.camBusy){
+    return '<div class="photo-box">'
+      + '<video id="camVideo" autoplay playsinline muted style="width:100%;display:block;background:#0f172a"></video>'
+      + (STATE.camBusy ? '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#93a3b8;font-size:13px">正在请求摄像头权限…</div>' : '')
+      + '</div>'
+      + '<div class="row mt12">' + (STATE.camLive ? '<button class="btn pri" onclick="UI.camShoot()">'+icon("shot",15)+' 拍照</button>' : '')
+      + '<button class="btn" onclick="UI.camClose()">关闭摄像头</button></div>'
+      + '<div class="note note-ex mt12">视频流只在本机预览与抓帧，<b>不联网、不上传</b>；关闭摄像头后画面立即释放。</div>';
+  }
+  if (STATE.photo){
+    var p = STATE.photo;
+    return '<div class="photo-box"><img src="'+p.src+'" alt="现场拍摄的成绩单"></div>'
+      + '<div class="row mt12"><button class="btn" onclick="UI.camClear()">删除这张</button>'
+      + '<span class="tag t-g">'+p.w+' × '+p.h+' · 约 '+p.kb+' KB</span></div>'
+      + '<div class="note note-ex mt12">照片仅保存在<b>当前浏览器会话</b>中，不写入本地存档、不上传服务器，关闭页面即销毁——这是处理学生纸质材料时的隐私底线。</div>';
+  }
+  return null;
+}
+
+function panelVoice(){
+  var ok  = supportsSpeech();
+  var stu = voiceTarget();
+  var lines = voiceLines(stu);
+  var list  = (typeof visibleStudents === "function") ? visibleStudents() : STUDENTS;
+
+  var ctl;
+  if (!ok){
+    ctl = '<div class="note amber">当前浏览器不支持语音合成接口（<b>speechSynthesis</b> 不可用），朗读按钮已停用。<br>'
+      + '此能力依赖设备自带的语音引擎，Edge / Chrome 桌面版通常可用。<b>环境不支持就明确告知，不做假装成功的按钮。</b></div>';
+  } else if (STATE.voiceOn){
+    ctl = '<button class="btn pri" onclick="UI.voiceStop()">'+icon("stop",15)+' 停止朗读</button>'
+      + '<span class="tag t-c puls" style="margin-left:8px">正在朗读第 '+((STATE.voiceIdx||0)+1)+' / '+lines.length+' 条</span>';
+  } else {
+    ctl = '<button class="btn pri" onclick="UI.voicePlay()">'+icon("vol",15)+' 朗读并核对成绩</button>';
+  }
+  if (STATE.voiceMsg) ctl += '<div class="note cyan mt12">'+STATE.voiceMsg+'</div>';
+
+  var picker = '<select class="sel" onchange="UI.voiceStuPick(this.value)">'
+    + list.map(function(s){ return '<option value="'+s.id+'"'+(s.id===stu.id?' selected':'')+'>'+s.name+'</option>'; }).join("")
+    + '</select>';
+
+  var script = lines.map(function(l, i){
+    var n = l.k === "head" ? "" : (l.k === "end" ? "" : i);
+    return '<div class="vline"><span class="vline-n">'+n+'</span><span>'+l.t+'</span></div>';
+  }).join("");
+
+  return '<div class="grid g2">'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>为什么只做「朗读」，不做「听写」</h3></div>'
+      + '<div style="font-size:13.5px;color:#5d6d85;line-height:1.78">'
+      + '语音这条口子里其实藏着两件事：<b>听写</b>（把话转成字）和<b>朗读</b>（把字念出来）。两者的可用条件完全不同。<br><br>'
+      + '<b>朗读可以离线做</b>——浏览器调用设备自带的语音引擎，音频不出本机，不需要联网。所以用在了最能省事的地方：'
+      + '录完成绩后让系统<b>逐项念一遍</b>，录入者边听边对照纸质表，听出差错当场改。<br><br>'
+      + '<b>听写不行</b>——主流浏览器的语音识别会把音频发到云端处理，校园内网环境下既不通也不该通。'
+      + '把它作为"已实现"的功能交付，是对使用者的不负责任。'
+      + '</div>'
+      + '<div class="mt12">'+[
+          ['听写（语音识别）','依赖云端，校内不可控','不使用'],
+          ['朗读（语音合成）','设备本地引擎，离线可用','已接入']
+        ].map(function(r){
+          var tagCls = r[2] === "已接入" ? "t-g" : "t-n";
+          return '<div class="rx-item"><div class="rx-item-n">·</div><div class="rx-item-t"><b>'+r[0]+'</b>'
+            + '<div class="rx-dose">'+r[1]+'</div></div><span class="tag '+tagCls+'" style="margin-left:auto">'+r[2]+'</span></div>';
+        }).join('')
+      + '</div>'
+    + '</div>'
+
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>语音成绩复核</h3><span class="sub">离线合成 · 不联网</span></div>'
+      + '<div style="padding:10px 12px;border-radius:9px;background:#f4f8ff;border:1px solid #d3ddec;margin-bottom:12px">'
+        + '<div style="font-size:12px;color:#5d6d85;margin-bottom:6px">核对对象</div>'
+        + picker
+      + '</div>'
+      + '<div style="max-height:230px;overflow:auto;border:1px solid #e8eef6;border-radius:9px;padding:6px">'+script+'</div>'
+      + '<div class="row mt12">'+ctl+'</div>'
+      + (ok ? '<div class="note note-ex mt12">演示提示：首次点击朗读前先试音一次，确认希沃大屏已连接音响——听不到声音的现场演示没有任何意义。</div>' : '')
+    + '</div>'
+    + '</div>';
+}
+
+/* ---------- 拍照留档（第 1 步）UI ---------- */
+function ocrSample(){
+  return '<svg viewBox="0 0 300 210" style="width:100%;max-width:330px;border:1px solid #d3ddec;border-radius:10px;background:#fff">'
+    + '<rect x="0" y="0" width="300" height="210" fill="#fff"/>'
+    + '<text x="150" y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#16202f">学生体质健康测试记录表</text>'
+    + '<line x1="24" y1="36" x2="276" y2="36" stroke="#d3ddec"/>'
+    + '<line x1="24" y1="63" x2="276" y2="63" stroke="#eef2f8"/>'
+    + '<line x1="24" y1="90" x2="276" y2="90" stroke="#eef2f8"/>'
+    + '<line x1="24" y1="117" x2="276" y2="117" stroke="#eef2f8"/>'
+    + '<line x1="24" y1="144" x2="276" y2="144" stroke="#eef2f8"/>'
+    + '<line x1="24" y1="171" x2="276" y2="171" stroke="#eef2f8"/>'
+    + '<line x1="24" y1="36" x2="24" y2="171" stroke="#d3ddec"/><line x1="140" y1="36" x2="140" y2="171" stroke="#d3ddec"/><line x1="276" y1="36" x2="276" y2="171" stroke="#d3ddec"/>'
+    + '<text x="34" y="55" font-size="11" fill="#5d6d85">身高</text><text x="150" y="55" font-size="11.5" fill="#16202f" font-weight="700">172.4 cm</text>'
+    + '<text x="34" y="82" font-size="11" fill="#5d6d85">体重</text><text x="150" y="82" font-size="11.5" fill="#16202f" font-weight="700">64.8 kg</text>'
+    + '<text x="34" y="109" font-size="11" fill="#5d6d85">肺活量</text><text x="150" y="109" font-size="11.5" fill="#16202f" font-weight="700">3720 ml</text>'
+    + '<text x="34" y="136" font-size="11" fill="#5d6d85">50 米跑</text><text x="150" y="136" font-size="11.5" fill="#16202f" font-weight="700">8.3 s</text>'
+    + '<text x="34" y="163" font-size="11" fill="#5d6d85">立定跳远</text><text x="150" y="163" font-size="11.5" fill="#16202f" font-weight="700">214 cm</text>'
+    + '<rect x="26" y="182" width="248" height="18" rx="4" fill="#fee2e2"/>'
+    + '<text x="150" y="195" text-anchor="middle" font-size="10.5" fill="#b91c1c">手写数值易误读，人工誊录是最容易出错的环节</text>'
+    + '</svg>';
+}
+function ocrCtl(){
+  if (!canEdit()){
+    return '<div class="note amber mt12">当前是<b>学生视图</b>，不具备采集权限。若要演示拍照，请用教师或管理员账号登录。</div>'
+      + '<button class="btn mt12" onclick="UI.ocrNext()">跳过拍照，看回填演示</button>';
+  }
+  var btns = "";
+  if (STATE.camLive){
+    btns = '<button class="btn pri" onclick="UI.camShoot()">'+icon("shot",15)+' 拍照留档</button>'
+      + '<button class="btn" onclick="UI.camClose()" style="margin-left:8px">关闭摄像头</button>';
+  } else if (STATE.camBusy){
+    btns = '<button class="btn" disabled style="opacity:.6">正在请求摄像头权限…</button>'
+      + '<button class="btn" onclick="UI.camClose()" style="margin-left:8px">取消</button>';
+  } else {
+    btns = '<button class="btn pri" onclick="UI.camOpen()">'+icon("cam",15)+' 调用摄像头拍照</button>'
+      + '<label class="btn" style="margin-left:8px;cursor:pointer;margin-bottom:0">'+icon("cap",15)+' 从相册选择'
+      + '<input type="file" accept="image/*" style="display:none" onchange="UI.camPick(this)"></label>';
+    if (STATE.photo) btns = '<button class="btn" onclick="UI.camClear()">删除重拍</button>' + btns;
+  }
+  return '<div class="row mt12" style="flex-wrap:wrap">'+btns+'</div>'
+    + (STATE.camErr ? '<div class="note amber mt12">'+STATE.camErr+'</div>' : "")
+    + '<div class="note mt12"><b>可用范围说清楚</b>：拍照<b>真实可用</b>——调用本机摄像头抓帧留存，视频不出本机。'
+    + '但<b>数值自动识别尚未接入</b>：没有用本校真实纸质表校准过，就不该给出准确率承诺。'
+    + '当前定位是<b>拍照留档、回到办公室录入</b>，先把操场上的誊录时间省下来。</div>'
+    + '<button class="btn mt12" onclick="UI.ocrNext()">跳过拍照，看回填交互演示</button>';
+}
+
+
+function renderCapture(){
+  const modes = [
+    { id:"field",  ico:"edit", name:"现场网页录入", tag:"已落地", t:"t-g", d:"教师用平板或手机打开校园网页，选择班级后逐项填写，保存即按国标实时算分。适配希沃大屏触控操作。" },
+    { id:"batch",  ico:"sheet", name:"Excel 批量导入", tag:"已落地", t:"t-g", d:"沿用学校原有 Excel 台账，一键导入历史成绩与新生名单，避免重复搬运。" },
+    { id:"ocr",    ico:"cam",  name:"纸质成绩单拍照留档", tag:"可用 / 部分", t:"t-a", d:"真实调用本机摄像头拍照留存，视频不出本机；数值自动识别未接入，页面已明确标注。" },
+    { id:"voice",  ico:"mic",  name:"语音成绩复核", tag:"可用 / 部分", t:"t-a", d:"离线朗读成绩逐项核对已可用（调用设备语音引擎，不联网）；语音听写依赖云端，校内不使用。" }
+  ];
+  const mode = STATE.capMode;
+  let modeCards = modes.map(m=>{
+    return '<div class="stu-c '+(mode===m.id?"on":"")+'" style="cursor:pointer" onclick="UI.setCapMode(\''+m.id+'\')">'
+      + '<div class="row" style="gap:9px;margin-bottom:8px">'
+      + '<span style="width:34px;height:34px;border-radius:9px;background:'+(mode===m.id?"#2563eb":"#e8f0ff")+';color:'+(mode===m.id?"#fff":"#1d4ed8")+';display:flex;align-items:center;justify-content:center">'+icon(m.ico,18)+'</span>'
+      + '<b style="font-size:14.5px">'+m.name+'</b><span class="tag '+m.t+'" style="margin-left:auto">'+m.tag+'</span></div>'
+      + '<div style="font-size:12.5px;color:#5d6d85;line-height:1.62">'+m.d+'</div></div>';
+  }).join("");
+
+  let detail = "", header = "", sub = "";
+  if (mode === "field"){
+    header = "现场录入 · 改一个数字看看会发生什么"; sub = "可交互";
+    detail = panelField(STATE.editNote);
+  } else if (mode === "batch"){
+    header = "Excel 批量导入"; sub = "保留原有工作方式";
+    detail = panelBatch();
+  } else if (mode === "voice"){
+    header = "语音报数录入"; sub = "规划中 · 未实现原因说明";
+    detail = panelVoice();
+  } else {
+    const stage = STATE.ocrStage;
+    const steps = ["对准纸质体测成绩单拍照","框选并定位各项目数值","识别结果回填到录入表"];
+    header = steps[stage]; sub = "第 "+(stage+1)+" / 3 步";
+    let ocrBody = "";
+    if (stage === 0){
+      ocrBody = '<div class="row" style="gap:18px;flex-wrap:wrap">'
+        + '<div style="flex:1;min-width:260px">'
+          + '<div style="font-size:12px;color:#5d6d85;margin-bottom:6px">第 1 步 · 取得纸质成绩单的图像</div>'
+          + (photoBox() || ocrSample())
+        + '</div>'
+        + '<div style="flex:1;min-width:230px">'
+          + '<div class="card-h" style="margin-bottom:8px"><span class="dot"></span><h3>为什么要拍照</h3></div>'
+          + '<div style="font-size:13.5px;color:#5d6d85;line-height:1.75">体测现场最耗时的一步，是把纸质表上的<b>手写成绩</b>逐项誊录到电脑。以本班为例，8 个项目 × 42 人 = 336 个数值，两名教师誊录约需 40 分钟，且手写的 3 和 8、1 和 7 容易看错。<br><br>拍照之后，教师可以从<b>当场逐字誊录</b>退到<b>回到办公室照着照片录入</b>，先把占着操场的时间还给课堂。</div>'
+          + ocrCtl()
+        + '</div></div>';
+    } else if (stage === 1){
+      ocrBody = '<div class="row" style="gap:18px;flex-wrap:wrap">'
+        + '<div style="flex:1;min-width:260px">'
+          + '<svg viewBox="0 0 300 210" style="width:100%;max-width:330px;border:1px solid #d3ddec;border-radius:10px;background:#fff">'
+          + '<rect x="0" y="0" width="300" height="210" fill="#fff"/>'
+          + '<text x="150" y="24" text-anchor="middle" font-size="12" fill="#5d6d85">正在定位数值区域…</text>'
+          + '<rect x="146" y="46" width="126" height="14" rx="3" fill="#0891b2" opacity=".22" stroke="#0891b2" stroke-dasharray="3 2"/>'
+          + '<rect x="146" y="73" width="126" height="14" rx="3" fill="#0891b2" opacity=".22" stroke="#0891b2" stroke-dasharray="3 2"/>'
+          + '<rect x="146" y="100" width="126" height="14" rx="3" fill="#0891b2" opacity=".22" stroke="#0891b2" stroke-dasharray="3 2"/>'
+          + '<rect x="146" y="127" width="126" height="14" rx="3" fill="#0891b2" opacity=".22" stroke="#0891b2" stroke-dasharray="3 2"/>'
+          + '<rect x="146" y="154" width="126" height="14" rx="3" fill="#0891b2" opacity=".22" stroke="#0891b2" stroke-dasharray="3 2"/>'
+          + '<text x="34" y="57" font-size="11" fill="#5d6d85">身高</text>'
+          + '<text x="34" y="84" font-size="11" fill="#5d6d85">体重</text>'
+          + '<text x="34" y="111" font-size="11" fill="#5d6d85">肺活量</text>'
+          + '<text x="34" y="138" font-size="11" fill="#5d6d85">50 米跑</text>'
+          + '<text x="34" y="165" font-size="11" fill="#5d6d85">立定跳远</text>'
+          + '<line x1="24" y1="180" x2="276" y2="180" stroke="#0891b2" stroke-width="2"><animate attributeName="x2" values="24;276;24" dur="1.6s" repeatCount="indefinite"/></line>'
+          + '</svg></div>'
+        + '<div style="flex:1;min-width:230px">'
+          + '<div class="card-h" style="margin-bottom:8px"><span class="dot"></span><h3>识别框选过程</h3></div>'
+          + '<div class="note cyan">演示说明：本页<b>没有</b>实现一个真实的识别引擎。识别效果取决于字体、光照、拍摄角度，在未用本校真实纸质表做过校准之前，不宜宣称准确率。此处展示的是<b>交互流程与结果呈现方式</b>，识别内核待用真实样本训练后接入。</div>'
+          + '<div class="mt12" style="font-size:13px;color:#5d6d85;line-height:1.7">预期定位字段：身高 / 体重 / 肺活量 / 50 米 / 立定跳远 / 坐位体前屈 / 引体向上（仰卧起坐）/ 耐力跑。</div>'
+          + '<div class="row mt12"><span class="puls tag t-c">识别中</span><button class="btn pri" onclick="UI.ocrNext()">查看回填结果</button></div>'
+        + '</div></div>';
+    } else {
+      const rows = [["身高","172.4 cm","确定"],["体重","64.8 kg","确定"],["肺活量","3720 ml","确定"],["50 米跑","8.3 s","需复核"],["立定跳远","214 cm","确定"]];
+      ocrBody = '<div class="grid g2">'
+        + '<div><div class="card-h" style="margin-bottom:8px"><span class="dot"></span><h3>识别结果（低置信项标红）</h3></div>'
+          + '<table class="tb"><thead><tr><th>项目</th><th style="text-align:right">识别值</th><th style="text-align:right">状态</th></tr></thead><tbody>'
+          + rows.map(r=>'<tr><td>'+r[0]+'</td><td class="num" style="text-align:right;font-weight:700">'+r[1]+'</td><td style="text-align:right"><span class="tag '+(r[2]==="确定"?"t-g":"t-r")+'">'+r[2]+'</span></td></tr>').join("")
+          + '</tbody></table>'
+          + '<div class="note amber mt12">低置信度数值<b>不会静默写入</b>数据文件，必须由教师点确认或手改后才生效——这是本模块的设计底线。</div></div>'
+        + '<div><div class="card-h" style="margin-bottom:8px"><span class="dot"></span><h3>效率对比估算</h3></div>'
+          + hbarRow("人工誊录", 100, "#dc2626", "约 40 分钟")
+          + hbarRow("OCR + 人工复核", 26, "#15803d", "约 10 分钟")
+          + '<div class="note note-ex mt12">估算口径：本班 42 人 × 8 项。OCR 耗时按“拍摄 + 复核低置信项”计，实际因纸质表版式而异。</div>'
+          + '<button class="btn mt12" onclick="UI.ocrReset()">重新演示</button></div>'
+        + '</div>';
+    }
+    detail = '<div class="card"><div class="card-h"><span class="dot"></span><h3>'+header+'</h3><span class="sub">'+sub+'</span></div>'
+      + '<div class="steps mb12">'
+        + steps.map((s,i)=>'<div class="step"><div class="step-n" style="'+(i<=stage?"":"background:#d3ddec;color:#8b99ad")+'">'+(i+1)+'</div><div class="step-t" style="'+(i<=stage?"color:#16202f;font-weight:600":"")+'">'+s+'</div></div>'+(i<steps.length-1?'<div class="step-line"></div>':'')).join("")
+      + '</div>'+ocrBody+'</div>';
+  }
+
+  let feedCard = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>手机实时上传 · 大屏同步</h3>'
+    + '<span class="sub">'+(STATE.served ? '手机扫码进入后拍照，自动出现在这里' : '示例照片（现场用手机热点可实时同步真实画面）')+'</span></div>'
+    + '<div class="feed-wall" id="feedWall">'+demoFeedHtml()+'</div>'
+    + '<div class="note note-ex mt12">所有上传仅保存在本机与现场网络内，不上传任何外部服务；演示结束后可清空 <code>uploads.json</code>。请避免上传未成年人正面特写。</div>'
+    + '</div>';
+  if (STATE.served){ startFeed(); }
+
+  return ''
+  + '<div class="note note-ex mb16"><b>多模态设计思路</b>：四条入口对应四种真实场景——课堂上<b>网页直接录</b>、学期初<b>历史台账批量导</b>、纸质表场景<b>拍照</b>、成绩核对场景<b>语音</b>。前两条已在系统内实际使用；后两条只做到<b>设备能力确定可用</b>的那一半（拍照抓帧、离线朗读），做不到的那一半（数值自动识别、语音听写）在页面内逐条写明原因，不包装成已实现。</div>'
+  + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>四条采集通道</h3><span class="sub">点击卡片切换下方演示区</span></div>'
+    + '<div class="stu-grid">'+modeCards+'</div></div>'
+  + detail
+  + feedCard;
+}
+
+function renderScore(){
+  const term = TERMS.find(t=>t.id===STATE.term);
+  const G = STATE.genderFilter;
+  let arr = visibleStudents().filter(s=>!G || s.gender===G);
+  const st = classStats(STATE.term, G);
+
+  let rows = arr.map(s=>{
+    const sc = getScore(s, STATE.term);
+    const r = s.recs[STATE.term];
+    return '<tr onclick="UI.pick(\''+s.id+'\')" style="cursor:pointer">'
+      + '<td><b>'+s.name+'</b><div style="font-size:11.5px;color:#8b99ad">'+s.id+'</div></td>'
+      + '<td>'+(s.gender==="M"?'<span class="tag t-b">男</span>':'<span class="tag" style="background:#fce7f3;color:#be185d">女</span>')+'</td>'
+      + '<td class="num">'+r.height+'<div style="font-size:11px;color:#8b99ad">'+r.weight+' kg</div></td>'
+      + '<td class="num">'+sc.bmi+'<div style="font-size:11px;color:#8b99ad">'+sc.bmiGrade+'</div></td>'
+      + '<td class="num">'+r.vc+'</td>'
+      + '<td class="num">'+r.run50.toFixed(1)+'</td>'
+      + '<td class="num">'+r.reach.toFixed(1)+'</td>'
+      + '<td class="num">'+r.jump+'</td>'
+      + '<td class="num">'+r.strength+'</td>'
+      + '<td class="num">'+fmtTime(r.endur)+'</td>'
+      + '<td class="num" style="text-align:right;font-size:17px;font-weight:800;color:'+scoreColor(sc.total)+'">'+sc.total+'</td>'
+      + '<td style="text-align:right">'+levelTag(sc.level)+'</td>'
+      + '</tr>';
+  }).join("");
+
+  const stu = STUDENTS.find(s=>s.id===STATE.stuId) || arr[0] || STUDENTS[0];
+  const sc = getScore(stu, STATE.term);
+  const partRows = ITEMS.map(i=>{
+    const p = sc.parts[i.key];
+    let raw = p.raw;
+    if (i.key==="endur") raw = fmtTime(p.raw);
+    if (i.key==="bmi")   raw = sc.bmi + "（"+sc.bmiGrade+"）";
+    return '<tr><td>'+itemName(stu.gender,i.key)+'</td>'
+      + '<td class="num">'+raw+'</td>'
+      + '<td class="num" style="text-align:right"><b style="color:'+scoreColor(p.score)+'">'+p.score+'</b></td>'
+      + '<td style="text-align:right;font-size:12.5px;color:#8b99ad">'+i.w+'%</td>'
+      + '<td style="width:88px"><div class="bar-out"><div class="bar-in" style="width:'+p.score+'%;background:'+scoreColor(p.score)+'"></div></div></td></tr>';
+  }).join("");
+
+  return ''
+  + '<div class="note mb16"><b>评分口径</b>：严格按教育部《国家学生体质健康标准（2014 年修订）》高中一年级评分表执行，取 100~10 共 20 个分数档 <b>向下查表</b>；BMI 由身高体重实时计算；总分 = Σ（单项得分 × 权重）。满分 100 分标准分，另有最高 20 分附加分（本演示版未计入）。</div>'
+  + '<div class="grid g4 mb16">'
+    + '<div class="kpi blue"><div class="kpi-l">测算人数</div><div class="kpi-v b">'+st.n+'</div><div class="kpi-s">按当前筛选统计</div></div>'
+    + '<div class="kpi cyan"><div class="kpi-l">平均分</div><div class="kpi-v c">'+st.avg+'</div><div class="kpi-s">'+term.name+'</div></div>'
+    + '<div class="kpi green"><div class="kpi-l">优良率</div><div class="kpi-v g">'+st.goodRate+'<span class="kpi-u">%</span></div><div class="kpi-s">80 分及以上</div></div>'
+    + '<div class="kpi amber"><div class="kpi-l">及格率</div><div class="kpi-v a">'+st.passRate+'<span class="kpi-u">%</span></div><div class="kpi-s">60 分及以上</div></div>'
+  + '</div>'
+  + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>全班测评明细</h3>'
+    + '<span class="sub">'+term.name+' · 点击任意行查看该生单人评分卡</span>'
+    + '<div class="seg" style="margin-left:12px">'
+      + '<button class="seg-b '+(STATE.genderFilter===""?"on":"")+'" onclick="UI.filter(\'\')">全部</button>'
+      + '<button class="seg-b '+(STATE.genderFilter==="M"?"on":"")+'" onclick="UI.filter(\'M\')">男生</button>'
+      + '<button class="seg-b '+(STATE.genderFilter==="F"?"on":"")+'" onclick="UI.filter(\'F\')">女生</button>'
+    + '</div></div>'
+    + '<div class="tbl-wrap"><table class="tb"><thead><tr>'
+      + '<th>姓名</th><th>性别</th><th>身高 / 体重</th><th>BMI</th><th>肺活量</th><th>50 米(s)</th><th>体前屈(cm)</th><th>跳远(cm)</th><th>力量(个)</th><th>耐力</th>'
+      + '<th style="text-align:right">总分</th><th style="text-align:right">等级</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>'
+  + '<div class="grid g2">'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' · 单人评分卡</h3><span class="sub">'+stu.id+' · '+(stu.gender==="M"?"男":"女")+'</span></div>'
+      + '<table class="tb"><thead><tr><th>项目</th><th>实测</th><th style="text-align:right">得分</th><th style="text-align:right">权重</th><th></th></tr></thead><tbody>'+partRows+'</tbody></table>'
+      + '<div class="row mt12" style="background:#f7fafd;border-radius:10px;padding:12px 15px">'
+        + '<div><div style="font-size:12px;color:#5d6d85">学年总分</div><div class="num" style="font-size:30px;font-weight:800;color:'+scoreColor(sc.total)+'">'+sc.total+'</div></div>'
+        + '<div style="margin-left:auto;text-align:right">'+levelTag(sc.level)+'<div class="hint" style="margin-top:4px">总分 = Σ（单项得分 × 权重）</div></div></div>'
+    + '</div>'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>评分过程可视化</h3></div>'
+      + '<div style="display:flex;justify-content:center;padding:6px 0 12px">'+radar(sc.parts ? Object.keys(sc.parts).reduce((a,k)=>{a[k]=sc.parts[k].score;return a;},{}) : {}, 280)+'</div>'
+      + '<div class="note note-ex purple"><b>这套公式解决了什么</b>：过去每项得分要人工对照国标表格逐项翻查，一个班 336 次查表；现在录入即出分，教师重复劳动被压缩为一次录入，且不会查错行。</div>'
+      + '<div class="note amber mt12"><b>但总分会掩盖短板</b>：BMI 正常的学生在这一项上白拿 15% 权重，即使耐力项目几乎不得分，总分也不至于难看。<b>只看总分排名，很容易漏掉单项严重不足的学生</b>。这也是本系统坚持保留各分项得分、并用雷达图呈现的原因——下一步的运动处方，正是建立在「分项定位」而非「总分排序」之上。</div>'
+    + '</div>'
+  + '</div>';
+}
+
+/* ---------------- 8.6 处方追问 · 本地知识库 ----------------
+   安全边界（人工设定，不交由生成）：
+   1. 涉及体重一律用「体重管理 / 改善身体成分」，不设减重数字目标；
+   2. 不给具体热量数字与节食方案；
+   3. 涉及疼痛、不适、疾病一律导向校医或医疗机构，不给诊断意见。            */
+const KB_RX = [
+  { id:"diet", keys:["膳食","饮食","营养","吃什么","吃饭","餐","蛋白","碳水","喝水","牛奶"],
+    title:"膳食与营养",
+    body:["三餐规律，<b>主食不可省略</b>——耐力与力量训练都依赖糖原储备，不吃主食会直接拖低训练质量。",
+          "每天饮水 1500–1700 毫升，训练前后分次少量补充，不要等到口渴再喝。",
+          "训练结束后 30 分钟内补充一次<b>碳水 + 蛋白质</b>的组合，例如牛奶配全麦面包，帮助身体恢复。",
+          "体测或比赛当天，提前 2 小时完成主餐，避免高油高糖，也不要吃从未吃过的食物。"] },
+
+  { id:"weight", keys:["体重","减肥","减重","瘦身","胖","太胖","瘦","BMI","超重","肥胖","身材"],
+    title:"体重管理",
+    body:["本系统对体重的表述统一为<b>体重管理</b>与<b>改善身体成分</b>，<b>不设定减重数字目标</b>——高中生处于生长发育期，不宜以减重为目标。",
+          "可行的做法是<b>调整饮食结构 + 提高活动量</b>：减少含糖饮料和油炸零食，保证每天 60 分钟以上的中高强度身体活动。",
+          "体重变化以<b>学期</b>为观察单位，不建议每周称重比较，避免给自己造成不必要的焦虑。",
+          "如果体重已经影响到健康，或伴有其他不适，请告知家长并咨询校医或医疗机构，<b>不要自行节食或服药</b>。"] },
+
+  { id:"muscle", keys:["肌肉","力量","增肌","上肢","手臂","腹肌","核心","引体","仰卧","俯卧撑","练哪"],
+    title:"力量与肌肉训练",
+    body:["力量练习安排在<b>充分热身后</b>、机体状态良好时进行，疲劳状态下不安排大强度力量练习。",
+          "同一个肌群<b>隔天练一次</b>，每周 2–3 次即可，肌肉是在休息时长好的，不是练的时候。",
+          "动作质量优先于数量：引体向上做不起来时，先用<b>斜身引体、弹力带辅助、离心慢放</b>过渡，不要靠甩身体借力。",
+          "核心练习（卷腹、平板支撑等）注意<b>颈肩放松、腰背平直</b>，出现腰部明显酸胀应减量并加强髋屈肌拉伸。"] },
+
+  { id:"warm", keys:["热身","准备活动","活动开"],
+    title:"热身与放松",
+    body:["准备部分一般 8–10 分钟：<b>慢跑 + 关节活动 + 动态拉伸</b>，让心率上来、体温升高再进入主内容。",
+          "结束部分 5 分钟左右：<b>低强度放松跑 + 静态拉伸</b>，每个部位保持 15–30 秒，不要弹振。",
+          "冬天或气温低时，准备部分要相应延长，这是预防运动损伤最省钱的办法。"] },
+
+  { id:"load", keys:["强度","负荷","心率","多快","多累","量","组数","次数"],
+    title:"负荷与强度",
+    body:["有氧类练习用心率掌握强度：中等强度约 <b>140–160 次/分</b>，能说话但不能唱歌，是比较合适的区间。",
+          "每周运动量的增加<b>控制在 10% 以内</b>，突然加量是受伤和过度疲劳最常见的原因。",
+          "出现持续疲劳、睡不好、静息心率明显升高，说明量大了，先减量而不是硬扛。"] },
+
+  { id:"cycle", keys:["多久","几周","周期","见效","多长时间","能提多少","进步"],
+    title:"见效周期",
+    body:["<b>耐力和心肺</b>一般在系统练习 4–6 周后出现可测量的进步。",
+          "<b>力量和速度</b>相对快一些，2–4 周能有感觉，但要稳定提高仍需 6–8 周。",
+          "本系统的处方按 <b>4 周一个周期</b>编排，一个周期结束后复测，再根据新数据重新生成——不要一个处方用一学期。"] },
+
+  { id:"pain", keys:["疼","痛","伤","受伤","不舒服","难受","头晕","扭","肿","膝盖","腰","踝","拉伤"],
+    title:"不适与损伤（安全兜底）",
+    body:["<b>这一条我必须说清楚：我不能判断你的伤情。</b>",
+          "出现疼痛、肿胀、活动受限、头晕胸闷等情况，应<b>立即停止练习</b>，告知体育教师和家长，由校医或医疗机构判断。",
+          "在明确诊断前，不要自行热敷、按摩、贴膏药，也不要「忍一忍继续练」。",
+          "恢复期的活动安排必须由医生或校医出具意见，本系统不提供伤后训练方案。"] },
+
+  { id:"sleep", keys:["睡眠","休息","熬夜","恢复","疲劳"],
+    title:"休息与恢复",
+    body:["高中生每天应保证 <b>8 小时左右睡眠</b>，睡眠不足会直接影响力量、反应和免疫力。",
+          "大强度练习次日安排低强度活动或完全休息，不要连续两天上大强度。",
+          "恢复手段里，<b>睡眠和营养</b>的作用远大于任何拉伸或按摩。"] }
+];
+
+/* 处方页追问：带学生上下文的确定性应答 */
+function answerRx(q, stu){
+  q = String(q||"").trim();
+  if (!q) return "请输入你想问的内容。";
+  if (!stu) return "请先选择一名学生。";
+  const sc = getScore(stu, STATE.term);
+  const rx = makePrescription(stu, STATE.term);
+  const G  = stu.gender;
+
+  /* 1) 问到具体项目 —— 优先用该项目的处方模块回答 */
+  for (const it of ITEMS){
+    const nm = itemName(G, it.key);
+    if (q.indexOf(nm) >= 0 || (q.indexOf(it.name) >= 0 && it.name.length >= 3)){
+      const sec = (rx.items||[]).find(x=>x.key === it.key);
+      const own = sc.parts[it.key];
+      let s = "【" + nm + "】" + stu.name + " 本次得 " + own.score + " 分";
+      if (sec && sec.lib){
+        s += "\n\n" + sec.lib.title;
+        s += "\n" + sec.lib.items.map(x=>"· " + x.t + "：" + x.d).join("\n");
+        if (sec.lib.tip) s += "\n\n提示：" + sec.lib.tip;
+      } else {
+        s += "\n\n这一项不是当前的薄弱项（已达 " + own.score + " 分），保持现有练习节奏即可，不必额外加量。";
+      }
+      return s;
+    }
+  }
+
+  /* 2) 问处方本身 —— 解释这份处方怎么来的 */
+  if (/(为什么|依据|怎么来|凭什么|原理|怎么定|如何生成|这份处方)/.test(q)){
+    if (rx.keep){
+      return stu.name + " 本次各项目均在 72 分以上，系统判定<b>无需针对性补弱处方</b>。\n\n"
+        + "判定规则很简单：先按国标算出七个项目的单项得分，凡低于 72 分的进入补弱清单（最多取 3 项），"
+        + "再从运动处方知识库里匹配对应训练模块。没有低于 72 分的项目，就不生成处方——<b>不是所有学生都需要处方</b>。";
+    }
+    let s = "这份处方是这么来的：\n\n";
+    s += "1. 先按《国家学生体质健康标准（2014 年修订）》算出 " + stu.name + " 的七项单项得分；\n";
+    s += "2. 找出低于 72 分的薄弱项，共 " + (rx.items||[]).length + " 项："
+       + (rx.items||[]).map(x=>x.name + "（" + x.score + " 分）").join("、") + "；\n";
+    s += "3. 每个薄弱项从处方知识库匹配一组训练动作，按体育课<b>准备—基本—结束</b>三部分的课时框架组装；\n";
+    s += "4. 负荷、组次、频次写清楚，教师审定后签发。\n\n";
+    s += "需要说明的是，第 1–2 步是<b>确定性计算</b>，不需要 AI；AI 参与的是第 3 步的检索与组装，"
+       + "而<b>「能不能练、负荷合不合适」由体育教师把关</b>。";
+    return s;
+  }
+
+  /* 3) 命中本地知识库 */
+  for (const k of KB_RX){
+    for (const w of k.keys){
+      if (q.indexOf(w) >= 0){
+        let s = "【" + k.title + "】\n" + k.body.map(x=>"· " + x).join("\n");
+        if (!rx.keep && (k.id === "diet" || k.id === "load" || k.id === "cycle")){
+          s += "\n\n结合 " + stu.name + " 的情况：当前重点补弱项为 "
+             + (rx.items||[]).map(x=>x.name).join("、")
+             + "，上面的原则优先服务于这几项。";
+        }
+        return s;
+      }
+    }
+  }
+
+  /* 4) 兜底 */
+  return "这个问题我暂时答不上来。\n\n本顾问是<b>规则匹配 + 本地知识库</b>的确定性应答，只能覆盖已经录入的内容。你可以试着问：\n"
+    + "· 某个项目怎么练（例如「引体向上怎么练」）\n"
+    + "· 膳食与营养怎么安排\n"
+    + "· 体重管理要注意什么\n"
+    + "· 训练强度和负荷怎么掌握\n"
+    + "· 这份处方是怎么生成的\n"
+    + "· 运动后怎么恢复";
+}
+
+/* 处方页追问面板 */
+function askPanel(stu){
+  const log = (STATE.askLog||[]).filter(x=>x.stu === stu.id);
+  const quick = ["这份处方是怎么生成的", "怎么练",
+    (stu.gender==="M" ? "引体向上怎么练" : "仰卧起坐怎么练"),
+    "膳食怎么安排", "体重管理要注意什么", "训练强度怎么掌握"];
+  return ''
+    + '<div style="border-top:1px solid #e9eff7;margin-top:16px;padding-top:15px">'
+      + '<div class="row" style="gap:8px;margin-bottom:3px">'
+        + '<span style="width:26px;height:26px;border-radius:7px;background:#e8f0ff;color:#1d4ed8;display:flex;align-items:center;justify-content:center;flex:none">'
+        + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>'
+        + '<b style="font-size:14.5px">就这份处方继续问</b>'
+        + '<span style="font-size:11.5px;color:#8b99ad">针对 '+stu.name+' 的回答，规则匹配 · 本地知识库 · 不联网</span>'
+      + '</div>'
+      + '<div class="ask-bar">'
+        + '<input id="rxAskIn" type="text" placeholder="例如：引体向上怎么练 / 膳食怎么安排 / 这份处方是依据什么生成的" '
+        + 'onkeydown="if(event.key===\'Enter\')UI.rxAsk()">'
+        + '<button onclick="UI.rxAsk()">提问</button>'
+      + '</div>'
+      + '<div class="ask-quick">' + quick.map(q=>'<span onclick="UI.rxQuick(\''+q+'\')">'+q+'</span>').join("") + '</div>'
+      + (log.length ? '<div class="ask-log">' + log.map(x=>
+            '<div class="qb">'+x.q+'</div><div class="ab">'+x.a+'</div>').join("") + '</div>' : '')
+    + '</div>';
+}
+
+/* 今日训练打卡卡片：学生可提交；教师/管理员查看时为只读状态 */
+function renderCheckin(stu){
+  const rx = makePrescription(stu, STATE.term);
+  const today = todayStr();
+  const rec = Checkin.get(stu.id, today);
+  const isStu = isStudent();
+
+  /* 无处方（各项目均 ≥ 72，无需补弱）时，打卡不启用 */
+  if (rx.keep){
+    return ''
+      + '<div class="card"><div class="card-h"><span class="dot"></span><h3>今日训练打卡</h3><span class="sub">'+today+'</span></div>'
+      + '<div class="note cyan"><b>'+stu.name+'</b> 本次测评各项目均 ≥ 72 分，暂无需针对性补弱练习，打卡功能暂不启用。请继续保持现有锻炼习惯。</div>'
+      + '</div>';
+  }
+
+  const items = rx.focus.map(f=>
+    '<div class="ck-item"><span class="ck-dot" style="background:'+scoreColor(f.score)+'"></span>'
+    + '<span class="ck-name">'+f.name+'</span>'
+    + '<span class="ck-sc" style="color:'+scoreColor(f.score)+'">'+f.score+' 分</span></div>'
+  ).join("");
+
+  /* 已打卡：只读展示，按钮不再出现 */
+  if (rec){
+    const st = CK_STATUS[rec.status] || rec.status;
+    const tagCls = rec.status==="done" ? "t-g" : rec.status==="part" ? "t-a" : "t-r";
+    return ''
+      + '<div class="card" style="border-color:var(--ok)"><div class="card-h"><span class="dot" style="background:var(--ok)"></span><h3>今日训练打卡</h3><span class="sub">'+today+'</span></div>'
+      + items
+      + '<div class="ck-done"><span class="ck-badge">'+icon("hand",16)+' 今日已打卡</span>'
+      + '<div class="ck-done-row"><b>完成状态：</b><span class="tag '+tagCls+'">'+st+'</span></div>'
+      + (rec.note ? '<div class="ck-done-row"><b>备注：</b>'+escapeHtml(rec.note)+'</div>' : '')
+      + '<div class="ck-done-row ck-time">提交时间：'+rec.time+'</div></div>'
+      + (isStu ? '<div class="note" style="margin-top:12px">每天记录一条；如需修改，请告知体育教师后在教师端更正。</div>' : '')
+      + '</div>';
+  }
+
+  /* 未打卡 + 学生角色：交互提交 */
+  if (isStu){
+    return ''
+      + '<div class="card"><div class="card-h"><span class="dot"></span><h3>今日训练打卡</h3><span class="sub">'+today+' · 本人</span></div>'
+      + '<div class="note cyan">依据你本次测评的薄弱项生成打卡任务，完成后点选对应状态并提交。记录仅保存在本机浏览器。</div>'
+      + items
+      + '<div class="ck-label">今日完成状态 <span id="ckWarn" style="color:var(--bad);font-weight:700;display:none">· 请先选择状态</span></div>'
+      + '<input type="hidden" id="ckSel" value="">'
+      + '<div class="ck-btns">'
+        + '<button type="button" class="ck-b" data-v="done" onclick="UI.ckPick(this)">已完成</button>'
+        + '<button type="button" class="ck-b" data-v="part" onclick="UI.ckPick(this)">部分完成</button>'
+        + '<button type="button" class="ck-b" data-v="none" onclick="UI.ckPick(this)">未执行</button>'
+      + '</div>'
+      + '<input id="ckNote" class="ck-input" type="text" placeholder="补充备注（选填）：完成了哪几项、身体感受等" maxlength="120">'
+      + '<div class="row" style="margin-top:6px"><button class="btn pri" onclick="UI.ckSubmit()">'+icon("send",15)+' 提交打卡</button></div>'
+      + '</div>';
+  }
+
+  /* 未打卡 + 教师/管理员：只读状态提示 */
+  return ''
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>今日训练打卡</h3><span class="sub">'+today+' · '+stu.name+'</span></div>'
+    + items
+    + '<div class="note amber">该生今日尚未打卡。学生端提交后这里会实时显示其完成状态，便于课堂针对性督促。</div>'
+    + '</div>';
+}
+
+function renderRx(){
+  const stu = STUDENTS.find(s=>s.id===STATE.stuId) || STUDENTS[0];
+  const sc = getScore(stu, STATE.term);
+  const rx = makePrescription(stu, STATE.term);
+  const G = stu.gender;
+
+  let body = "";
+  if (rx.keep){
+    body = '<div class="note"><b>'+stu.name+'</b> 本次测评各项目均在 72 分以上，无需针对性补弱处方。建议维持现有锻炼习惯，以优势项目带动全面发展。</div>';
+  } else {
+    body = rx.items.map(sec=>{
+      return '<div class="rx-sec"><div class="rx-h">'+icon("bulb",15)+' 薄弱项 '+sec.name+'（'+sec.score+' 分）</div>'
+        + '<div class="rx-b"><div style="font-weight:700;margin-bottom:8px;color:#16202f">'+sec.lib.title+'</div>'
+        + sec.lib.items.map(it=>'<div class="rx-item"><div class="rx-item-n">'+it.n.slice(0,1)+'</div>'
+            + '<div class="rx-item-t"><b>'+it.t+'</b><div class="rx-dose">'+it.d+'</div></div></div>').join("")
+        + '<div class="note cyan mt12" style="font-size:12.5px">'+sec.lib.tip+'</div>'
+        + '</div></div>';
+    }).join("");
+  }
+
+  // 课时框架
+  const plan = [
+    { p:"准备部分", t:"约 8 分钟", c:"慢跑 400 米 + 关节活动 + 动态拉伸（弓步转体、摆腿各 2×8 拍）", hint:"针对薄弱项柔韧不足者优先安排"},
+    { p:"基本部分", t:"约 28 分钟", c:"主教材：薄弱项针对性练习 3 组循环；辅教材：优势项保持性练习 1 组", hint:"练习密度目标 ≥ 60%"},
+    { p:"结束部分", t:"约 6 分钟", c:"静态拉伸 + 呼吸调整 + 本课小结与目标布置", hint:"平均心率预计 135–155 次/分"}
+  ];
+  const planHtml = plan.map(x=>'<div class="rx-item"><div class="rx-item-n">'+x.p.slice(0,1)+'</div>'
+    + '<div class="rx-item-t"><b>'+x.p+' · '+x.t+'</b><div>'+x.c+'</div><div class="rx-dose">'+x.hint+'</div></div></div>').join("");
+
+  const cards = visibleStudents().filter(s=>!STATE.genderFilter || s.gender===STATE.genderFilter)
+    .map(s=>{
+      const c = getScore(s, STATE.term);
+      return '<div class="stu-c '+(s.id===STATE.stuId?"on":"")+'" onclick="UI.pick(\''+s.id+'\');UI.go(\'rx\')">'
+        + '<div class="stu-nm">'+s.name+'<span style="font-size:11px;color:#8b99ad;font-weight:400">'+(s.gender==="M"?"男":"女")+'</span></div>'
+        + '<div class="stu-id">'+s.id+'</div>'
+        + '<div class="stu-sc" style="color:'+scoreColor(c.total)+'">'+c.total+'</div>'
+        + '<div class="stu-meta">'+c.level+' · BMI '+c.bmi+'</div></div>';
+    }).join("");
+
+  return ''
+  + '<div class="note purple mb16"><b>这一部分是本作品的 AI 内核</b>：系统先按国标算出各项目得分，自动识别低于 72 分的薄弱项（最多取 3 项），再从<b>运动处方知识库</b>中匹配对应训练模块，按体育课教案结构（准备—基本—结束）组合成一份可执行的一人一策处方。教师负责审定与调整，机器负责检索与排版。</div>'
+  + '<div class="grid g12 mb16">'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' 的个性化运动处方</h3>'
+      + '<span class="sub">总分 '+sc.total+' · '+sc.level+'</span></div>'
+      + (rx.keep ? '' : '<div class="row wrap mb12" style="gap:7px">'
+          + rx.focus.map(f=>'<span class="tag t-r">'+f.name+' '+f.score+' 分</span>').join("")
+          + (rx.strong&&rx.strong.length?'<span style="font-size:12px;color:#8b99ad;margin-left:6px">优势保持：</span>':'')
+          + (rx.strong?rx.strong.map(s=>'<span class="tag t-g">'+s.name+' '+s.score+'</span>').join(""):'')
+        + '</div>')
+      + body
+      + (STATE.pushedRx===stu.id ? '<div class="rx-pushed"><span class="ic">'+icon("hand",16)+'</span>已推送到 <b>'+stu.name+'</b> 的学生端（演示确认，真实环境将写入学生专属处方库）</div>' : '')
+      + '<div class="rx-sec"><div class="rx-h">'+icon("sheet",15)+' 课时框架（4 周 · 每周 3 次）</div><div class="rx-b">'+planHtml+'</div></div>'
+      + '<div class="row wrap" style="gap:8px"><button class="btn" onclick="window.print()">'+icon("dl",15)+' 打印 / 导出本报告</button>'
+      + '<button class="btn pri" onclick="UI.pushRx(\''+stu.id+'\')">'+icon("send",15)+' 推送给学生端</button>'
+      + '<span class="hint">打印可另存为 PDF；推送保留教师署名，便于课堂发放与家校沟通</span></div>'
+      + askPanel(stu)
+    + '</div>'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>选择学生</h3>'
+      + '<span class="sub">'+(isStudent() ? '仅本人（学生视图）' : '共 '+visibleStudents().length+' 人')+'（虚构数据）</span></div>'
+      + '<div class="seg mb12">'
+        + '<button class="seg-b '+(STATE.genderFilter===""?"on":"")+'" onclick="UI.filter(\'\')">全部</button>'
+        + '<button class="seg-b '+(STATE.genderFilter==="M"?"on":"")+'" onclick="UI.filter(\'M\')">男生</button>'
+        + '<button class="seg-b '+(STATE.genderFilter==="F"?"on":"")+'" onclick="UI.filter(\'F\')">女生</button>'
+      + '</div>'
+      + '<div style="max-height:600px;overflow-y:auto;padding-right:4px"><div class="stu-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">'+cards+'</div></div>'
+    + '</div>'
+  + '</div>'
+  + renderCheckin(stu)
+  + '<div class="card"><div class="card-h"><span class="dot"></span><h3>处方是怎么被"组合"出来的</h3></div>'
+    + '<div class="steps mb12">'
+      + [["录入体测数据","8 项实测成绩"],["国标查表评分","各单项得分"],["识别薄弱项","得分 < 72"],["匹配处方模块","知识库检索"],["教案化组装","准备/基本/结束"],["教师审定签发","人机协同闭环"]]
+        .map((s,i)=>'<div class="step"><div class="step-n" style="background:'+(i>=3?"#0891b2":"#2563eb")+'">'+(i+1)+'</div>'
+          + '<div class="step-t">'+s[0]+'<div style="font-size:11px;color:#8b99ad">'+s[1]+'</div></div></div>'+(i<5?'<div class="step-line"></div>':''))
+        .join("")
+    + '</div>'
+    + '<div class="note cyan">第 1–3 步是确定性计算（国标公式，不需要 AI）；第 4–5 步是 AI 参与的检索与生成；第 6 步必须由体育教师把关。<b>把 AI 限定在“查、排、组”，把“对不对、能不能练”留给教师</b>，是本模块的设计原则。</div>'
+  + '</div>';
+}
+
+function renderCoach(){
+  const msgs = STATE.chat.length ? STATE.chat.map(m=>
+      '<div class="msg '+(m.who==="me"?"me":"ai")+'">'+(m.who==="ai"?'<div class="msg-who">体测顾问</div>':'')+m.text+'</div>'
+    ).join("")
+    : '<div class="msg ai"><div class="msg-who">体测顾问</div>你好，我是体测顾问。可以问我某位学生的成绩与薄弱点、班级整体情况、某个项目怎么练，也可以问这套系统本身。试试下面这些问题。</div>';
+
+  const qs = ["周子墨这次总分多少","他和上次比进步了吗","给我他的运动处方","班里哪几项最弱","怎么用处方系统"];
+
+  return ''
+  + '<div class="note cyan mb16"><b>实现方式说明（重要）</b>：本顾问采用<b>规则匹配 + 本地知识库</b>的确定性应答，<b>不调用云端大模型</b>。原因有三：一是学生体质数据不出校园网，是数据安全的硬边界；二是校内网络不具备稳定调用外部服务的条件；三是体测问答需要<b>每次给同一个问题同一个答案</b>，确定性优先于发散性。所有回答均从本机数据实时查询得出，不是预设文案。</div>'
+  + '<div class="grid g12">'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>体测顾问 · 多轮问答</h3><span class="sub">离线运行 · 数据本机查询</span></div>'
+      + '<div class="chat-box" id="chatBox">'+msgs+'</div>'
+      + '<div class="q-chips mt12">'+qs.map(q=>'<button class="q-chip" onclick="UI.ask(\''+q+'\')">'+q+'</button>').join("")+'</div>'
+      + '<div class="chat-in mt12"><textarea id="chatIn" placeholder="输入问题，回车发送" onkeydown="if(event.key===13&&!event.shiftKey){event.preventDefault();UI.send()}"></textarea>'
+      + '<button class="btn pri" onclick="UI.send()">'+icon("send",15)+' 发送</button></div>'
+    + '</div>'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>顾问的能力边界</h3></div>'
+      + '<div style="font-size:13.5px;color:#5d6d85;line-height:1.75">'
+        + '<div style="font-weight:700;color:#16202f;margin-bottom:6px">可以回答</div>'
+        + '学生个体：总分、等级、单项得分、BMI 与体型评价、进步幅度<br>'
+        + '班级层面：平均分、优良率、及格率、各项目强弱排序<br>'
+        + '训练建议：针对具体项目的练习方法与负荷安排<br>'
+        + '系统使用：操作流程与权限说明<br><br>'
+        + '<div style="font-weight:700;color:#16202f;margin-bottom:6px">不作答</div>'
+        + '涉及伤病诊断、就医建议、用药与营养处方的问题会提示转由专业人员处理。'
+      + '</div>'
+      + '<div class="note note-ex amber mt12"><b>为什么不做成聊天机器人</b>：体测场景的问题是高度收敛的，用户要的是准确数字与可执行的训练方法，不是文采。规则引擎可以做到零幻觉、可审计、可离线，代价是不能闲聊——这个取舍在校园场景里是划算的。</div>'
+      + '<div class="footnote" style="margin-top:14px">提示：输入学生姓名即可查询其数据，例如「'+STUDENTS[3].name+' 的薄弱项」。</div>'
+    + '</div>'
+  + '</div>';
+}
+
+function renderTrack(){
+  const stu = STUDENTS.find(s=>s.id===STATE.stuId) || STUDENTS[0];
+  const scores = TERMS.map(t=>getScore(stu, t.id).total);
+  const st = TERMS.map(t=>classStats(t.id));
+  const G = stu.gender;
+
+  const itemSeries = ITEMS.map(i=>{
+    const data = TERMS.map(t=>getScore(stu,t.id).parts[i.key].score);
+    const delta = data[2] - data[0];
+    const col = delta>0?"#15803d":delta<0?"#dc2626":"#5d6d85";
+    return '<tr><td>'+itemName(G,i.key)+'</td>'
+      + TERMS.map((t,idx)=>'<td class="num" style="text-align:right;color:'+scoreColor(data[idx])+';font-weight:700">'+data[idx]+'</td>').join("")
+      + '<td class="num" style="text-align:right;font-weight:800;color:'+col+'">'+(delta>0?"+":"")+delta+'</td>'
+      + '<td><span class="tag '+(delta>4?"t-g":delta>=0?"t-b":"t-r")+'">'+(delta>4?"明显提升":delta>=0?"稳中有进":"需关注")+'</span></td></tr>';
+  }).join("");
+
+  const clsSeries = TERMS.map(t=>st[TERMS.indexOf(t)].avg);
+  const passSeries = TERMS.map(t=>st[TERMS.indexOf(t)].passRate);
+  const goodSeries = TERMS.map(t=>st[TERMS.indexOf(t)].goodRate);
+
+  const improve = visibleStudents().map(s=>{
+    const a = getScore(s,"t1").total, b = getScore(s,STATE.term).total;
+    return { s, d: Math.round((b-a)*10)/10, a, b };
+  }).sort((x,y)=>y.d-x.d);
+  const up = improve.filter(x=>x.d>0).length;
+
+  return ''
+  + '<div class="note note-ex mb16"><b>为什么要有这一页</b>：体测是每年一次的国家要求，但学生的变化是连续的。只看单次成绩，教师看到的是“谁不及格”；把三次测评连起来看，才能回答“谁在进步”“哪些干预真的起了作用”。这一页也是向家长和学生反馈时最有说服力的证据。</div>'
+  + (isStudent() ? '' : renderExecCard())
+  + '<div class="grid g4 mb16">'
+    + '<div class="kpi green"><div class="kpi-l">'+stu.name+' 三次总分</div><div class="kpi-v g">'+scores[0]+' → '+scores[2]+'</div><div class="kpi-s">累计 '+(scores[2]-scores[0]>0?"+":"")+Math.round((scores[2]-scores[0])*10)/10+' 分</div></div>'
+    + '<div class="kpi blue"><div class="kpi-l">班级平均分走势</div><div class="kpi-v b">'+clsSeries[0]+' → '+clsSeries[2]+'</div><div class="kpi-s">'+TERMS[0].name+' 起</div></div>'
+    + '<div class="kpi cyan"><div class="kpi-l">及格率变化</div><div class="kpi-v c">'+passSeries[0]+' → '+passSeries[2]+'<span class="kpi-u">%</span></div><div class="kpi-s">持续跟踪三个学期</div></div>'
+    + '<div class="kpi purple"><div class="kpi-l">成绩提升人数</div><div class="kpi-v p">'+up+'<span class="kpi-u">/ '+STUDENTS.length+'</span></div><div class="kpi-s">相对首次测评</div></div>'
+  + '</div>'
+  + '<div class="grid g2 mb16">'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' · 总分变化</h3><span class="sub">'+stu.id+'</span></div>'
+      + lineChart([{ data: scores, color:"#2563eb" }], TERMS.map(t=>t.label), 520, 200)
+      + '<div class="tbl-wrap mt12"><table class="tb"><thead><tr><th>项目</th>'
+        + TERMS.map(t=>'<th style="text-align:right">'+t.label+'</th>').join("")
+        + '<th style="text-align:right">变化</th><th style="text-align:right">判断</th></tr></thead><tbody>'+itemSeries+'</tbody></table></div>'
+    + '</div>'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>班级整体趋势</h3><span class="sub">平均分 / 及格率 / 优良率</span></div>'
+      + lineChart([
+          { data: clsSeries,  color:"#2563eb" },
+          { data: passSeries, color:"#f59e0b" },
+          { data: goodSeries, color:"#15803d" }
+        ], TERMS.map(t=>t.label), 520, 196)
+      + '<div class="legend" style="justify-content:center;margin-top:10px">'
+        + '<span><i style="background:#2563eb"></i>平均分</span><span><i style="background:#f59e0b"></i>及格率 %</span><span><i style="background:#15803d"></i>优良率 %</span></div>'
+      + '<div class="tbl-wrap mt12"><table class="tb"><thead><tr><th>进步最多</th><th style="text-align:right">起始</th><th style="text-align:right">当前</th><th style="text-align:right">提升</th></tr></thead><tbody>'
+        + improve.slice(0,5).map(x=>'<tr onclick="UI.pick(\''+x.s.id+'\')" style="cursor:pointer"><td><b>'+x.s.name+'</b></td><td class="num" style="text-align:right">'+x.a+'</td><td class="num" style="text-align:right">'+x.b+'</td><td class="num" style="text-align:right;color:#15803d;font-weight:800">+'+x.d+'</td></tr>').join("")
+        + '</tbody></table></div>'
+    + '</div>'
+  + '</div>'
+  + '<div class="card"><div class="card-h"><span class="dot"></span><h3>切换到其他学生</h3><span class="sub">点击卡片查看其成长曲线</span></div>'
+    + '<div class="stu-grid">'
+    + STUDENTS.slice(0,12).map(s=>{
+        const a=getScore(s,"t1").total,b=getScore(s,STATE.term).total;
+        return '<div class="stu-c '+(s.id===STATE.stuId?"on":"")+'" onclick="UI.pick(\''+s.id+'\');UI.go(\'track\')">'
+          + '<div class="stu-nm">'+s.name+'</div><div class="stu-id">'+s.id+'</div>'
+          + '<div class="stu-sc" style="color:'+scoreColor(b)+'">'+b+'<span style="font-size:12px;color:#8b99ad;font-weight:600"> (首 '+a+')</span></div>'
+          + '<div class="stu-meta" style="color:'+(b>=a?"#15803d":"#dc2626")+'">'+(b>=a?"+":"")+Math.round((b-a)*10)/10+'</div></div>';
+      }).join("")
+    + '</div></div>';
+}
+
+/* 成长追踪页：训练打卡执行率卡片（仅教师/管理员可见，学生视图不展示） */
+function renderExecCard(){
+  const term = STATE.term;
+  const today = todayStr();
+  const wk = weekRange(today);
+  const should = STUDENTS.filter(s => !makePrescription(s, term).keep);
+  const shouldCount = should.length;
+  const doneToday = should.filter(s => Checkin.get(s.id, today));
+  const doneTodayCount = doneToday.length;
+  const weekRecs = Checkin.range(wk[0], wk[1]);
+  const weekSids = {};
+  for (let i=0;i<weekRecs.length;i++) weekSids[weekRecs[i].sid] = 1;
+  const weekDoneCount = Object.keys(weekSids).length;
+  const rate = shouldCount ? Math.round(doneTodayCount / shouldCount * 100) : 0;
+  const notDone = should.filter(s => !Checkin.get(s.id, today));
+  const termName = (TERMS.find(t=>t.id===term) || {}).name || "";
+
+  const notDoneHtml = notDone.length
+    ? notDone.map(s => '<span class="ck-chip" onclick="UI.pick(\''+s.id+'\');UI.go(\'rx\')">'+s.name+'<i>'+s.id+'</i></span>').join("")
+    : '<span class="ck-all">全部已打卡</span>';
+
+  return ''
+  + '<div class="card" style="border-color:var(--cyan)"><div class="card-h"><span class="dot" style="background:var(--cyan)"></span><h3>训练打卡执行率</h3>'
+  + '<span class="sub">本周 '+wk[0]+' ~ '+wk[1]+' · '+termName+'</span></div>'
+  + '<div class="grid g4 mb16">'
+    + '<div class="kpi"><div class="kpi-l">应打卡人数</div><div class="kpi-v">'+shouldCount+'</div><div class="kpi-s">持有运动处方</div></div>'
+    + '<div class="kpi green"><div class="kpi-l">今日已打卡</div><div class="kpi-v g">'+doneTodayCount+'</div><div class="kpi-s">'+today+'</div></div>'
+    + '<div class="kpi cyan"><div class="kpi-l">本周累计打卡</div><div class="kpi-v c">'+weekDoneCount+'</div><div class="kpi-s">去重人次</div></div>'
+    + '<div class="kpi purple"><div class="kpi-l">今日执行率</div><div class="kpi-v p">'+rate+'<span class="kpi-u">%</span></div><div class="kpi-s">已打卡 / 应打卡</div></div>'
+  + '</div>'
+  + '<div class="ck-exec-foot">'
+    + '<div class="ck-sub">未打卡名单（今日 · '+notDone.length+' 人）'
+    + (notDone.length ? '<button class="ck-toggle" onclick="UI.ckListToggle()">展开</button>' : '')
+    + '</div>'
+    + '<div id="ckNotDone" class="ck-list">'+notDoneHtml+'</div>'
+  + '</div>'
+  + '<div class="note cyan" style="margin-top:13px">口径说明：<b>应打卡</b>＝当前学期持有运动处方（存在薄弱项）的学生；<b>已打卡</b>＝当日在本机提交过打卡记录。数据全部来自浏览器本地存储，仅作课堂督导演示，不联网、不跨设备同步。</div>'
+  + '</div>';
+}
+
+/* ---------------- 8.7 参赛材料：Prompt 台账 ----------------
+   说明：以下为本项目开发过程中真实发生的需求输入与人工决策记录。
+   为便于阅读做了截断与格式整理，未虚构任何不存在的提示词；
+   标为「AI 自主规划」的步骤表示没有单独的人工输入，由 AI 承接上一步后自行拆解执行。 */
+const PROMPTS = [
+  {
+    stage: "① 赛道定位与作品重定位",
+    raw: '@《市教育局关于举办 2026 年无锡市"人工智能+教育"创新应用技能大赛的通知》 @《附件1：赛项指南》\n\n这个是无锡市人工智能+的相关参赛要求，我计划用体质测试参赛，需要你帮我完成的事是：\n1. 不得更改我体质测试网页系统的任何东西，再制作的是符合文件要求的新内容。\n2. 我目前的版本给予一个合适的路径，是智能体还是网页，选择合适的赛道，但是目前参赛人数上是网页的这种人数比较多。\n3. 给予我一个板块内容及设计思路比较适宜的，能给进行外面展示，便于示范的。\n4. 设计上做的更为美观，侧栏含有相关图标设计。',
+    out: "逐条比对两份官方文件后给出赛道二推荐（附否决赛道一的理由：赛道一要求基于国产大模型/智能体平台，本项目 AI 为本地规则引擎，不满足硬条件），并将作品从“体质智测系统”重定位为“体质健康 AI 测评与个性化运动处方系统”；同步产出 7 板块结构与侧栏图标方案。",
+    fix: "教师追加提问“或者你觉得我做哪些校园相关的更利于获奖，也可以帮我进行推荐”，据此补充了校园主题的获奖潜力排序（体质→篮球技战术→管理类 CRUD），并明确指出哪些方向不要做。"
+  },
+  {
+    stage: "② 演示系统原型生成",
+    raw: null,
+    out: "承接①的需求自主拆解任务：从教育部公开页面抓取并解析高中男/女生各项目评分表（14 张 × 20 个分数档），生成脱敏数据集（42 名虚构学生 × 3 学期）、评分引擎、7 个页面与全部手写 SVG 图表，最终产出单文件 HTML。",
+    fix: "教师设定硬约束：不得触碰校内生产系统。因此全程未读取生产系统任何数据文件，改动结束后核对生产系统文件时间戳确认未变更。"
+  },
+  {
+    stage: "③ 演示视频脚本",
+    raw: "演示视频的 6 分钟脚本",
+    out: "先核对视频硬指标（≤6 分钟、须含作品简介+操作演示+应用效果三段、1920×1080/25fps/4Mbps），再逐页读取系统真实截图数值，产出 10 个镜头的分镜脚本，时间码合计精确为 360 秒。",
+    fix: "教师现场若发现某处数据与屏幕不一致即可口述纠正——脚本中的每一个数字都是从系统当期真实输出中提取的，而非估算。"
+  },
+  {
+    stage: "④ 四项产品改造",
+    raw: "第一个问题，你目前做的这个演示系统存在着很多文字性的介绍，这是一个参赛作品，如果都是此类介绍性文字是否适宜？\n第二个问题，学生、管理者、教师端是否需要一定的账号与密码进行登录？在演示的时候例如从教师端口设置一个二维码，便于其他人能给直接扫码进行观察，这另外一方面也便于后续学生利用平板扫描登入，或是能给在希沃上进行展示。\n第三个，关于教师端是否需要对于学生的信息导入，虽然是演示，但是从推广角度，excel一键导入更为便捷。\n第四个，AI运动处方我还是建议开设问答的端口，目前只回答体测、体能练习、膳食搭配、肌肉的训练方法类，个性化学习的目的还是需要交互体验。",
+    out: "①把说明文字分为“自我解释”与“评分证据”两类，前者折叠、后者保留，并加纯净/讲解双模式开关；②新增三角色登录与路由级权限；③Excel/CSV 批量导入改为真实现（含列名识别、逐行校验、错误跳过）；④处方页新增追问端口，知识库扩至 8 类。",
+    fix: "教师明确否决了删除全部解说文字的做法（保留双模式而非一刀切）；并在后续指出追问端口不可替代原有的一键推送功能。"
+  },
+  {
+    stage: "⑤ 功能取舍修正",
+    raw: "AI运动处方端一键推送还是需要保留的，只需要加一个能给询问如何进行训练，膳食及处方上一些内容的回答",
+    out: "保留既有推送与导出按钮不动，在其下方追加追问区；知识库补充膳食营养、体重管理、热身放松、负荷周期等类型。",
+    fix: "对涉及体重与体型的答复统一改为“体重管理”“改善身体成分”表述，不给出热量数字与减重目标；问及疼痛一律回答停止练习并就医，不做任何诊断。"
+  },
+  {
+    stage: "⑥ 多模态能力勘定",
+    raw: "作为一个产品来说，还有哪些可以进行优化，利于我在比赛中获得比较好的名次",
+    out: "对照赛项硬性要求逐项盘点，发现“支持文字、语音、图像等多模态交互”这一项原先只有静态说明并无真实调用，据此补做：本地数据存档（刷新不丢）、摄像头真实拍照留档、离线语音朗读复核，并明确判定数值自动识别与语音听写不可接入及其技术原因。",
+    fix: "教师选择“先列出优化项清单再决定”，并未笼统要求全做；据此把候选改动按 补分价值 / 实现代价 排序后由人工勾选，而非一律实施。"
+  }
+];
+
+const TOOLS = [
+  { name: "腾讯 WorkBuddy", role: "主力开发与增强平台", ver: null, note: "已列入《赛项指南》推荐开发应用平台名单（名单共 3 个：卓易 EazyDevelop、腾讯 WorkBuddy、电信 TeleAgent）" }
+];
+
+function escHtml(s){
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function toolCard(){
+  const t = TOOLS[0];
+  return '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>AI 工具名称与版本</h3><span class="sub">按赛项要求如实登记</span></div>'
+    + '<div class="grid g2">'
+      + '<div style="border:1px solid #e2e9f3;border-radius:11px;padding:14px">'
+        + '<div style="font-size:14.5px;font-weight:700;margin-bottom:4px">' + t.name + '</div>'
+        + '<div style="font-size:12.5px;color:#5d6d85;line-height:1.7">' + t.role + '</div>'
+        + '<div class="note amber mt12"><b>版本号：此处待你核对后填写</b><br>'
+        + '请在 WorkBuddy 客户端的「帮助 / 关于」中查看实际版本号并填入，'
+        + '<b>不填估算值、不填记忆值</b>。赛项要求说明工具名称及版本，版本号错填属于可被核实的不实信息。</div>'
+      + '</div>'
+      + '<div style="border:1px solid #e2e9f3;border-radius:11px;padding:14px">'
+        + '<div style="font-size:14.5px;font-weight:700;margin-bottom:4px">运行依赖情况</div>'
+        + '<div style="font-size:12.5px;color:#5d6d85;line-height:1.7">'
+        + '成品为单 HTML 文件，<b>零外部链接、零 CDN、不调用任何在线服务</b>。'
+        + 'AI 参与的是开发过程，成品本身的运行不依赖 AI 服务是否可用。</div>'
+        + '<div class="note mt12"><b>这一点可以被当场验证</b>：断开网络后打开本文件，'
+        + '评分、处方、图表、拍照、朗读全部仍然可用。</div>'
+      + '</div>'
+    + '</div>'
+    + '<div class="note mt12">' + t.note + '</div>'
+  + '</div>';
+}
+
+function promptLogCard(){
+  const rows = PROMPTS.map(function(p, i){
+    const open = STATE.plOpen.indexOf(i) >= 0;
+    return '<div class="plog' + (open ? " on" : "") + '">'
+      + '<div class="plog-h" onclick="UI.plog(' + i + ')">'
+        + '<span class="plog-n">' + (i+1) + '</span>'
+        + '<span class="plog-s">' + p.stage + '</span>'
+        + '<span class="tag ' + (p.raw ? "t-g" : "t-n") + '" style="margin-left:auto;margin-right:8px">' + (p.raw ? "有原始输入" : "AI 自主规划") + '</span>'
+        + '<span class="plog-a">' + (open ? "收起" : "展开" ) + '</span>'
+      + '</div>'
+      + (open ? '<div class="plog-b">'
+          + (p.raw
+              ? '<pre class="plog-raw">' + escHtml(p.raw) + '</pre>'
+                + '<div class="row" style="justify-content:flex-end"><button class="btn sm" onclick="UI.copyPrompt(' + i + ')">' + icon("dl",13) + ' 复制原文</button></div>'
+              : '<div class="note mt8">这一步<b>没有单独的人工提示词</b>：AI 承接上一步的需求后自行拆解任务并执行。如实标注，不事后补写一个看起来更专业却不真实的提示词。</div>')
+          + '<div class="plog-row"><span class="plog-k">AI 产出</span><span>' + p.out + '</span></div>'
+          + (p.fix ? '<div class="plog-row"><span class="plog-k hu">人工干预</span><span>' + p.fix + '</span></div>' : "")
+        + '</div>' : "")
+      + '</div>';
+  }).join("");
+  return '<div class="card mb16"><div class="card-h"><span class="dot" style="background:#0f766e"></span><h3>开发过程 Prompt 台账</h3>'
+    + '<span class="sub">' + PROMPTS.length + " 轮 · 点击展开 · 可复制原文</span></div>"
+    + '<div class="note mb12"><b>为什么要放这一页</b>：赛项要求说明“AI 工具名称及版本、提示词设计思路、人工干预与修改部分”。'
+    + '与其在开发应用报告里用文字描述人机协同，不如把<b>原始输入与人工决策直接摊开</b>——这些内容可以逐条核对，也是最难造假的部分。</div>'
+    + rows
+    + (STATE.copyMsg ? '<div class="note cyan mt12">' + STATE.copyMsg + '</div>' : "")
+    + '</div>';
+}
+
+function renderTrace(){
+  const aiList = [
+    ["架构与页面搭建","腾讯 WorkBuddy（赛项推荐平台）承担全部前端代码生成，包括 7 个板块的页面结构、交互式 SVG 图表（雷达图、环形图、折线图、柱状图均为手写 SVG，未引用任何图表库）、响应式布局与大屏字号适配。"],
+    ["评分表结构化","将教育部公布的纸质评分表（14 张、每张 20 个分数档）转换为可计算的数据结构，并生成向下查表的评分函数。这是人工逐条录入最容易出错的一步，也是最需要复核的一步。"],
+    ["处方知识库起草","运动处方各模块的练习动作、组次与负荷建议，由 AI 依据运动训练学通识起草初稿。"],
+    ["多模态能力勘定","逐项判定设备可用能力后可否接入：拍照抓帧（getUserMedia）与语音合成（speechSynthesis）均在本机完成、不联网，接入；语音识别依赖云端服务、数值识别缺少本校真实样本校准，判定不接入。"],
+    ["文案与演示组织","页面说明文字、演示路径设计、配套材料的组织建议。"]
+  ];
+  const huList = [
+    ["评分表逐项校对","AI 转换后的评分数据逐项对照教育部文件核验——这是不能出错的部分。校对发现的问题（如引体向上在良好/及格段按 4 分一档而非 2 分一档）已手工修正，最终以官方表格为准。"],
+    ["处方内容的专业审定","AI 起草的训练建议由体育教师按高中体育与健康课程标准、体育课教案规范（准备—基本—结束三部分的时长与练习密度）审定改写，剔除不适合高中生的内容，调整负荷表述。"],
+    ["健康教育尺度把关","涉及体重与体型的内容统一改为“体重管理”“改善身体成分”表述，避免任何可能引发身材焦虑的说法。涉及青少年健康的内容不留 AI 发挥空间。"],
+    ["数据边界设定","明确数据不出校园网、不调用外部服务，学生数据在前置于演示版时全部替换为虚构数据。演示版与校内生产系统物理隔离，不修改生产环境任何文件。"],
+    ["课堂适用性判断","哪些功能真正在一堂课里用得上、哪些只是好看，由一线教师取舍。例如放弃了“课堂实时心率监测”这一类缺乏设备支撑的设想。"]
+  ];
+
+  return ''
+  + '<div class="note mb16"><b>按赛项要求说明</b>：本版除接入国产 AI 工具辅助开发外，还以腾讯 WorkBuddy 为开发与增强平台，且核心运行逻辑<b>不依赖任何外部服务</b>。凡 AI 生成内容均经人工逐项核对与改写。</div>'
+  + '<div class="grid g2 mb16">'
+    + '<div class="card"><div class="card-h"><span class="dot" style="background:#0891b2"></span><h3>AI 工具运用情况</h3><span class="sub">（模拟演示数据）</span></div>'
+      + aiList.map(x=>'<div class="tl-i ai"><div class="tl-t">'+x[0]+'</div><div class="tl-d">'+x[1]+'</div></div>').join("")
+    + '</div>'
+    + '<div class="card"><div class="card-h"><span class="dot" style="background:#6d28d9"></span><h3>人工干预与修改</h3><span class="sub">（模拟演示数据）</span></div>'
+      + huList.map(x=>'<div class="tl-i hu"><div class="tl-t">'+x[0]+'</div><div class="tl-d">'+x[1]+'</div></div>').join("")
+    + '</div>'
+  + '</div>'
+  + toolCard()
+  + promptLogCard()
+  + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>为什么把 AI 用在这些地方</h3></div>'
+    + '<div class="grid g3">'
+      + '<div style="border:1px solid #e2e9f3;border-radius:11px;padding:15px"><div style="font-size:14.5px;font-weight:700;margin-bottom:6px">用 AI：量大、有套路、错了能查</div>'
+        + '<div style="font-size:13px;color:#5d6d85;line-height:1.7">评分表结构化（336 个数值）、页面与图表代码、处方文案初稿。这些工作量大但通识性强，且<b>结果可被验证</b>——算错能查出来，代码跑不通就报错。</div></div>'
+      + '<div style="border:1px solid #e2e9f3;border-radius:11px;padding:15px"><div style="font-size:14.5px;font-weight:700;margin-bottom:6px">不用 AI：涉及学生健康与安全</div>'
+        + '<div style="font-size:13px;color:#5d6d85;line-height:1.7">负荷是否合理、这个学生能不能练、话该怎么说。<b>这些东西错了不会报错，只会伤人</b>。所以处方必须经教师审定，涉及体重的表述必须人工把关。</div></div>'
+      + '<div style="border:1px solid #e2e9f3;border-radius:11px;padding:15px"><div style="font-size:14.5px;font-weight:700;margin-bottom:6px">划界：AI 出草稿，人负责签发</div>'
+        + '<div style="font-size:13px;color:#5d6d85;line-height:1.7">系统里 AI 生成的处方<b>不会直接到学生手上</b>，必须教师点击签发。这条界线写进了功能设计，不只是写在文档里。</div></div>'
+    + '</div>'
+    + '<div class="note purple mt12"><b>“人机协同”在这里是具体可指认的</b>：AI 负责“查、排、组”，教师负责“对不对、能不能练、该怎么说”。这句话可以落到每一条数据、每一段处方文字上去核对，不是一句口号。</div>'
+  + '</div>'
+  + '<div class="card"><div class="card-h"><span class="dot"></span><h3>演示版边界声明</h3></div>'
+    + '<div class="footnote" style="margin-top:0">'
+      + '<b>1. 数据</b>：本演示版内 42 名学生及其成绩均为算法生成的虚构数据，姓名为虚构姓名，不含任何真实学生信息，符合赛项“作品中不出现未成年人正面画面”的隐私保护要求。<br>'
+      + '<b>2. 与生产系统的关系</b>：本演示版为独立单文件，未读取、未修改、未依赖校内体质智测系统的任何文件与数据。生产系统继续按原方式在校内运行。<br>'
+      + '<b>3. 多模态能力边界</b>：<b>已可用</b>——摄像头拍照留档、离线语音朗读成绩两项真实调用本机设备，视频与音频不出本机。<b>未接入</b>——纸质表数值自动识别与语音听写，前者缺本校真实样本校准、后者依赖云端服务，均不宣称可用，采集页已逐条写明原因。<br>'
+      + '<b>4. 评分标准</b>：评分表依据教育部《国家学生体质健康标准（2014 年修订）》高中一年级，正式使用前请按本校实际使用的评分版本复核。<br>'
+      + '<b>5. 运行方式</b>：单 HTML 文件，双击即可用浏览器打开，无需服务器、无需联网、不依赖任何外部库。'
+    + '</div>'
+  + '</div>';
+}
+
+/* ---------------- 10. 顾问应答（规则 + 本机数据查询） ---------------- */
+let LAST_STU = null;   // 最近一次提到过的学生，用于承接「他 / 她 / 这位同学」的指代
+
+function answer(q){
+  q = String(q||"").trim();
+  if (!q) return "请输入问题。";
+
+  // 指代消解：句中无姓名时，尝试承接上一轮提到的学生
+  const named0 = STUDENTS.find(s=>q.indexOf(s.name)>=0);
+  const pronoun = /(他|她|这位同学|该生|这名同学|这孩子)/.test(q);
+  if (named0) LAST_STU = named0;
+  const named = named0 || (pronoun && LAST_STU) || null;
+  if (!named0 && pronoun && !LAST_STU){
+    return "你提到的这位同学我还没确认是谁——请先说出姓名，例如「"+STUDENTS[0].name+" 想提升耐力」。之后这一轮里说「他」我就能接上了。";
+  }
+
+  // 医疗边界
+  if (/(疼|痛|伤|病|头晕|胸闷|吃药|医院|就医|营养|减肥药)/.test(q)){
+    return "关于身体不适、伤病判断或医疗相关的建议，我不适合回答，请交给校医或专业医疗机构处理。\n\n如果你告诉我“哪个项目想提升”，我可以给出对应的练习方法。";
+  }
+
+  // 系统使用
+  if (/(怎么用|如何操作|流程|怎么导入|怎么录)/.test(q)){
+    return "操作流程分三步：\n\n第一步，进入「多模态采集」录入体测数据，支持网页逐项填写、Excel 批量导入。\n第二步，「国标测评」会按 2014 修订国标自动算分评级，不需要人工查表。\n第三步，「AI 运动处方」针对得分低于 72 分的项目生成处方，教师审定后签发给学生。\n\n全过程在本机完成，不联网，数据不出校。";
+  }
+
+  // 班级薄弱项
+  if (/(班级|全班|班里).*(最弱|薄弱|最差|哪几项)|哪几项最弱|最弱的是/.test(q)){
+    const st = classStats(STATE.term);
+    const sorted = ITEMS.map(i=>({n:i.name, v:st.partAvg[i.key], w:i.w})).sort((a,b)=>a.v-b.v);
+    const s = sorted.slice(0,3).map((x,i)=>(i+1)+". "+x.n+"（"+x.v+" 分，权重 "+x.w+"%）").join("\n");
+    return "当前测评班级各项目平均分从低到高：\n\n"+s+"\n\n"+sorted[0].n+"是最突出的共性短板，建议在体育课的基本部分集中安排针对性练习，练习密度目标控制在 60% 以上。";
+  }
+
+  // 班级统计
+  if (/(及格率|优良率|平均分|达标率|班级情况|整体)/.test(q)){
+    const st = classStats(STATE.term);
+    return "当前测评班级统计：\n\n平均分 "+st.avg+" 分\n优良率 "+st.goodRate+"%（优秀 "+st.lv.优秀+" 人，良好 "+st.lv.良好+" 人）\n及格率 "+st.passRate+"%\n不及格 "+st.lv.不及格+" 人\n\n国标规定学年总分良好及以上方可参加评优评奖，建议重点盯住临近 80 分的学生。";
+  }
+
+  // 某学生：进步比较
+  if (named && /(进步|上次|变化|提高|退步|第三次|对比)/.test(q)){
+    const a = getScore(named,"t1"), b = getScore(named, STATE.term);
+    const d = Math.round((b.total-a.total)*10)/10;
+    let detail = "";
+    ITEMS.forEach(i=>{
+      const dv = b.parts[i.key].score - a.parts[i.key].score;
+      if (Math.abs(dv) >= 5) detail += "\n· "+itemName(named.gender,i.key)+"：" +a.parts[i.key].score+" → "+b.parts[i.key].score+"（"+(dv>0?"+":"")+dv+"）";
+    });
+    return named.name+"总分从 "+a.total+" 提升到 "+b.total+"，累计 "+(d>0?"+":"")+d+" 分，等级由 "+a.level+" 变为 "+b.level+"。\n\n变化较大的项目：" + (detail || "无单项变化超过 5 分") +
+      "\n\n下一步建议保持当前训练节奏，把重点放在尚未到 80 分的项目上。";
+  }
+
+  // 某学生：处方
+  if (named && /(处方|怎么练|训练|练什么|提升)/.test(q)){
+    const rx = makePrescription(named, STATE.term);
+    const sc = getScore(named, STATE.term);
+    if (rx.keep){
+      return named.name+"本次总分 "+sc.total+"（"+sc.level+"），各项目均在 72 分以上，无需针对性补弱。建议维持现有锻炼习惯，以优势项目带动全面发展。";
+    }
+    let s = named.name+"总分 "+sc.total+"（"+sc.level+"），薄弱项为：\n\n";
+    s += rx.focus.map(f=>"· "+f.name+" "+f.score+" 分").join("\n");
+    s += "\n\n【"+rx.items[0].name+"】"+rx.items[0].lib.title+"\n";
+    rx.items[0].lib.items.forEach(it=>{ s += "\n· "+it.t+"：" + it.d; });
+    s += "\n\n"+rx.items[0].lib.tip;
+    return s;
+  }
+
+  // 某学生：总览
+  if (named){
+    const sc = getScore(named, STATE.term);
+    const parts = ITEMS.map(i=>i.name+" "+sc.parts[i.key].score).join("，");
+    const sorted = ITEMS.map(i=>({n:itemName(named.gender,i.key), v:sc.parts[i.key].score})).sort((a,b)=>a.v-b.v);
+    return named.name+"（"+named.id+"，"+(named.gender==="M"?"男":"女")+"）本次测评：\n\n总分 "+sc.total+" 分，"+"等级 "+sc.level+"\nBMI "+sc.bmi+"（"+sc.bmiGrade+"）\n\n各单项得分："+parts+"\n\n最弱的一项是"+sorted[0].n+"（"+sorted[0].v+" 分）。输入“"+named.name+" 怎么练”可以获取处方。";
+  }
+
+  // 单个项目怎么练
+  const itemsMap = [
+    [/耐力|1000|800|跑步|长跑/, "endur"], [/体前屈|柔韧/, "reach"], [/引体|上肢/, "pullup"],
+    [/仰卧起坐|核心|腹肌/, "situp"], [/跳远|爆发力|弹跳/, "jump"], [/50 米|短跑|速度|起跑/, "run50"],
+    [/肺活量|心肺/, "vc"], [/体重|BMI|超重|肥胖|偏瘦|体型/, "bmi_high"]
+  ];
+  for (const r of itemsMap){
+    if (r[0].test(q)){
+      const lib = RX_LIB[r[1]];
+      let s = "【"+lib.title+"】\n\n";
+      lib.items.forEach(it=>{ s += "· "+it.t+"：" + it.d + "\n"; });
+      s += "\n"+lib.tip;
+      s += "\n\n想针对某位学生生成完整处方，请告诉我他的姓名，或到「AI 运动处方」板块查看。";
+      return s;
+    }
+  }
+
+  // 关于这个系统本身
+  if (/(AI|人工智能|怎么实现|原理|技术上|系统)/.test(q)){
+    return "这套系统由三层组成：\n\n一是确定性计算层，按国标评分表查表算分，这部分不需要 AI，但最需要准确。\n二是知识库层，运动处方和问答都由本地知识库支撑，离线可跑。\n三是交互层，页面、图表和操作流程。\n\nAI 参与的是第二层和第三层的搭建过程，以及评分表的结构化转换。登录求详解请看「AI 溯源」板块，那里逐项列出了 AI 做了什么、人改了什么。";
+  }
+
+  return "这个问题我暂时答不上来。我可以帮你查：\n\n· 某个学生的总分、单项得分、BMI（直接说姓名）\n· 学生跨学期的进步对比\n· 针对薄弱项的运动处方\n· 班级平均分、及格率、优良率\n· 某个项目的训练方法\n\n例如试试输入「"+STUDENTS[5].name+" 的薄弱项」。";
+}
+
+/* ---------------- 11. UI 控制 ---------------- */
+const UI = {
+  /* ---------- 登录 ---------- */
+  loginRender(){
+    const box = document.getElementById("loginRoles");
+    if (!box) return;
+    box.innerHTML = ACCOUNTS.map(a=>
+      '<div class="lr-c" id="lr_'+a.id+'" onclick="UI.pickAccount(\''+a.id+'\')">'
+      + '<div class="lr-t">'+a.name+'<span class="tagx" style="background:'+a.color+'1a;color:'+a.color+'">'+a.scope+'</span></div>'
+      + '<div class="lr-d">'+a.desc+'</div>'
+      + '<div class="lr-a">'+a.demo+'</div></div>').join("");
+  },
+  pickAccount(id){
+    const a = ACCOUNTS.find(x=>x.id===id);
+    if (!a) return;
+    ACCOUNTS.forEach(x=>{ const e=document.getElementById("lr_"+x.id); if(e) e.className = "lr-c"+(x.id===id?" on":""); });
+    const u = document.getElementById("lgUser"), p = document.getElementById("lgPwd");
+    if (u) u.value = a.user;
+    if (p) p.value = a.pwd;
+    const err = document.getElementById("lgErr");
+    if (err) err.textContent = "";
+  },
+  doLogin(){
+    const ue = document.getElementById("lgUser"), pe = document.getElementById("lgPwd");
+    const u = ue ? String(ue.value||"").trim() : "";
+    const p = pe ? String(pe.value||"") : "";
+    const err = document.getElementById("lgErr");
+    const acc = ACCOUNTS.find(a => a.user === u && a.pwd === p);
+    if (!acc){
+      if (err) err.textContent = "账号或密码不正确。可直接点左侧角色卡片自动填入。";
+      return;
+    }
+    STATE.user = acc;
+    STATE.role = acc.role;
+    if (acc.role === "student"){
+      const me = STUDENTS.find(s=>s.name===STUDENT_SELF) || STUDENTS[0];
+      STATE.stuId = me.id;
+      STATE.genderFilter = "";
+    }
+    const mask = document.getElementById("loginMask");
+    if (mask) mask.className = "login-mask off";
+    try { document.body.classList.toggle("clean", STATE.clean); } catch(e){}
+    this.chip(); this.mode(); this.roles();
+    this.go(acc.role === "student" ? "rx" : "home");
+  },
+  logout(){
+    let go = true;
+    try { go = window.confirm ? window.confirm("确定要退出登录吗？") : true; } catch(e){ go = true; }
+    if (!go) return;
+    STATE.user = null;
+    const mask = document.getElementById("loginMask");
+    if (mask) mask.className = "login-mask";
+    const u=document.getElementById("lgUser"), p=document.getElementById("lgPwd"), e=document.getElementById("lgErr");
+    if (u) u.value = "";
+    if (p) p.value = "";
+    if (e) e.textContent = "";
+    ACCOUNTS.forEach(x=>{ const el=document.getElementById("lr_"+x.id); if (el) el.className = "lr-c"; });
+  },
+  chip(){
+    const el = document.getElementById("userChip");
+    if (!el) return;
+    if (!STATE.user){ el.innerHTML = ""; return; }
+    const a = STATE.user;
+    const cur = (typeof ROLES !== "undefined") ? ROLES.find(r=>r.id===STATE.role) : null;
+    let tail = "";
+    if (STATE.role === "guest") tail = " · 访客模式（只读体验）";
+    else if (STATE.role === "student") tail = " · 本人视图（" + STUDENT_SELF + "）";
+    else if (STATE.role !== a.role) tail = " · 切至" + (cur ? cur.name : "") + "视图";
+    el.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:'+a.color+';display:inline-block"></span>'
+      + a.name + tail
+      + '<span class="out" onclick="UI.logout()">退出</span>';
+  },
+  /* ---------- 纯净 / 讲解 ---------- */
+  mode(){
+    const el = document.getElementById("modeSw");
+    if (!el) return;
+    el.innerHTML = '<button class="'+(STATE.clean?"on":"")+'" onclick="UI.setClean(true)" title="隐藏页面解说文字，只保留功能与数据">纯净</button>'
+      + '<button class="'+(STATE.clean?"":"on")+'" onclick="UI.setClean(false)" title="显示全部解说文字，适合演示讲解">讲解</button>';
+  },
+  setClean(v){
+    STATE.clean = !!v;
+    try { document.body.classList.toggle("clean", STATE.clean); } catch(e){}
+    this.mode();
+    this.go(STATE.page);
+  },
+  nav(){
+    const nav = document.getElementById("nav");
+    if (!nav) return;
+    nav.innerHTML = '<div class="sb-cap">功能板块</div>' + PAGES.filter(p=>pageAllowed(p.id)).map(p=>
+      '<div class="nav-item '+(STATE.page===p.id?"on":"")+'" onclick="UI.go(\''+p.id+'\')">'
+      + '<span class="nav-ico">'+icon(p.ico)+'</span><span>'+p.name+'</span>'
+      + (p.badge?'<span class="nav-badge">'+p.badge+'</span>':'') + '</div>'
+    ).join("");
+  },
+  roles(){
+    const el = document.getElementById("roleSw");
+    if (!el) return;
+    if (STATE.role === "guest"){ el.innerHTML = '<span class="role-b on" style="cursor:default">访客</span>'; return; }
+    el.innerHTML = ROLES.map(r=>'<button class="role-b '+(STATE.role===r.id?"on":"")+'" onclick="UI.role(\''+r.id+'\')">'+r.name+'</button>').join("");
+  },
+  go(id){
+    if (STATE.feedTimer){ clearInterval(STATE.feedTimer); STATE.feedTimer = null; STATE.feedAfter = 0; }
+    if (!PAGES.some(p=>p.id===id)) return;
+    if (!pageAllowed(id)) id = "rx";
+    STATE.page = id;
+    const p = PAGES.find(x=>x.id===id);
+    const t = document.getElementById("pgTitle");
+    const d = document.getElementById("pgDesc");
+    if (t) t.textContent = p.name;
+    if (d) d.textContent = p.desc;
+    this.nav();
+    const view = document.getElementById("view");
+    if (!view) return;
+    let html = "";
+    try {
+      if (id==="home")    html = renderHome();
+      else if (id==="capture") html = renderCapture();
+      else if (id==="score")   html = renderScore();
+      else if (id==="rx")      html = renderRx();
+      else if (id==="coach")   html = renderCoach();
+      else if (id==="track")   html = renderTrack();
+      else if (id==="trace")   html = renderTrace();
+    } catch(e){
+      html = '<div class="card"><h3>页面渲染出错</h3><pre style="white-space:pre-wrap;font-size:12px;color:#b91c1c">'+String(e && e.stack || e)+'</pre></div>';
+    }
+    view.innerHTML = html;
+    view.className = "fade";
+    view.scrollTop = 0;
+    this.saveChip();
+  },
+  role(id){
+    STATE.role = id;
+    if (id === "student"){
+      STATE.stuId = selfStudent().id;
+      STATE.genderFilter = "";
+    }
+    this.roles();
+    this.chip();
+    if (id === "student"){
+      this.go("rx");
+    } else if (id === "admin"){
+      this.go("home");
+    } else {
+      this.go("score");
+    }
+  },
+  filter(g){
+    STATE.genderFilter = g;
+    this.go(STATE.page);
+  },
+  pick(id){
+    if (!STUDENTS.some(s=>s.id===id)) return;
+    STATE.stuId = id;
+    this.go(STATE.page);
+  },
+  setTerm(t){
+    STATE.term = t;
+    this.go(STATE.page);
+  },
+  setCapMode(m){
+    STATE.capMode = m;
+    STATE.editNote = "";
+    this.go("capture");
+  },
+  edit(id, key, val){
+    const s = STUDENTS.find(x=>x.id===id);
+    if (!s) return;
+    const v = parseFloat(val);
+    if (isNaN(v)) { this.go("capture"); return; }
+    s.recs[STATE.term][key] = v;
+    invalidateCache(id, STATE.term);
+    Store.put(STATE.term, id, key, v);
+    STATE.editNote = id;
+    this.go("capture");
+  },
+  ocrNext(){ STATE.ocrStage = Math.min(2, STATE.ocrStage+1); this.go("capture"); },
+  ocrReset(){ STATE.ocrStage = 0; this.go("capture"); },
+  ask(q){
+    STATE.chat.push({ who:"me", text:q });
+    const box = document.getElementById("chatBox");
+    if (box){
+      box.innerHTML += '<div class="msg me">'+q+'</div>';
+      box.scrollTop = box.scrollHeight;
+    }
+    setTimeout(()=>{
+      const a = answer(q);
+      STATE.chat.push({ who:"ai", text:a });
+      const b = document.getElementById("chatBox");
+      if (b){
+        b.innerHTML += '<div class="msg ai"><div class="msg-who">体测顾问</div>'+a.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")+'</div>';
+        b.scrollTop = b.scrollHeight;
+      }
+    }, 320);
+  },
+  send(){
+    const el = document.getElementById("chatIn");
+    if (!el) return;
+    const v = el.value.trim();
+    if (!v) return;
+    el.value = "";
+    this.ask(v);
+  },
+  /* ---------- 处方页追问 ---------- */
+  rxAsk(){
+    const el = document.getElementById("rxAskIn");
+    if (!el) return;
+    const q = String(el.value || "").trim();
+    if (!q) return;
+    const stu = STUDENTS.find(s=>s.id===STATE.stuId) || STUDENTS[0];
+    let a = "";
+    try { a = answerRx(q, stu); }
+    catch(e){ a = "回答生成出错：" + (e && e.message ? e.message : e); }
+    if (!STATE.askLog) STATE.askLog = [];
+    STATE.askLog.push({ stu: stu.id, q: q, a: a });
+    if (STATE.askLog.length > 20) STATE.askLog = STATE.askLog.slice(-20);
+    el.value = "";
+    this.go("rx");
+    const box = document.getElementById("rxAskIn");
+    if (box && box.focus) box.focus();
+  },
+  rxQuick(q){
+    const el = document.getElementById("rxAskIn");
+    if (el) el.value = q;
+    this.rxAsk();
+  },
+  /* 一键推送处方到学生端（演示：记录并给出确认；真实环境写入学生专属处方库） */
+  pushRx(id){
+    STATE.pushedRx = id;
+    this.go("rx");
+  },
+  /* ---------- 训练打卡 ---------- */
+  ckPick(btn){
+    const all = document.querySelectorAll(".ck-b");
+    for (let i=0;i<all.length;i++) all[i].classList.remove("on");
+    if (btn) btn.classList.add("on");
+    const inp = document.getElementById("ckSel");
+    if (inp) inp.value = btn ? btn.getAttribute("data-v") : "";
+    const w = document.getElementById("ckWarn");
+    if (w) w.style.display = "none";
+  },
+  ckSubmit(){
+    const sel = document.getElementById("ckSel");
+    const status = sel ? sel.value : "";
+    if (!status){
+      const w = document.getElementById("ckWarn");
+      if (w) w.style.display = "inline";
+      return;
+    }
+    const noteEl = document.getElementById("ckNote");
+    const note = noteEl ? (noteEl.value||"").trim() : "";
+    const sid = STATE.stuId, date = todayStr();
+    Checkin.put(sid, date, { status:status, note:note, time:nowStr() });
+    this.go("rx");
+  },
+  ckListToggle(){
+    const el = document.getElementById("ckNotDone");
+    if (!el) return;
+    const open = el.classList.toggle("open");
+    const btn = document.querySelector(".ck-toggle");
+    if (btn) btn.textContent = open ? "收起" : "展开";
+  },
+  /* ---------- 批量导入 ---------- */
+  pickFile(input){
+    if (!canEdit()){
+      STATE.importErr = "当前是学生视图，不能导入或修改成绩。请用教师或管理员账号登录。";
+      this.go("capture");
+      return;
+    }
+    onImpFile(input);
+  },
+  tpl(){ downloadTpl(); },
+  applyImp(){ applyImport(); },
+  cancelImp(){ cancelImport(); },
+  /* ---------- 本地存档状态 ---------- */
+  saveChip(){
+    const el = document.getElementById("saveChip");
+    if (!el) return;
+    if (!Store.ok){
+      el.innerHTML = '<div class="save-chip warn" title="当前环境未开放本地存储，改动只保留在本次会话中，刷新即还原">'
+        + '<span class="save-dot warn"></span>未启用存档</div>';
+      return;
+    }
+    const n = Store.count(), p = Store.students();
+    if (!n){ el.innerHTML = ""; return; }
+    el.innerHTML = '<div class="save-chip" title="改动已写入本机存储，关闭浏览器或刷新后仍然保留">'
+      + '<span class="save-dot"></span>存档 ' + n + ' 处修改 · ' + p + ' 人'
+      + '<span class="save-x" onclick="UI.resetData()" title="清空存档，还原初始演示数据">还原</span></div>';
+  },
+  resetData(){
+    const n = Store.count();
+    if (!n) return;
+    const go = (typeof window.confirm === "function")
+      ? window.confirm("确定清空本地存档吗？\n\n将丢弃累计的 " + n + " 处修改，回到系统初始演示数据。")
+      : true;
+    if (!go) return;
+    Store.clear();
+    const fresh = buildStudents();
+    STUDENTS.length = 0;
+    for (let i=0;i<fresh.length;i++) STUDENTS.push(fresh[i]);
+    TERMS.forEach(t => STUDENTS.forEach(s => invalidateCache(s.id, t.id)));
+    STATE.editNote = "";
+    STATE.importResult = null;
+    STATE.stuId = STUDENTS[0].id;
+    this.saveChip();
+    this.go(STATE.page);
+  },
+  /* ---------- 语音成绩复核 ---------- */
+  voiceStuPick(id){ STATE.voiceStu = id; STATE.voiceMsg = ""; this.go("capture"); },
+  voicePlay(){
+    STATE.voiceMsg = "";
+    if (!supportsSpeech()){ STATE.voiceMsg = "当前环境不支持语音合成，朗读已停用。"; this.go("capture"); return; }
+    const lines = voiceLines(voiceTarget());
+    STATE.voiceOn = true; STATE.voiceIdx = 0;
+    this.go("capture");
+    const self = this;
+    window.setTimeout(function(){ speakSeq(lines, 0); }, 90);
+  },
+  voiceStop(){
+    try { window.speechSynthesis.cancel(); } catch(e){}
+    STATE.voiceOn = false;
+    STATE.voiceMsg = "已停止朗读。";
+    voiceHighlight(-1);
+    this.go("capture");
+  },
+  /* ---------- 摄像头拍照留档 ---------- */
+  camOpen(){
+    STATE.camErr = "";
+    if (!canEdit()){ STATE.camErr = "当前是学生视图，不能采集成绩。请用教师或管理员账号登录。"; this.go("capture"); return; }
+    const md = (typeof navigator !== "undefined" && navigator.mediaDevices) ? navigator.mediaDevices : null;
+    if (!md || typeof md.getUserMedia !== "function"){
+      STATE.camErr = "此环境下浏览器未提供摄像头接口（navigator.mediaDevices 不可用，常见于 http 非加密来源或旧版内核）。可改用「从相册选择」，或直接看交互演示。";
+      this.go("capture"); return;
+    }
+    STATE.camBusy = true;
+    this.go("capture");
+    const self = this;
+    md.getUserMedia({ video:{ facingMode:"environment", width:{ ideal:1280 } }, audio:false })
+      .then(function(stream){
+        CAM = stream;
+        STATE.camBusy = false; STATE.camLive = true; STATE.camErr = "";
+        self.go("capture");
+        window.setTimeout(function(){
+          const v = document.getElementById("camVideo");
+          if (v){ try { v.srcObject = stream; v.play(); } catch(e){} }
+        }, 60);
+      })
+      .catch(function(err){
+        STATE.camBusy = false; STATE.camLive = false;
+        STATE.camErr = camErrText(err);
+        self.go("capture");
+      });
+  },
+  camShoot(){
+    const v = document.getElementById("camVideo");
+    if (!v || !v.videoWidth){ STATE.camErr = "画面尚未就绪，请稍等一秒再拍。"; this.go("capture"); return; }
+    const c = newCanvas();
+    if (!c){ STATE.camErr = "此浏览器不支持画布，无法抓帧。"; this.go("capture"); return; }
+    try {
+      const w = v.videoWidth, h = v.videoHeight;
+      c.width = w; c.height = h;
+      c.getContext("2d").drawImage(v, 0, 0, w, h);
+      const url = c.toDataURL("image/jpeg", 0.82);
+      STATE.photo = { src:url, w:w, h:h, kb: Math.max(1, Math.round(url.length * 0.75 / 1024)) };
+      STATE.camErr = "";
+      this.camClose(false);
+      if (STATE.served) uploadPhoto(STATE.photo, { name: curStuName(), stuId: STATE.stuId });
+      this.go("capture");
+    } catch(e){
+      STATE.camErr = "抓帧失败：" + ((e && e.message) || "未知原因");
+      this.go("capture");
+    }
+  },
+  camClose(rerender){
+    if (CAM){ try { CAM.getTracks().forEach(function(t){ t.stop(); }); } catch(e){} CAM = null; }
+    STATE.camLive = false; STATE.camBusy = false;
+    if (rerender !== false) this.go("capture");
+  },
+  camPick(input){
+    STATE.camErr = "";
+    if (!canEdit()){ STATE.camErr = "当前是学生视图，不能上传成绩单照片。"; if (input) input.value = ""; this.go("capture"); return; }
+    const f = input && input.files && input.files[0];
+    if (!f) return;
+    if (!/^image\//.test(f.type)){ STATE.camErr = "请选择图片文件（JPG / PNG）。"; input.value = ""; this.go("capture"); return; }
+    if (typeof FileReader === "undefined"){ STATE.camErr = "此环境不支持读取本地文件。"; input.value = ""; this.go("capture"); return; }
+    const rd = new FileReader(), self = this;
+    rd.onload = function(ev){
+      const url = String(ev.target.result);
+      const im = new Image();
+      im.onload = function(){
+        STATE.photo = { src:url, w:im.width, h:im.height, kb: Math.max(1, Math.round(f.size/1024)) };
+        STATE.camErr = "";
+        if (STATE.served) uploadPhoto(STATE.photo, { name: curStuName(), stuId: STATE.stuId });
+        self.go("capture");
+      };
+      im.onerror = function(){ STATE.camErr = "图片解析失败，请换一张重试。"; input.value = ""; self.go("capture"); };
+      im.src = url;
+    };
+    rd.onerror = function(){ STATE.camErr = "图片读取失败。"; input.value = ""; self.go("capture"); };
+    rd.readAsDataURL(f);
+  },
+  camClear(){ STATE.photo = null; STATE.camErr = ""; this.go("capture"); },
+  /* ---------- Prompt 台账 ---------- */
+  plog(i){
+    const k = STATE.plOpen.indexOf(i);
+    if (k >= 0) STATE.plOpen.splice(k, 1); else STATE.plOpen.push(i);
+    this.go("trace");
+  },
+  copyPrompt(i){
+    const p = PROMPTS[i];
+    const t = p && p.raw ? p.raw : "";
+    if (!t){ STATE.copyMsg = "该步骤原本就没有提示词输入，无可复制内容。"; this.go("trace"); return; }
+    let done = false, err = "";
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(t).then(function(){}, function(){ });
+        done = true;
+      }
+    } catch(e){ err = e.message; }
+    if (!done){
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = t;
+        ta.style.position = "fixed"; ta.style.top = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        done = document.execCommand("copy");
+        document.body.removeChild(ta);
+      } catch(e){ err = e.message; done = false; }
+    }
+    STATE.copyMsg = done
+      ? "第 " + (i+1) + " 条（" + p.stage + "）原文已复制到剪贴板，可直接粘贴进开发应用报告。"
+      : "复制失败" + (err ? "：" + err : "") + "，请展开后手动选中文本框内容复制。";
+    this.go("trace");
+  },
+  /* ---------- 扫码进入 ---------- */
+  fillLoginQR(){
+    var el = document.getElementById("loginQR");
+    if (!el) return;
+    if (!STATE.served){
+      el.innerHTML = '<div class="qr-note">本机直接打开（file://）时无法生成可扫码的局域网地址。<br>评委 / 学生可直接点下方按钮以访客身份体验：</div>'
+        + '<button class="login-guest-btn" style="margin-top:12px" onclick="UI.enterGuest()">以访客身份体验（无需扫码）</button>'
+        + '<div class="qr-tip" style="margin-top:10px">如需演示「手机扫码 → 拍照 → 大屏同步」：用自己手机开「个人热点」，本机连该热点后运行 <b>启动校园访问.py</b>，即可生成可扫码的局域网地址（不依赖任何校园网）。</div>';
+      return;
+    }
+    var url = guestUrl();
+    el.innerHTML = '<div class="qr-card"><div class="qr-cap">扫码在手机 / 平板上打开（访客模式）</div>'
+      + qrSvg(url, 172, 3)
+      + '<div class="qr-url">'+escapeHtml(url)+'</div>'
+      + '<div class="qr-tip">手机、平板、希沃大屏扫同一个码，将以<b>访客身份自动进入</b>，可直接体验全部功能。</div></div>';
+  },
+  openQR(){
+    var b = document.getElementById("qrModalBody");
+    var m = document.getElementById("qrModal");
+    if (b){
+      if (STATE.served){
+        var u = guestUrl();
+        b.innerHTML = qrSvg(u, 240, 4)
+          + '<div class="qr-url" style="margin-top:12px">'+escapeHtml(u)+'</div>'
+          + '<ol class="steps" style="margin-top:14px"><li>用手机 / 平板相机扫码，将<b>以访客身份自动进入</b>（无需输密码）。</li>'
+          + '<li>可自由体验：查看班级画像、本人运动处方、做训练打卡、向处方顾问提问。</li>'
+          + '<li>在「多模态采集」拍照或选图，照片会<b>实时同步到大屏</b>。</li></ol>'
+          + '<div class="qr-tip">访客模式为只读体验，操作不影响正式演示数据；多人扫码各自独立、不会互相冲突。</div>';
+      } else {
+        b.innerHTML = '<div class="qr-note">当前以本机文件方式打开，未连接任何服务器，无法生成局域网二维码。</div>'
+          + '<button class="login-guest-btn" style="margin-top:12px" onclick="UI.enterGuest()">以访客身份体验（无需扫码）</button>'
+          + '<ol class="steps" style="margin-top:14px"><li>评委 / 学生点「以访客身份体验」即可进入系统，自动分配独立账号，只读浏览，操作不影响演示数据。</li>'
+          + '<li>若想演示「手机扫码 → 拍照 → 大屏同步」：用自己手机开「个人热点」，本机连该热点后运行 <b>启动校园访问.py</b>，再扫顶栏二维码（全程不依赖校园网）。</li></ol>';
+      }
+    }
+    if (m) m.classList.add("on");
+  },
+  closeQR(){
+    var m = document.getElementById("qrModal");
+    if (m) m.classList.remove("on");
+  },
+  /* ---------- 访客模式：扫码自动进入，按标签页分配独立账号 ---------- */
+  enterGuest(){
+    var g = this._guestIdentity();
+    STATE.user = { id:"guest", name:g.account, role:"guest", color:g.color };
+    STATE.role = "guest";
+    STATE.stuId = selfStudent().id;
+    STATE.genderFilter = "";
+    var mask = document.getElementById("loginMask");
+    if (mask) mask.className = "login-mask off";
+    var bar = document.getElementById("guestBar");
+    if (bar){
+      bar.style.display = "block";
+      bar.innerHTML = '<b>访客模式</b>：您已自动登录为 <b>'+escapeHtml(g.account)+'</b>，密码 <b>'+escapeHtml(g.pwd)+'</b>（仅本机可用，可自由体验）。您的操作不会影响正式演示数据。'
+        + '<span class="gb-x" onclick="UI.closeGuestBar()" title="收起">&times;</span>';
+    }
+  },
+  _guestIdentity(){
+    try {
+      var raw = sessionStorage.getItem("guestToken");
+      if (raw){ var o = JSON.parse(raw); if (o && o.account) return o; }
+    } catch(e){}
+    var n = String(Math.floor(100 + Math.random() * 900));   // 三位数编号
+    var o = { account: "访客" + n, pwd: this._randPwd(6), color: "#0ea5e9" };
+    try { sessionStorage.setItem("guestToken", JSON.stringify(o)); } catch(e){}
+    return o;
+  },
+  _randPwd(len){
+    var s = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";   // 去掉易混字符 I O 0 1
+    var r = "";
+    for (var i = 0; i < len; i++) r += s.charAt(Math.floor(Math.random() * s.length));
+    return r;
+  },
+  closeGuestBar(){
+    var b = document.getElementById("guestBar");
+    if (b) b.style.display = "none";
+  }
+};
+
+/* ---------------- 12. 启动 ---------------- */
+(function init(){
+  Store.init();
+  Checkin.init();
+  STATE.served = !!shareUrl();
+  try { document.body.classList.toggle("clean", STATE.clean); } catch(e){}
+  var params = null;
+  try { params = new URLSearchParams(location.search); } catch(e){ params = null; }
+  var isGuest = !!(params && params.get && params.get("guest") === "1");
+  if (isGuest){
+    UI.enterGuest();
+  } else {
+    UI.loginRender();
+    UI.fillLoginQR();
+    UI.pickAccount("teacher");
+  }
+  UI.nav();
+  UI.roles();
+  UI.chip();
+  UI.mode();
+  UI.go("home");
+  window.UI = UI;
+})();
+</script>
+</body>
+</html>
