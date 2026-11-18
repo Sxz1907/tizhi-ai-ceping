@@ -551,7 +551,6 @@ body.clean .note-ex{display:none !important}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM21 21h-1M17 21v-1"/></svg>
           扫码进入
         </button>
-        <div class="mode-sw" id="modeSw"></div>
         <div class="role-sw" id="roleSw" data-page-node-id="dsgbGmSQJwSOoGXLZoTBAs"></div>
       </div>
     </header>
@@ -1325,10 +1324,10 @@ const ACCOUNTS = [
     scope:"仅本人", color:"#0891b2",
     desc:"仅可查看本人的测评结果、运动处方与成长曲线，不能查看他人数据，不能修改成绩。",
     demo:"演示账号 student / 123456（演示身份：李思远 25101）" },
-  { id:"admin",   user:"admin",   pwd:"123456", name:"管理员", role:"admin",
+  { id:"admin",   user:"17851290925",   pwd:"Sxz1907", name:"管理员", role:"admin",
     scope:"全校", color:"#6d28d9",
     desc:"在教师权限基础上，负责账号与数据源管理、评分标准版本维护。",
-    demo:"演示账号 admin / 123456" }
+    demo:"管理员账号 17851290925 / Sxz1907" }
 ];
 /* 学生角色绑定到的演示身份 */
 const STUDENT_SELF = "李思远";
@@ -1791,7 +1790,7 @@ function panelBatch(){
         + '<button class="btn" onclick="UI.tpl()">' + icon("sheet", 15) + ' 下载模板</button>'
         + '<span class="hint">模板含 3 行示例数据，可直接删掉后填写</span>'
       + '</div>'
-      + '<div class="note mt12">导入时做三类校验：<b>格式校验</b>（数值是否在合理区间）、'
+      + '<div class="note note-ex mt12">导入时做三类校验：<b>格式校验</b>（数值是否在合理区间）、'
       + '<b>一致性校验</b>（学号或姓名能否对上）、<b>完整性校验</b>（八个项目是否齐全）。'
       + '未通过的行会被<b>标出并跳过</b>，不会污染已有数据。</div>'
     + '</div>'
@@ -1805,7 +1804,7 @@ function panelBatch(){
       + '<div class="scroll-x mt12"><table class="tb"><thead><tr><th>学号</th><th>姓名</th><th>身高</th><th>体重</th>'
       + '<th>肺活量</th><th>50米</th><th>体前屈</th><th>跳远</th><th>力量</th><th>耐力</th></tr></thead>'
       + '<tbody>' + tplRows + '</tbody></table></div>'
-      + '<div class="note cyan mt12"><b>现场演示建议</b>：先点「下载模板」，把某个学生的 50 米改慢 1 秒，'
+      + '<div class="note note-ex cyan mt12"><b>现场演示建议</b>：先点「下载模板」，把某个学生的 50 米改慢 1 秒，'
       + '再选文件导入——回到「国标测评」页能看到这个学生的总分立刻下降。这比讲解更能说明引擎是真的在算。</div>'
     + '</div></div>';
 }
@@ -2183,7 +2182,7 @@ function ocrCtl(){
   }
   return '<div class="row mt12" style="flex-wrap:wrap">'+btns+'</div>'
     + (STATE.camErr ? '<div class="note amber mt12">'+STATE.camErr+'</div>' : "")
-    + '<div class="note mt12"><b>可用范围说清楚</b>：拍照<b>真实可用</b>——调用本机摄像头抓帧留存，视频不出本机。'
+    + '<div class="note note-ex mt12"><b>可用范围说清楚</b>：拍照<b>真实可用</b>——调用本机摄像头抓帧留存，视频不出本机。'
     + '但<b>数值自动识别尚未接入</b>：没有用本校真实纸质表校准过，就不该给出准确率承诺。'
     + '当前定位是<b>拍照留档、回到办公室录入</b>，先把操场上的誊录时间省下来。</div>'
     + '<button class="btn mt12" onclick="UI.ocrNext()">跳过拍照，看回填交互演示</button>';
@@ -2252,7 +2251,7 @@ function renderCapture(){
           + '</svg></div>'
         + '<div style="flex:1;min-width:230px">'
           + '<div class="card-h" style="margin-bottom:8px"><span class="dot"></span><h3>识别框选过程</h3></div>'
-          + '<div class="note cyan">演示说明：本页<b>没有</b>实现一个真实的识别引擎。识别效果取决于字体、光照、拍摄角度，在未用本校真实纸质表做过校准之前，不宜宣称准确率。此处展示的是<b>交互流程与结果呈现方式</b>，识别内核待用真实样本训练后接入。</div>'
+          + '<div class="note note-ex cyan">演示说明：本页<b>没有</b>实现一个真实的识别引擎。识别效果取决于字体、光照、拍摄角度，在未用本校真实纸质表做过校准之前，不宜宣称准确率。此处展示的是<b>交互流程与结果呈现方式</b>，识别内核待用真实样本训练后接入。</div>'
           + '<div class="mt12" style="font-size:13px;color:#5d6d85;line-height:1.7">预期定位字段：身高 / 体重 / 肺活量 / 50 米 / 立定跳远 / 坐位体前屈 / 引体向上（仰卧起坐）/ 耐力跑。</div>'
           + '<div class="row mt12"><span class="puls tag t-c">识别中</span><button class="btn pri" onclick="UI.ocrNext()">查看回填结果</button></div>'
         + '</div></div>';
@@ -2332,7 +2331,7 @@ function renderScore(){
   }).join("");
 
   return ''
-  + '<div class="note mb16"><b>评分口径</b>：严格按教育部《国家学生体质健康标准（2014 年修订）》高中一年级评分表执行，取 100~10 共 20 个分数档 <b>向下查表</b>；BMI 由身高体重实时计算；总分 = Σ（单项得分 × 权重）。满分 100 分标准分，另有最高 20 分附加分（本演示版未计入）。</div>'
+  + '<div class="note note-ex mb16"><b>评分口径</b>：严格按教育部《国家学生体质健康标准（2014 年修订）》高中一年级评分表执行，取 100~10 共 20 个分数档 <b>向下查表</b>；BMI 由身高体重实时计算；总分 = Σ（单项得分 × 权重）。满分 100 分标准分，另有最高 20 分附加分（本演示版未计入）。</div>'
   + '<div class="grid g4 mb16">'
     + '<div class="kpi blue"><div class="kpi-l">测算人数</div><div class="kpi-v b">'+st.n+'</div><div class="kpi-s">按当前筛选统计</div></div>'
     + '<div class="kpi cyan"><div class="kpi-l">平均分</div><div class="kpi-v c">'+st.avg+'</div><div class="kpi-s">'+term.name+'</div></div>'
@@ -2359,7 +2358,7 @@ function renderScore(){
     + '<div class="card"><div class="card-h"><span class="dot"></span><h3>评分过程可视化</h3></div>'
       + '<div style="display:flex;justify-content:center;padding:6px 0 12px">'+radar(sc.parts ? Object.keys(sc.parts).reduce((a,k)=>{a[k]=sc.parts[k].score;return a;},{}) : {}, 280)+'</div>'
       + '<div class="note note-ex purple"><b>这套公式解决了什么</b>：过去每项得分要人工对照国标表格逐项翻查，一个班 336 次查表；现在录入即出分，教师重复劳动被压缩为一次录入，且不会查错行。</div>'
-      + '<div class="note amber mt12"><b>但总分会掩盖短板</b>：BMI 正常的学生在这一项上白拿 15% 权重，即使耐力项目几乎不得分，总分也不至于难看。<b>只看总分排名，很容易漏掉单项严重不足的学生</b>。这也是本系统坚持保留各分项得分、并用雷达图呈现的原因——下一步的运动处方，正是建立在「分项定位」而非「总分排序」之上。</div>'
+      + '<div class="note note-ex amber mt12"><b>但总分会掩盖短板</b>：BMI 正常的学生在这一项上白拿 15% 权重，即使耐力项目几乎不得分，总分也不至于难看。<b>只看总分排名，很容易漏掉单项严重不足的学生</b>。这也是本系统坚持保留各分项得分、并用雷达图呈现的原因——下一步的运动处方，正是建立在「分项定位」而非「总分排序」之上。</div>'
     + '</div>'
   + '</div>';
 }
@@ -2620,7 +2619,7 @@ function renderRx(){
     }).join("");
 
   return ''
-  + '<div class="note purple mb16"><b>这一部分是本作品的 AI 内核</b>：系统先按国标算出各项目得分，自动识别低于 72 分的薄弱项（最多取 3 项），再从<b>运动处方知识库</b>中匹配对应训练模块，按体育课教案结构（准备—基本—结束）组合成一份可执行的一人一策处方。教师负责审定与调整，机器负责检索与排版。</div>'
+  + '<div class="note note-ex purple mb16"><b>这一部分是本作品的 AI 内核</b>：系统先按国标算出各项目得分，自动识别低于 72 分的薄弱项（最多取 3 项），再从<b>运动处方知识库</b>中匹配对应训练模块，按体育课教案结构（准备—基本—结束）组合成一份可执行的一人一策处方。教师负责审定与调整，机器负责检索与排版。</div>'
   + '<div class="grid g12 mb16">'
     + '<div class="card"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' 的个性化运动处方</h3>'
       + '<span class="sub">总分 '+sc.total+' · '+sc.level+'</span></div>'
@@ -2655,7 +2654,7 @@ function renderRx(){
           + '<div class="step-t">'+s[0]+'<div style="font-size:11px;color:#8b99ad">'+s[1]+'</div></div></div>'+(i<5?'<div class="step-line"></div>':''))
         .join("")
     + '</div>'
-    + '<div class="note cyan">第 1–3 步是确定性计算（国标公式，不需要 AI）；第 4–5 步是 AI 参与的检索与生成；第 6 步必须由体育教师把关。<b>把 AI 限定在“查、排、组”，把“对不对、能不能练”留给教师</b>，是本模块的设计原则。</div>'
+    + '<div class="note note-ex cyan">第 1–3 步是确定性计算（国标公式，不需要 AI）；第 4–5 步是 AI 参与的检索与生成；第 6 步必须由体育教师把关。<b>把 AI 限定在“查、排、组”，把“对不对、能不能练”留给教师</b>，是本模块的设计原则。</div>'
   + '</div>';
 }
 
@@ -2668,7 +2667,7 @@ function renderCoach(){
   const qs = ["周子墨这次总分多少","他和上次比进步了吗","给我他的运动处方","班里哪几项最弱","怎么用处方系统"];
 
   return ''
-  + '<div class="note cyan mb16"><b>实现方式说明（重要）</b>：本顾问采用<b>规则匹配 + 本地知识库</b>的确定性应答，<b>不调用云端大模型</b>。原因有三：一是学生体质数据不出校园网，是数据安全的硬边界；二是校内网络不具备稳定调用外部服务的条件；三是体测问答需要<b>每次给同一个问题同一个答案</b>，确定性优先于发散性。所有回答均从本机数据实时查询得出，不是预设文案。</div>'
+  + '<div class="note note-ex cyan mb16"><b>实现方式说明（重要）</b>：本顾问采用<b>规则匹配 + 本地知识库</b>的确定性应答，<b>不调用云端大模型</b>。原因有三：一是学生体质数据不出校园网，是数据安全的硬边界；二是校内网络不具备稳定调用外部服务的条件；三是体测问答需要<b>每次给同一个问题同一个答案</b>，确定性优先于发散性。所有回答均从本机数据实时查询得出，不是预设文案。</div>'
   + '<div class="grid g12">'
     + '<div class="card"><div class="card-h"><span class="dot"></span><h3>体测顾问 · 多轮问答</h3><span class="sub">离线运行 · 数据本机查询</span></div>'
       + '<div class="chat-box" id="chatBox">'+msgs+'</div>'
@@ -2795,7 +2794,7 @@ function renderExecCard(){
     + '</div>'
     + '<div id="ckNotDone" class="ck-list">'+notDoneHtml+'</div>'
   + '</div>'
-  + '<div class="note cyan" style="margin-top:13px">口径说明：<b>应打卡</b>＝当前学期持有运动处方（存在薄弱项）的学生；<b>已打卡</b>＝当日在本机提交过打卡记录。数据全部来自浏览器本地存储，仅作课堂督导演示，不联网、不跨设备同步。</div>'
+  + '<div class="note note-ex cyan" style="margin-top:13px">口径说明：<b>应打卡</b>＝当前学期持有运动处方（存在薄弱项）的学生；<b>已打卡</b>＝当日在本机提交过打卡记录。数据全部来自浏览器本地存储，仅作课堂督导演示，不联网、不跨设备同步。</div>'
   + '</div>';
 }
 
@@ -3126,18 +3125,15 @@ const UI = {
       + a.name + tail
       + '<span class="out" onclick="UI.logout()">退出</span>';
   },
-  /* ---------- 纯净 / 讲解 ---------- */
+  /* ---------- 产品视图固定：说明文字永久隐藏，界面不再出现任何模式开关 ---------- */
   mode(){
     const el = document.getElementById("modeSw");
-    if (!el) return;
-    el.innerHTML = '<button class="'+(STATE.clean?"on":"")+'" onclick="UI.setClean(true)" title="隐藏页面解说文字，只保留功能与数据">纯净</button>'
-      + '<button class="'+(STATE.clean?"":"on")+'" onclick="UI.setClean(false)" title="显示全部解说文字，适合演示讲解">讲解</button>';
+    if (el) el.innerHTML = "";
   },
-  setClean(v){
-    STATE.clean = !!v;
-    try { document.body.classList.toggle("clean", STATE.clean); } catch(e){}
-    this.mode();
-    this.go(STATE.page);
+  setClean(){
+    // 讲解视图入口已移除；保留此空方法仅为兼容旧调用
+    STATE.clean = true;
+    try { document.body.classList.add("clean"); } catch(e){}
   },
   nav(){
     const nav = document.getElementById("nav");
@@ -3152,7 +3148,16 @@ const UI = {
     const el = document.getElementById("roleSw");
     if (!el) return;
     if (STATE.role === "guest"){ el.innerHTML = '<span class="role-b on" style="cursor:default">访客</span>'; return; }
+    // 只有「管理员账号 + 停在管理者视图」时才显示切换条；
+    // 一旦切到教师端/学生端（或教师/学生账号登录），整排隐藏，像真实产品一样没有切换入口
+    if (!this.isAdmin() || STATE.role !== "admin"){
+      el.innerHTML = "";
+      return;
+    }
     el.innerHTML = ROLES.map(r=>'<button class="role-b '+(STATE.role===r.id?"on":"")+'" onclick="UI.role(\''+r.id+'\')">'+r.name+'</button>').join("");
+  },
+  isAdmin(){
+    return !!(STATE.user && STATE.user.role === "admin");
   },
   go(id){
     if (STATE.feedTimer){ clearInterval(STATE.feedTimer); STATE.feedTimer = null; STATE.feedAfter = 0; }
@@ -3185,6 +3190,9 @@ const UI = {
     this.saveChip();
   },
   role(id){
+    // 权限校验：仅管理员账号可切换三端视图，防止绕过按钮直接调用
+    if (!this.isAdmin()) return;
+    if (!ROLES.some(r=>r.id===id)) return;
     STATE.role = id;
     if (id === "student"){
       STATE.stuId = selfStudent().id;
@@ -3581,7 +3589,7 @@ const UI = {
   } else {
     UI.loginRender();
     UI.fillLoginQR();
-    UI.pickAccount("teacher");
+    UI.pickAccount("admin");
   }
   UI.nav();
   UI.roles();
