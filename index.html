@@ -426,6 +426,11 @@ body.clean .note-ex{display:none !important}
   font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:2px}
 .login-btn:hover{background:#1e40af}
 .login-foot{font-size:11.5px;color:#94a3b8;text-align:center;margin-top:16px;line-height:1.7}
+.login-feat{display:flex;flex-direction:column;gap:13px;margin:6px 0 20px}
+.login-feat-i{display:flex;align-items:flex-start;gap:11px}
+.login-feat-i .lf-ic{flex:none;width:26px;height:26px;border-radius:8px;background:#e8f0ff;color:#1d4ed8;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+.login-feat-i b{display:block;font-size:13.5px;color:#12202f;margin-bottom:2px}
+.login-feat-i small{display:block;font-size:11.8px;color:#7b8aa0;line-height:1.5}
 
 /* ---------- 扫码进入 / 手机实时上传 ---------- */
 .qr-btn{display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border:1px solid #d3ddec;border-radius:15px;
@@ -525,8 +530,40 @@ body.clean .note-ex{display:none !important}
 .std-card .kpi{ padding:22px 20px; }
 .std-card .ck-item{ padding:15px 16px; margin-bottom:10px; }
 
+/* ===== 知识库检索页 & 题库页 排版 ===== */
+.kb-cat{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 14px}
+.kb-cat span{border:1px solid var(--line-2);border-radius:18px;padding:6px 13px;font-size:12.5px;color:#3d5067;cursor:pointer;background:#fff;transition:.15s;font-weight:600}
+.kb-cat span:hover{border-color:var(--brand);color:var(--brand)}
+.kb-cat span.on{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 3px 10px rgba(37,99,235,.22)}
+.kb-search{display:flex;gap:8px;margin-bottom:14px}
+.kb-search input{flex:1;border:1px solid var(--line-2);border-radius:10px;padding:11px 14px;font-size:14px;font-family:inherit;outline:none;background:#fff}
+.kb-search input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.10)}
+.kb-stat{font-size:12.5px;color:var(--text-2);margin-bottom:12px}
+.kb-stat b{color:var(--brand)}
+.kb-doc{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px;background:#fff;transition:.15s}
+.kb-doc:hover{border-color:#bcd0f5;box-shadow:var(--sh-2)}
+.kb-doc h4{font-size:15px;color:#12202f;margin-bottom:8px;display:flex;align-items:center;gap:9px}
+.kb-doc .kb-kind{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:5px;background:var(--brand-l);color:var(--brand-d);white-space:nowrap}
+.kb-doc .kb-body{font-size:13.3px;color:#40536b;line-height:1.85;white-space:pre-line}
+.kb-doc .kb-src{margin-top:11px;padding-top:10px;border-top:1px dashed var(--line);font-size:11.8px;color:var(--text-3)}
+.kb-doc .kb-src b{color:#0e7490}
+.kb-doc .kb-tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.kb-doc .kb-tags i{font-style:normal;font-size:11px;color:#5d6d85;background:#f1f5fb;border-radius:5px;padding:2px 8px}
+.kb-empty{text-align:center;color:var(--text-3);padding:48px 20px;font-size:14px}
+.quiz-bank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.quiz-card{border:1px solid var(--line);border-radius:12px;padding:15px 16px;background:#fff;display:flex;flex-direction:column;transition:.15s}
+.quiz-card.on{border-color:var(--brand);box-shadow:0 0 0 2px rgba(37,99,235,.12)}
+.quiz-card .qc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.quiz-card .qc-q{font-size:13.6px;color:#12202f;font-weight:700;line-height:1.55;flex:1}
+.quiz-card .qc-no{font-size:11px;color:#fff;background:var(--brand);border-radius:6px;padding:2px 7px;flex:none}
+.quiz-card .qc-opts{margin:10px 0;font-size:12.5px;color:#5d6d85;line-height:1.8}
+.quiz-card .qc-opts span{display:block}
+.quiz-card .qc-ans{font-size:11.8px;color:#15803d;background:#e7f6ed;border-radius:6px;padding:5px 9px;margin-top:auto}
+.quiz-card button{margin-top:10px;align-self:flex-start}
+
 </style>
 </head>
+<script src="kb_data.js"></script>
 <body data-page-node-id="rueupgLJWuotmX2xLBkSLK">
 <div id="app" data-page-node-id="fuZW8fFdyEw9dfeVxITZj7">
   <aside id="sidebar" data-page-node-id="A8aaAfk7EcuIYDZAUc7KHu">
@@ -547,8 +584,7 @@ body.clean .note-ex{display:none !important}
     <nav class="sb-nav" id="nav" data-page-node-id="bFI8xrI979SouuvEgXUaK9"></nav>
     <div class="sb-foot" data-page-node-id="JXKTx1Dycis9CGS1uqQaHg">
       <b data-page-node-id="Mf2i8EYGQfEe30td3G5ZPi">江苏省锡山高级中学</b><br data-page-node-id="MH6uzQfnYVA4V7nzbFI711">
-      体育健康数据中心 · v1.0<br data-page-node-id="jB6wDeZxNhH1PDhqRBS2XQ">
-      与校内生产系统物理隔离
+      体育健康数据中心
     </div>
   </aside>
   <main id="main" data-page-node-id="9u2ntZTHgbh1ZluytGUhFI">
@@ -578,26 +614,27 @@ body.clean .note-ex{display:none !important}
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M3 12h4l2.5-7 4 14L16 12h5"/></svg>
         <div>
           <div style="font-size:17.5px;font-weight:800;letter-spacing:.2px">体质健康 AI 测评系统</div>
-          <div style="font-size:12px;opacity:.72;margin-top:2px">测评 · 处方 · 追踪　校园网本地部署</div>
+          <div style="font-size:12px;opacity:.72;margin-top:2px">江苏省锡山高级中学</div>
         </div>
       </div>
-      <div class="login-note">
-        本系统按<b>角色</b>开放数据范围。教师与管理员可查看并维护全班数据；学生仅能查看本人的测评结果与运动处方。
+      <div class="login-feat">
+        <div class="login-feat-i"><span class="lf-ic">①</span><div><b>国标测评</b><small>按国家学生体质健康标准自动评分</small></div></div>
+        <div class="login-feat-i"><span class="lf-ic">②</span><div><b>AI 运动处方</b><small>识别薄弱项，生成一人一策训练方案</small></div></div>
+        <div class="login-feat-i"><span class="lf-ic">③</span><div><b>知识库答疑</b><small>51 万字本地知识库，逐条标注来源</small></div></div>
+        <div class="login-feat-i"><span class="lf-ic">④</span><div><b>成长追踪</b><small>跨学期对比，验证体质改善效果</small></div></div>
       </div>
-      <div class="login-roles" id="loginRoles"></div>
-      <div class="login-tip">演示环境，账号与密码已在右侧列出，点选角色即可自动填入。</div>
       <div id="loginQR"></div>
     </div>
     <div class="login-r">
       <div class="login-h">账号登录</div>
-      <div class="login-sub">请选择身份后登录</div>
+      <div class="login-sub">请输入账号与密码</div>
       <label class="login-lb">账号</label>
       <input class="login-in" id="lgUser" type="text" autocomplete="off" placeholder="请输入账号">
       <label class="login-lb">密码</label>
       <input class="login-in" id="lgPwd" type="password" autocomplete="off" placeholder="请输入密码">
       <div class="login-err" id="lgErr"></div>
       <button class="login-btn" onclick="UI.doLogin()">登 录</button>
-      <div class="login-foot">数据全部保存在本机，不上传任何外部服务；可完全离线运行。</div>
+      <div class="login-foot">体质健康 AI 测评系统 · 校园本地部署</div>
     </div>
   </div>
 </div>
@@ -621,6 +658,106 @@ body.clean .note-ex{display:none !important}
    高中一年级（男 / 女）单项评分表，含 100~10 共 20 个分数档。
    内部全部学生成绩为算法生成的虚构数据，用于演示，非真实学生数据。
    ===================================================================== */
+
+/* =====================================================================
+   10-A 本地知识库检索引擎（KB）
+   数据源：kb_data.js（window.KB_DOCS / KB_META），1330 条 / 51 万字 / 16 类权威来源。
+   设计：中文 bigram 分词 + 字段加权打分 + 分类别名映射 + 出处回溯。
+   全部在本机计算，不联网、不调用外部模型；每条命中都可追溯到来源。
+   ===================================================================== */
+const KB = (function(){
+  var DOCS = (typeof window!=="undefined" && window.KB_DOCS) ? window.KB_DOCS : [];
+  var META = (typeof window!=="undefined" && window.KB_META) ? window.KB_META : {count:DOCS.length,chars:0,sourceCount:0};
+  /* 体测项目 -> 知识库分类/关键词别名，便于按项目精准取知识 */
+  var ITEM_ALIAS = {
+    vc:["肺活量","心肺","耐力跑","800","1000","有氧"],
+    run50:["50米","短跑","速度","爆发力","起跑"],
+    reach:["坐位体前屈","柔韧","拉伸","柔韧性"],
+    jump:["立定跳远","跳远","下肢爆发","弹跳"],
+    strength:["引体向上","仰卧起坐","上肢力量","核心","腰腹","腹部","肌肉力量"],
+    endur:["耐力跑","800米","1000米","耐力","有氧"],
+    bmi:["BMI","体重","身体成分","体型","胖","瘦"]
+  };
+  /* 把字符串切成中文 bigram + 英文/数字词 */
+  function tokens(s){
+    s = String(s||"").toLowerCase();
+    var out=[], en = s.match(/[a-z0-9]+/g)||[];
+    en.forEach(function(w){ if(w.length>=2) out.push(w); });
+    var zh = s.replace(/[^一-龥]+/g," ");
+    zh.split(/\s+/).forEach(function(seg){
+      if(seg.length===1){ out.push(seg); }
+      for(var i=0;i<seg.length-1;i++) out.push(seg.slice(i,i+2));
+    });
+    return out;
+  }
+  function score(q, d){
+    var tq = tokens(q), hit=0;
+    var title = String(d.title||""), tags=(d.tags||[]).join(" "), sub=String(d.sub||""), cat=String(d.cat||"");
+    var body = String(d.body||"");
+    var seen={};
+    tq.forEach(function(t){
+      if(seen[t]) return; seen[t]=1;
+      var w=0;
+      if(title.toLowerCase().indexOf(t)>=0) w+=6;
+      if(tags.toLowerCase().indexOf(t)>=0) w+=5;
+      if(sub.toLowerCase().indexOf(t)>=0) w+=4;
+      if(cat.toLowerCase().indexOf(t)>=0) w+=3;
+      if(body.toLowerCase().indexOf(t)>=0) w+=1;
+      hit+=w;
+    });
+    /* 完整词条命中加权：如"立定跳远""膳食指南" */
+    (d.tags||[]).forEach(function(tag){
+      if(tag.length>=2 && q.indexOf(tag)>=0) hit+=12;
+    });
+    if(q.indexOf(d.title)>=0 && d.title.length>=3) hit+=15;
+    return hit;
+  }
+  /* 通用检索：query / 分类过滤 / 数量 */
+  function search(query, opt){
+    opt = opt||{};
+    var arr=[]; var q=String(query||"");
+    for(var i=0;i<DOCS.length;i++){
+      var d=DOCS[i];
+      if(opt.cat && d.cat!==opt.cat && d.sub!==opt.cat) continue;
+      if(opt.kind && d.kind!==opt.kind) continue;
+      var sc=score(q,d);
+      if(sc>0){
+        /* 内容质量加权：核心知识卡优先于模板化的场景/学段/性别卡，题目类降权 */
+        var kboost = (d.kind==="知识卡"||d.kind==="专项知识") ? 1.35
+                   : (d.kind==="题目") ? 0.45
+                   : (d.kind==="问答") ? 0.85
+                   : (d.kind==="误区辨析") ? 1.15 : 1.0;
+        arr.push({doc:d,score:sc*kboost});
+      }
+    }
+    arr.sort(function(a,b){ return b.score-a.score; });
+    return arr.slice(0, opt.limit||8);
+  }
+  /* 按体测项目取训练/知识条目 */
+  function byItem(key, limit){
+    var alias = ITEM_ALIAS[key]||[key];
+    var res=[], seen={};
+    alias.forEach(function(a){
+      search(a,{limit:(limit||6)*2}).forEach(function(r){
+        if(!seen[r.doc.id] && (r.doc.kind==="知识卡" || r.doc.kind==="专项知识" || r.doc.kind==="场景建议")){
+          seen[r.doc.id]=1; res.push(r);
+        }
+      });
+    });
+    res.sort(function(a,b){return b.score-a.score;});
+    return res.slice(0, limit||6);
+  }
+  /* 取某分类下的代表条目（用于知识库页面分类浏览） */
+  function byCat(cat, limit){
+    return DOCS.filter(function(d){ return d.cat===cat || d.sub===cat; }).slice(0, limit||40);
+  }
+  function categories(){
+    var m={}; DOCS.forEach(function(d){ m[d.cat]=(m[d.cat]||0)+1; });
+    return Object.keys(m).map(function(k){return {name:k,count:m[k]};}).sort(function(a,b){return b.count-a.count;});
+  }
+  return { all:function(){return DOCS;}, meta:META, search:search, byItem:byItem, byCat:byCat, categories:categories,
+           aliases:ITEM_ALIAS, ready:DOCS.length>0 };
+})();
 
 /* ---------------- 1. 国标评分表（2014修订 · 高中一年级） ---------------- */
 // 键为单项得分，值为该档对应的达标成绩
@@ -999,6 +1136,7 @@ function makePrescription(stu, termId){
 
 /* ---------------- 6. 图标 ---------------- */
 const ICO = {
+  book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 6h8M8 10h6"/>',
   mic:'<rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3M8.5 21h7"/>',
   vol:'<path d="M11 5 6.5 9H3v6h3.5L11 19V5z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18.5 6.5a7.5 7.5 0 0 1 0 11"/>',
   stop:'<rect x="6" y="6" width="12" height="12" rx="2"/>',
@@ -1157,6 +1295,7 @@ const PAGES = [
   { id:"askReview",name:"答疑审核",    ico:"chat",  desc:"审核 AI 基于体测数据给出的建议并反馈学生", roles:"tm" },
   { id:"health",  name:"运动健康档案", ico:"users", desc:"学生运动损伤/营养上报与关联档案", roles:"tm" },
   { id:"taskPush",name:"训练任务推送", ico:"send",  desc:"按体测薄弱项智能分组，推送针对性练习", roles:"tm" },
+  { id:"kb",      name:"体测知识库",   ico:"book",  desc:"51 万字本地知识库 · 按项目分类检索 · 逐条标注出处", roles:"tm", badge:"核心" },
   { id:"quizBank",name:"体测知识小测", ico:"sheet", desc:"围绕测试方法/国标标准组建随堂小测", roles:"tm" },
   { id:"evalReview",name:"训练课评价", ico:"bulb",  desc:"学生对体测训练课的评价汇总与反馈", roles:"tm" },
   { id:"track",   name:"成长追踪",     ico:"track", desc:"跨学期纵向对比与趋势", roles:"tm" },
@@ -1169,6 +1308,7 @@ const PAGES = [
   { id:"s_rx",    name:"我的运动处方", ico:"rx",    desc:"一人一策的个性化处方", roles:"s" },
   { id:"s_ask",   name:"体测答疑",     ico:"chat",  desc:"AI 基于我的体测数据答疑", roles:"s", badge:"核心" },
   { id:"s_health",name:"健康上报",     ico:"users", desc:"运动损伤/营养情况脱敏上报", roles:"s" },
+  { id:"s_kb",    name:"健康知识库",   ico:"book",  desc:"按项目分类的健康知识 · 可搜索 · 有出处", roles:"s" },
   { id:"s_quiz",  name:"体测小测",     ico:"sheet", desc:"体测知识与运动常识小测", roles:"s" },
   { id:"s_track", name:"成长曲线",     ico:"track", desc:"我的跨学期体质趋势", roles:"s" }
 ];
@@ -1360,20 +1500,19 @@ var Engage = {
     if (!this.data.asks.length) this.seed();
   },
   seed(){
-    // 预置两条学生答疑，便于教师端「答疑审核」一进来就有内容可演示。
+    // 预置两条学生答疑：AI 建议由本地知识库检索实时生成（带出处）
     // sid 必须用真实学生 id（与 STUDENTS 一致），否则学生端看不到自己的提问。
     var s1 = STUDENTS.find(function(x){ return x.name==="李思远"; }) || STUDENTS[0];
     var s2 = STUDENTS.find(function(x){ return x.name==="王晨曦"; }) || STUDENTS[1];
-    var r1 = s1.recs[STATE.term] || {}, r2 = s2.recs[STATE.term] || {};
     this.data.asks = [
-      { id:"a1", sid:s1.id, who:"李思远", q:"我 50 米总是跑不快，是哪里的问题？",
-        ai:"结合你的体测数据：50 米 "+fmtSec(r1.run50)+" 秒，短跑是主要薄弱项；立定跳远 "+fmtSec(r1.jump)+" cm 也偏弱，说明下肢爆发力不足。建议重点是臀腿力量与起跑加速：每周 3 次深蹲跳、蛙跳与 30 米加速跑，注意摆臂与蹬地协调，4 周后复测。",
+      { id:"a1", sid:s1.id, who:s1.name, q:"我 50 米总是跑不快，是哪里的问题？",
+        ai:this.answer(s1.id,"我 50 米总是跑不快，是哪里的问题？"),
         teacher:"", status:"pending", ts:Date.now()-3600000*5 },
-      { id:"a2", sid:s2.id, who:"王晨曦", q:"800 米跑完膝盖有点疼，还能继续练吗？",
-        ai:"结合你的数据：800 米 "+fmtSec(r2.endur)+" 秒，耐力项目基本达标。跑后膝痛多与负荷/落地姿势有关，建议先降低跑量、改走跑结合，加强股四头肌与核心训练；若持续疼痛请到校医处检查，暂缓高强度跑步。",
+      { id:"a2", sid:s2.id, who:s2.name, q:"我的立定跳远怎么提升？",
+        ai:this.answer(s2.id,"我的立定跳远怎么提升？"),
         teacher:"", status:"pending", ts:Date.now()-3600000*2 }
     ];
-    // 预置一条老师推送任务，让「训练任务推送→学生端我的任务」闭环一进来即可演示
+    // 预置一条老师推送任务
     if (!this.data.tasks.length){
       this.data.tasks = [
         { id:"tp1", type:"专项练习打卡", group:"短跑薄弱组", title:"短跑起跑加速专项训练（第 3 周）", ts:Date.now()-3600000*8 }
@@ -1407,29 +1546,83 @@ var Engage = {
     this.data={ asks:[], health:[], tasks:[], quiz:[], evals:[] };
     if (this.ok){ try { window.localStorage.removeItem(LS_ENGAGE); } catch(e){} }
   },
-  /* AI 依据学生体测数据生成答疑建议（规则驱动，离线可用） */
+  /* AI 依据学生体测数据 + 本地知识库检索生成答疑（离线可用，回答带出处） */
   answer(sid, q){
     var s = STUDENTS.find(function(x){return x.id===sid;}) || STUDENTS[0];
     var sc = getScore(s, STATE.term) || {};
-    var weak = s.weak || "耐力";
-    var q2 = String(q||"");
-    var body;
-    if (/50|短跑|速度|爆发/.test(q2)){
-      body = "结合你的数据：50 米 "+fmtSec(s.recs[STATE.term]["run50"])+" 秒，短跑是你的主要薄弱项。建议每周 3 次下肢爆发训练（深蹲跳、蛙跳、跨步跳）+ 30 米加速跑 6 组，注意起跑蹬地与摆臂协调，4 周后复测。";
-    } else if (/800|1000|耐力|肺活量|跑/.test(q2)){
-      body = "结合你的数据：耐力项目是"+weak+"之一。建议采用走跑交替逐步过渡到连续跑，每周 3~4 次、每次 20 分钟以上，配合腹式呼吸练习提升肺活量；训练中若胸闷膝痛立即降强度。";
-    } else if (/跳远|立定|力量|跳/.test(q2)){
-      body = "结合你的数据：立定跳远反映下肢爆发力，是你的重点提升项。建议每周 3 次台阶跳、收腹跳与核心平板支撑，起跳时注意蹬摆配合、落地屈膝缓冲。";
-    } else if (/体重|BMI|胖|瘦|营养|饮食/.test(q2)){
-      body = "结合你的 BMI 与体测数据：建议均衡饮食、控制含糖饮料，配合规律有氧（快走/慢跑）每周累计 150 分钟以上；处于生长期不必节食，重点是营养均衡 + 运动。";
-    } else if (/坐位体前屈|柔韧|拉伸/.test(q2)){
-      body = "柔韧提升靠坚持：每天课间做 10 分钟坐位体前屈静态拉伸与腿部后侧拉伸，循序渐进、避免弹震式拉扯，6~8 周可见明显改善。";
-    } else {
-      body = "结合你本学期体测数据，当前最需要提升的是「"+weak+"」。建议围绕该项目每周安排 3 次专项练习并配合均衡营养，4 周后到系统里复测对比。若症状持续或加重，请先找体育老师或校医当面确认。";
+    var q2 = String(q||"").trim();
+    var parts = [];
+    /* 安全边界：伤病诊断与就医用药转介专业人员（知识库不给诊断） */
+    if (/(疼|痛|扭伤|拉伤|肿胀|受伤|头晕|胸闷|吃药|用药|就医|医院|骨折)/.test(q2)){
+      return "你描述的情况涉及身体不适或损伤，我不能给出诊断或用药建议。\n\n请先停止相关练习，告知体育老师和家长，由校医或医疗机构判断处理。\n\n如果只是想知道某个体测项目平时怎么科学练习，告诉我项目名称，我可以结合你的数据从知识库给出训练建议。";
     }
-    return body + "（AI 参考建议，已经体育老师审核后发送）";
+
+    /* 1) 识别问题中提到的体测项目，带上该生真实成绩 */
+    var itemKey = "";
+    /* key 与 ITEMS 一致：力量项目=strength(男引体/女仰卧)，耐力跑=endur(男1000/女800) */
+    var ITEM_NAMES = {vc:"肺活量",run50:"50 米跑",reach:"坐位体前屈",jump:"立定跳远",strength:"力量项目",endur:"耐力跑",bmi:"BMI"};
+    var pats = {vc:/肺活量|心肺/,run50:/50米|50 ?米|短跑|速度/,reach:/坐位体前屈|柔韧|拉伸/,jump:/立定跳远|跳远|弹跳/,
+                strength:/引体|仰卧起坐|腹肌|核心|力量/,endur:/800|1000|耐力|长跑|跑不动/,bmi:/BMI|体重|胖|瘦/};
+    for (var k in ITEM_NAMES){
+      if (pats[k] && pats[k].test(q2)){ itemKey=k; break; }
+    }
+    if (itemKey && sc.parts && sc.parts[itemKey]){
+      var pv = sc.parts[itemKey];
+      var raw = (s.recs && s.recs[STATE.term] && s.recs[STATE.term][itemKey]);
+      var detail = itemKey==="vc" ? (raw+" 毫升")
+                 : itemKey==="bmi" ? ("BMI "+fmtNum(raw))
+                 : itemKey==="run50" ? (fmtSec(raw)+" 秒")
+                 : itemKey==="endur" ? (fmtSec(raw)+" 秒")
+                 : itemKey==="jump" ? ((Math.round(raw)/100).toFixed(2)+" 米")
+                 : (raw+" 个");
+      parts.push("结合你的体测数据："+ITEM_NAMES[itemKey]+"本次 "+detail+"，单项 "+pv.score+" 分"+(pv.score<72?"，属于需要重点提升的项目。":"，已达到较好水平。"));
+    }
+
+    /* 2) 检索本地知识库：优先按项目，其次按问题全文（只取知识类，排除题目） */
+    var isKnowledge = function(h){ return h && h.doc && h.doc.kind!=="题目" && String(h.doc.body||"").length>40; };
+    var hits = [];
+    if (itemKey) hits = KB.byItem(itemKey, 8).filter(isKnowledge);
+    if (!hits.length) hits = KB.search(q2, {limit:10}).filter(isKnowledge);
+    if (!hits.length && sc.parts){
+      /* 兜底：用该生最薄弱项去检索 */
+      var weakest="", min=101;
+      for (var kk in sc.parts){ if (sc.parts[kk].score<min){ min=sc.parts[kk].score; weakest=kk; } }
+      if (weakest && weakest!=="bmi") hits = KB.byItem(weakest, 8).filter(isKnowledge);
+    }
+    hits = hits.slice(0,6);
+
+    /* 3) 组装知识要点（取检索条目的有效正文段落） */
+    if (hits.length){
+      parts.push("根据本地体质健康知识库，给你以下建议：");
+      var used=0, srcSet={};
+      for (var i=0;i<hits.length && used<3;i++){
+        var d=hits[i].doc;
+        var lines = String(d.body||"").split("\n");
+        var txt = "";
+        for (var j=0;j<lines.length;j++){
+          var L = lines[j].trim();
+          if (/^【(出处|适用|学段|水平|场景)】/.test(L)) continue;
+          if (/^问[:：]/.test(L)) continue; /* 跳过问答条目的问题行，取答案 */
+          if (/^(核心要点|要点|答：|依据：)/.test(L)) L=L.replace(/^(核心要点|要点|答：|依据：)[:：]?/,"");
+          if (L.length>=25){ txt=L; break; }
+        }
+        if (!txt) txt = String(d.body||"").replace(/^【[^】]*】/,"").replace(/\s+/g," ").trim().slice(0,240);
+        if (txt.length>240) txt=txt.slice(0,240)+"…";
+        if (txt.length<20) continue;
+        parts.push("· "+txt);
+        srcSet[d.src]=1;
+        used++;
+      }
+      var srcs=Object.keys(srcSet);
+      if (srcs.length) parts.push("【知识出处】"+srcs.join("；"));
+    } else {
+      parts.push("这个问题本地知识库暂时没有直接条目。建议围绕体测薄弱项规律练习，若涉及疼痛或疾病，请找体育老师或校医当面确认。");
+    }
+    parts.push("本建议结合你的体测数据由本地知识库检索生成，已经体育老师审核后发送。");
+    return parts.join("\n");
   }
 };
+function fmtNum(v){ return (typeof v==="number") ? (Math.round(v*10)/10) : "—"; }
 function fmtSec(v){ return (typeof v==="number" && v>0) ? v.toFixed(1) : "—"; }
 
 function todayStr(){
@@ -1531,15 +1724,14 @@ function renderHome(){
       + '<td style="text-align:right">'+levelTag(o.sc.level)+'</td></tr>';
   }).join("");
 
-  const tourStu = (function(){ var s = STUDENTS.find(x=>x.name==="李思远"); return s ? s.id : STUDENTS[0].id; })();
   const tour = ''
   + '<div class="tour">'
-    + '<div class="tour-t">演示路线 ▸</div>'
-    + '<div class="tour-step" onclick="UI.go(\'home\')"><span class="tour-n">1</span><div><b>班级体质画像</b><span>总览·等级分布</span></div></div>'
-    + '<div class="tour-step" onclick="UI.pick(\''+tourStu+'\');UI.go(\'rx\')"><span class="tour-n">2</span><div><b>看一名学生处方</b><span>李思远·一人一策</span></div></div>'
-    + '<div class="tour-step" onclick="UI.pick(\''+tourStu+'\');UI.go(\'rx\')"><span class="tour-n">3</span><div><b>今日训练打卡</b><span>手机扫码即练即记</span></div></div>'
-    + '<div class="tour-step" onclick="UI.pick(\''+tourStu+'\');UI.go(\'track\')"><span class="tour-n">4</span><div><b>成长追踪</b><span>跨学期进步</span></div></div>'
-    + '<div class="tour-step" onclick="UI.go(\'capture\')"><span class="tour-n">5</span><div><b>手机拍照上大屏</b><span>多模态采集</span></div></div>'
+    + '<div class="tour-t">快捷入口 ▸</div>'
+    + '<div class="tour-step" onclick="UI.go(\'capture\')"><span class="tour-n">＋</span><div><b>录入体测数据</b><span>逐项录入 / 批量导入</span></div></div>'
+    + '<div class="tour-step" onclick="UI.go(\'rx\')"><span class="tour-n">✚</span><div><b>生成运动处方</b><span>薄弱项 · 一人一策</span></div></div>'
+    + '<div class="tour-step" onclick="UI.go(\'kb\')"><span class="tour-n">▤</span><div><b>查知识库</b><span>51 万字 · 有出处</span></div></div>'
+    + '<div class="tour-step" onclick="UI.go(\'heatmap\')"><span class="tour-n">▦</span><div><b>薄弱项热力图</b><span>全班项目达标率</span></div></div>'
+    + '<div class="tour-step" onclick="UI.go(\'bigscreen\')"><span class="tour-n">▣</span><div><b>希沃大屏模式</b><span>课堂展示态</span></div></div>'
   + '</div>';
 
   return ''
@@ -2628,8 +2820,29 @@ function answerRx(q, stu){
     }
   }
 
-  /* 4) 兜底 */
-  return "这个问题我暂时答不上来。\n\n本顾问是<b>规则匹配 + 本地知识库</b>的确定性应答，只能覆盖已经录入的内容。你可以试着问：\n"
+  /* 4) 兜底：检索大规模本地知识库（带出处） */
+  var hits = (typeof KB!=="undefined" && KB.ready)
+    ? KB.search(q, {limit:10}).filter(function(h){ return h.doc.kind!=="题目" && String(h.doc.body||"").length>40; }).slice(0,3)
+    : [];
+  if (hits.length){
+    var s = "从本地知识库为你找到以下内容：\n";
+    var srcs = {};
+    hits.forEach(function(h){
+      var t="", lines=String(h.doc.body||"").split("\n");
+      for (var z=0;z<lines.length;z++){
+        var L=lines[z].trim();
+        if (/^【(出处|适用|学段|水平|场景)】/.test(L)) continue;
+        if (L.length>=25){ t=L; break; }
+      }
+      if(!t) t=String(h.doc.body||"").replace(/^【[^】]*】/,"").trim();
+      if (t.length>220) t=t.slice(0,220)+"…";
+      s += "\n· "+t;
+      srcs[h.doc.src]=1;
+    });
+    s += "\n\n【知识出处】"+Object.keys(srcs).join("；");
+    return s;
+  }
+  return "这个问题本地知识库暂时没有直接覆盖。你可以试着问：\n"
     + "· 某个项目怎么练（例如「引体向上怎么练」）\n"
     + "· 膳食与营养怎么安排\n"
     + "· 体重管理要注意什么\n"
@@ -3010,14 +3223,35 @@ function renderSQuiz(){
            : '<div class="row" style="margin-top:6px"><button class="btn pri" onclick="UI.quizSubmit()">'+icon("send",15)+' 提交答案</button></div>')
     + '</div>';
 }
+/* 题库：优先从本地知识库的"题目"类条目解析，保证题目有出处；失败时用内置兜底题 */
 function quizBank(){
-  return [
+  var fallback = [
     {q:"50 米跑主要反映学生的哪项身体素质？", opts:["柔韧性","速度/爆发力","耐力","力量"], a:1},
     {q:"肺活量测试时，正确的做法是？", opts:["快速吹一次即可","深吸气后尽力呼气","边跑边吹","多次短促吹气"], a:1},
     {q:"《国家学生体质健康标准》目前执行的是哪一版？", opts:["2002 年","2007 年","2014 年修订","2020 年"], a:2},
     {q:"坐位体前屈主要测量的是？", opts:["下肢柔韧性","上肢力量","心肺耐力","反应速度"], a:0},
     {q:"耐力跑测试后，合理的做法是？", opts:["立即坐下休息","慢慢走动放松","马上大量饮水","继续冲刺"], a:1}
   ];
+  var qs=[];
+  try {
+    var pool = (typeof KB!=="undefined" && KB.ready)
+      ? KB.all().filter(function(d){ return d.kind==="题目"; }) : [];
+    /* 只保留四个选项的单选题，从中均匀抽取 12 题 */
+    var single = pool.filter(function(d){
+      var m=String(d.body||"").match(/选项：([\s\S]*?)\n正确答案/);
+      return m && m[1].split(" / ").length===4;
+    });
+    var step = Math.max(1, Math.floor(single.length/12));
+    for (var i=0;i<single.length && qs.length<12;i+=step){
+      var m = String(single[i].body||"").match(/题干：([\s\S]*?)\n选项：([\s\S]*?)\n正确答案：([^\n]*)/);
+      if (!m) continue;
+      var opts = m[2].split(" / ").map(function(x){return x.trim();});
+      var ansTxt = m[3].trim();
+      var ai = opts.indexOf(ansTxt);
+      if (ai>=0 && opts.length===4 && m[1].trim()) qs.push({q:m[1].trim(), opts:opts, a:ai, src:single[i].src});
+    }
+  } catch(e){}
+  return qs.length>=6 ? qs : fallback;
 }
 
 /* 学生端⑧：成长曲线 */
@@ -3153,18 +3387,76 @@ function renderTaskPush(){
 }
 
 /* 教师⑥：体测知识题库与组卷 */
+/* 知识库检索卡片（教师/学生共用） */
+function kbDocCard(d){
+  var kindColor = (d.kind==="题目") ? "#7c3aed" : (d.kind==="问答" ? "#0891b2" : "#1d4ed8");
+  return '<div class="kb-doc">'
+    + '<h4><span class="kb-kind" style="background:'+kindColor+'1a;color:'+kindColor+'">'+escapeHtml(d.kind||"知识")+'</span>'+escapeHtml(d.title||"")+'</h4>'
+    + '<div class="kb-body">'+escapeHtml(d.body||"")+'</div>'
+    + ((d.src||d.srcType) ? '<div class="kb-src">来源：<b>'+escapeHtml(d.srcType||"权威资料")+'</b> · '+escapeHtml(d.src||"")+'</div>' : '')
+    + ((d.tags&&d.tags.length) ? '<div class="kb-tags">'+d.tags.slice(0,5).map(function(t){return '<i>'+escapeHtml(t)+'</i>';}).join("")+'</div>' : '')
+    + '</div>';
+}
+function kbSearchUI(){
+  var cats = KB.categories();
+  var active = STATE.kbCat||"";
+  var q = STATE.kbQuery||"";
+  var html = '<div class="kb-search">'
+    + '<input id="kbIn" type="text" placeholder="搜索知识：如 立定跳远怎么练 / 膳食 / 热身 / BMI …" value="'+escapeHtml(q)+'" onkeydown="if(event.key===\'Enter\')UI.kbDoSearch()">'
+    + '<button class="btn pri" onclick="UI.kbDoSearch()">'+icon("book",15)+' 检索</button></div>';
+  html += '<div class="kb-cat"><span class="'+(active?"":"on")+'" onclick="UI.kbCat(\'\')">全部 · '+KB.meta.count+' 条</span>'
+       + cats.map(function(c){ return '<span class="'+(active===c.name?"on":"")+'" onclick="UI.kbCat(\''+c.name.replace(/'/g,"")+'\')">'+escapeHtml(c.name)+' · '+c.count+'</span>'; }).join("")
+       + '</div>';
+  var list, stat;
+  if (q){
+    var res = KB.search(q, {limit:40, cat:active||""});
+    list = res.map(function(r){return kbDocCard(r.doc);}).join("");
+    stat = '检索「<b>'+escapeHtml(q)+'</b>」命中 <b>'+res.length+'</b> 条'+(active?'（分类：'+escapeHtml(active)+'）':'');
+  } else if (active){
+    var docs = KB.byCat(active, 40);
+    list = docs.map(kbDocCard).join("");
+    stat = '分类「<b>'+escapeHtml(active)+'</b>」共 <b>'+KB.byCat(active,9999).length+'</b> 条，显示前 '+docs.length+' 条';
+  } else {
+    var rec = KB.byItem("jump",4).concat(KB.byItem("vc",4));
+    list = rec.map(function(r){return kbDocCard(r.doc);}).join("");
+    stat = '本地知识库共 <b>'+KB.meta.count+'</b> 条 · <b>'+(KB.meta.chars/10000).toFixed(1)+'</b> 万字 · <b>'+KB.meta.sourceCount+'</b> 类来源。输入关键词或点分类开始检索。';
+  }
+  html += '<div class="kb-stat">'+stat+'</div>';
+  html += list ? list : '<div class="kb-empty">没有找到相关条目，试试其他关键词或切换到"全部"分类。</div>';
+  return html;
+}
+/* 教师/管理者端：体测知识库 */
+function renderKB(){
+  return tmHead("体测知识库", "本地检索 · 逐条溯源 · 服务教学与答疑")
+    + kbSearchUI() + '</div>';
+}
+/* 学生端：健康知识库 */
+function renderSKb(){
+  return stuHead("健康知识库", "按项目分类 · 可搜索 · 每条都有出处")
+    + '<div class="note cyan">这里收录了体质健康与科学锻炼的知识，输入你关心的问题或点分类即可查询，每条都标注了来源，方便你查证。</div>'
+    + kbSearchUI() + '</div>';
+}
 function renderQuizBank(){
   var bank = quizBank();
   var picked = STATE.bankPick || [];
-  var rows = bank.map(function(q,i){
+  var showAns = STATE.bankShowAns || {};
+  var cards = bank.map(function(q,i){
     var on = picked.indexOf(i)>=0;
-    return '<div class="ck-item"><div><b>'+(i+1)+'. '+q.q+'</b><div class="sub">正确答案：'+q.opts[q.a]+'</div></div>'
-      + '<button class="btn '+(on?'pri':'')+'" onclick="UI.bankPick('+i+')">'+(on?'已选':'＋选题')+'</button></div>';
+    var opts = q.opts.map(function(o,j){ return '<span>'+String.fromCharCode(65+j)+'. '+escapeHtml(o)+'</span>'; }).join("");
+    return '<div class="quiz-card '+(on?'on':'')+'">'
+      + '<div class="qc-top"><div class="qc-q">'+(i+1)+'. '+escapeHtml(q.q)+'</div><span class="qc-no">'+(on?'已选':'单选')+'</span></div>'
+      + '<div class="qc-opts">'+opts+'</div>'
+      + (showAns[i] ? '<div class="qc-ans">正确答案：'+escapeHtml(q.opts[q.a])+(q.src?' · 出处：'+escapeHtml(q.src):'')+'</div>' : '')
+      + '<div class="row" style="gap:8px">'
+        + '<button class="btn '+(on?'pri':'')+'" onclick="UI.bankPick('+i+')">'+(on?'✓ 已选':'＋ 选题')+'</button>'
+        + '<button class="btn" style="background:#f1f5fb" onclick="UI.bankShowAns('+i+')">'+(showAns[i]?'隐藏答案':'查看答案')+'</button>'
+      + '</div>'
+      + '</div>';
   }).join("");
-  return tmHead("体测知识小测 · 题库与组卷", "围绕测试方法/国标标准/运动常识")
-    + '<div class="note">点选题目→组卷下发，学生端「体测小测」实时可见。已选 <b>'+picked.length+'</b> / '+bank.length+' 题。</div>'
-    + '<div class="ck-list" style="margin-top:10px">'+rows+'</div>'
-    + '<div class="row" style="margin-top:10px"><button class="btn pri" onclick="UI.bankPush()">'+icon("send",15)+' 组卷并下发</button></div>'
+  return tmHead("体测知识小测 · 题库与组卷", "题目来自本地知识库 · 每题可溯源")
+    + '<div class="kb-stat">题库共 <b>'+bank.length+'</b> 题，已选 <b>'+picked.length+'</b> 题。点"选题"加入试卷，组卷后学生端「体测小测」实时可见。</div>'
+    + '<div class="quiz-bank-grid">'+cards+'</div>'
+    + '<div class="row" style="margin-top:14px"><button class="btn pri" onclick="UI.bankPush()">'+icon("send",15)+' 组卷并下发</button></div>'
     + '</div>';
 }
 
@@ -3217,31 +3509,34 @@ function renderCoach(){
   const msgs = STATE.chat.length ? STATE.chat.map(m=>
       '<div class="msg '+(m.who==="me"?"me":"ai")+'">'+(m.who==="ai"?'<div class="msg-who">体测顾问</div>':'')+m.text+'</div>'
     ).join("")
-    : '<div class="msg ai"><div class="msg-who">体测顾问</div>你好，我是体测顾问。可以问我某位学生的成绩与薄弱点、班级整体情况、某个项目怎么练，也可以问这套系统本身。试试下面这些问题。</div>';
+    : '<div class="msg ai"><div class="msg-who">体测顾问</div>你好，我是体测顾问，可以查询学生成绩与薄弱项、班级整体情况，并结合本地知识库给出训练建议。试试下面这些问题。</div>';
 
-  const qs = ["周子墨这次总分多少","他和上次比进步了吗","给我他的运动处方","班里哪几项最弱","怎么用处方系统"];
+  const qs = ["周子墨这次总分多少","他和上次比进步了吗","给我他的运动处方","班里哪几项最弱","立定跳远怎么练","膳食怎么安排"];
+  const cats = (typeof KB!=="undefined"&&KB.ready) ? KB.categories().slice(0,8) : [];
+  const kbc = cats.map(function(c){
+    return '<div class="ck-item" style="cursor:pointer" onclick="UI.go(\'kb\')"><div><b>'+escapeHtml(c.name)+'</b></div><span class="tag t-b">'+c.count+' 条</span></div>';
+  }).join("");
 
   return ''
-  + '<div class="note note-ex cyan mb16"><b>实现方式说明（重要）</b>：本顾问采用<b>规则匹配 + 本地知识库</b>的确定性应答，<b>不调用云端大模型</b>。原因有三：一是学生体质数据不出校园网，是数据安全的硬边界；二是校内网络不具备稳定调用外部服务的条件；三是体测问答需要<b>每次给同一个问题同一个答案</b>，确定性优先于发散性。所有回答均从本机数据实时查询得出，不是预设文案。</div>'
   + '<div class="grid g12">'
-    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>体测顾问 · 多轮问答</h3><span class="sub">离线运行 · 数据本机查询</span></div>'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>体测顾问</h3><span class="sub">数据查询 · 知识库检索</span></div>'
       + '<div class="chat-box" id="chatBox">'+msgs+'</div>'
       + '<div class="q-chips mt12">'+qs.map(q=>'<button class="q-chip" onclick="UI.ask(\''+q+'\')">'+q+'</button>').join("")+'</div>'
       + '<div class="chat-in mt12"><textarea id="chatIn" placeholder="输入问题，回车发送" onkeydown="if(event.key===13&&!event.shiftKey){event.preventDefault();UI.send()}"></textarea>'
       + '<button class="btn pri" onclick="UI.send()">'+icon("send",15)+' 发送</button></div>'
     + '</div>'
-    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>顾问的能力边界</h3></div>'
-      + '<div style="font-size:13.5px;color:#5d6d85;line-height:1.75">'
-        + '<div style="font-weight:700;color:#16202f;margin-bottom:6px">可以回答</div>'
-        + '学生个体：总分、等级、单项得分、BMI 与体型评价、进步幅度<br>'
-        + '班级层面：平均分、优良率、及格率、各项目强弱排序<br>'
-        + '训练建议：针对具体项目的练习方法与负荷安排<br>'
-        + '系统使用：操作流程与权限说明<br><br>'
-        + '<div style="font-weight:700;color:#16202f;margin-bottom:6px">不作答</div>'
-        + '涉及伤病诊断、就医建议、用药与营养处方的问题会提示转由专业人员处理。'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>本地知识库</h3><span class="sub">'+((typeof KB!=="undefined"&&KB.ready)?(KB.meta.count+' 条 · '+(KB.meta.chars/10000).toFixed(1)+' 万字'):'加载中')+'</span></div>'
+      + '<div class="kb-stat">顾问可检索本地知识库并标注出处，数据可查、答案可溯源。</div>'
+      + '<div class="ck-list">'+kbc+'</div>'
+      + '<div class="row" style="margin-top:12px"><button class="btn pri" onclick="UI.go(\'kb\')">'+icon("book",15)+' 打开知识库</button></div>'
+      + '<div style="border-top:1px solid var(--line);margin-top:18px;padding-top:15px">'
+        + '<div style="font-weight:800;color:#12202f;font-size:14px;margin-bottom:10px">数据速查</div>'
+        + '<div class="grid g2" style="gap:8px">'
+          + '<div class="kpi" style="padding:12px"><div class="kpi-l">班级人数</div><div class="kpi-v">'+STUDENTS.length+'</div></div>'
+          + '<div class="kpi" style="padding:12px"><div class="kpi-l">知识来源</div><div class="kpi-v">'+((typeof KB!=="undefined"&&KB.ready)?KB.meta.sourceCount:0)+' 类</div></div>'
+        + '</div>'
+        + '<div class="q-chips mt12">'+["班级平均分","优良率","班里最弱的项目"].map(function(q){return '<button class="q-chip" onclick="UI.ask(\''+q+'\')">'+q+'</button>';}).join("")+'</div>'
       + '</div>'
-      + '<div class="note note-ex amber mt12"><b>为什么不做成聊天机器人</b>：体测场景的问题是高度收敛的，用户要的是准确数字与可执行的训练方法，不是文采。规则引擎可以做到零幻觉、可审计、可离线，代价是不能闲聊——这个取舍在校园场景里是划算的。</div>'
-      + '<div class="footnote" style="margin-top:14px">提示：输入学生姓名即可查询其数据，例如「'+STUDENTS[3].name+' 的薄弱项」。</div>'
     + '</div>'
   + '</div>';
 }
@@ -3600,11 +3895,29 @@ function answer(q){
     }
   }
 
-  // 关于这个系统本身
-  if (/(AI|人工智能|怎么实现|原理|技术上|系统)/.test(q)){
-    return "这套系统由三层组成：\n\n一是确定性计算层，按国标评分表查表算分，这部分不需要 AI，但最需要准确。\n二是知识库层，运动处方和问答都由本地知识库支撑，离线可跑。\n三是交互层，页面、图表和操作流程。\n\nAI 参与的是第二层和第三层的搭建过程，以及评分表的结构化转换。登录求详解请看「AI 溯源」板块，那里逐项列出了 AI 做了什么、人改了什么。";
+  // 知识库兜底检索（带出处）——让顾问对未预设的问题也能基于本地知识回答
+  if (typeof KB!=="undefined" && KB.ready){
+    var hits = KB.search(q, {limit:10}).filter(function(h){
+      return h && h.doc && h.doc.kind!=="题目" && String(h.doc.body||"").length>40;
+    }).slice(0,3);
+    if (hits.length){
+      var s = "根据本地知识库：\n";
+      var srcs={};
+      hits.forEach(function(h){
+        var t="", lines=String(h.doc.body||"").split("\n");
+        for (var z=0;z<lines.length;z++){
+          var L=lines[z].trim();
+          if (/^【(出处|适用|学段|水平|场景)】/.test(L)) continue;
+          if (L.length>=25){ t=L; break; }
+        }
+        if(!t) t=String(h.doc.body||"").replace(/^【[^】]*】/,"").trim();
+        if (t.length>200) t=t.slice(0,200)+"…";
+        s += "\n· "+t; srcs[h.doc.src]=1;
+      });
+      s += "\n\n【知识出处】"+Object.keys(srcs).join("；");
+      return s;
+    }
   }
-
   return "这个问题我暂时答不上来。我可以帮你查：\n\n· 某个学生的总分、单项得分、BMI（直接说姓名）\n· 学生跨学期的进步对比\n· 针对薄弱项的运动处方\n· 班级平均分、及格率、优良率\n· 某个项目的训练方法\n\n例如试试输入「"+STUDENTS[5].name+" 的薄弱项」。";
 }
 
@@ -3637,7 +3950,7 @@ const UI = {
     const err = document.getElementById("lgErr");
     const acc = ACCOUNTS.find(a => a.user === u && a.pwd === p);
     if (!acc){
-      if (err) err.textContent = "账号或密码不正确。可直接点左侧角色卡片自动填入。";
+      if (err) err.textContent = "账号或密码不正确，请重新输入。";
       return;
     }
     STATE.user = acc;
@@ -3735,6 +4048,22 @@ const UI = {
     if (k>=0) STATE.bankPick.splice(k,1); else STATE.bankPick.push(i);
     this.go("quizBank");
   },
+  bankShowAns(i){
+    STATE.bankShowAns = STATE.bankShowAns || {};
+    STATE.bankShowAns[i] = !STATE.bankShowAns[i];
+    this.go("quizBank");
+  },
+  kbDoSearch(){
+    var el = document.getElementById("kbIn");
+    STATE.kbQuery = el ? String(el.value||"").trim() : "";
+    var isStu = (STATE.role==="student");
+    this.go(isStu ? "s_kb" : "kb");
+  },
+  kbCat(cat){
+    STATE.kbCat = cat || "";
+    var isStu = (STATE.role==="student");
+    this.go(isStu ? "s_kb" : "kb");
+  },
   bankPush(){
     if (!STATE.bankPick || !STATE.bankPick.length){ alert("请先选择题目"); return; }
     Engage.add("quiz", { sid:"", group:"全体学生", count:STATE.bankPick.length, pushed:true });
@@ -3819,6 +4148,7 @@ const UI = {
       else if (id==="askReview") html = renderAskReview();
       else if (id==="health")    html = renderHealth();
       else if (id==="taskPush")  html = renderTaskPush();
+      else if (id==="kb")        html = renderKB();
       else if (id==="quizBank")  html = renderQuizBank();
       else if (id==="evalReview")html = renderEvalReview();
       else if (id==="bigscreen") html = renderBigscreen();
@@ -3829,6 +4159,7 @@ const UI = {
       else if (id==="s_rx")     html = renderSRx();
       else if (id==="s_ask")    html = renderSAsk();
       else if (id==="s_health") html = renderSHealth();
+      else if (id==="s_kb")     html = renderSKb();
       else if (id==="s_quiz")   html = renderSQuiz();
       else if (id==="s_track")  html = renderSTrack();
     } catch(e){
@@ -4151,16 +4482,14 @@ const UI = {
     var el = document.getElementById("loginQR");
     if (!el) return;
     if (!STATE.served){
-      el.innerHTML = '<div class="qr-note">本机直接打开（file://）时无法生成可扫码的局域网地址。<br>评委 / 学生可直接点下方按钮以访客身份体验：</div>'
-        + '<button class="login-guest-btn" style="margin-top:12px" onclick="UI.enterGuest()">以访客身份体验（无需扫码）</button>'
-        + '<div class="qr-tip" style="margin-top:10px">如需演示「手机扫码 → 拍照 → 大屏同步」：用自己手机开「个人热点」，本机连该热点后运行 <b>启动校园访问.py</b>，即可生成可扫码的局域网地址（不依赖任何校园网）。</div>';
+      el.innerHTML = '<div class="qr-note">扫码在学生手机 / 平板上打开，需在校园网环境下启动本地服务。<br>本机可直接用账号登录。</div>';
       return;
     }
     var url = guestUrl();
-    el.innerHTML = '<div class="qr-card"><div class="qr-cap">扫码在手机 / 平板上打开（访客模式）</div>'
+    el.innerHTML = '<div class="qr-card"><div class="qr-cap">扫码在手机 / 平板上进入</div>'
       + qrSvg(url, 172, 3)
       + '<div class="qr-url">'+escapeHtml(url)+'</div>'
-      + '<div class="qr-tip">手机、平板、希沃大屏扫同一个码，将以<b>访客身份自动进入</b>，可直接体验全部功能。</div></div>';
+      + '<div class="qr-tip">学生扫码进入后仅可查看本人的测评结果与处方。</div></div>';
   },
   openQR(){
     var b = document.getElementById("qrModalBody");
@@ -4170,15 +4499,11 @@ const UI = {
         var u = guestUrl();
         b.innerHTML = qrSvg(u, 240, 4)
           + '<div class="qr-url" style="margin-top:12px">'+escapeHtml(u)+'</div>'
-          + '<ol class="steps" style="margin-top:14px"><li>用手机 / 平板相机扫码，将<b>以访客身份自动进入</b>（无需输密码）。</li>'
-          + '<li>可自由体验：查看班级画像、本人运动处方、做训练打卡、向处方顾问提问。</li>'
-          + '<li>在「多模态采集」拍照或选图，照片会<b>实时同步到大屏</b>。</li></ol>'
-          + '<div class="qr-tip">访客模式为只读体验，多人扫码各自独立、互不干扰。</div>';
+          + '<ol class="steps" style="margin-top:14px"><li>用手机 / 平板相机扫码，以学生身份进入本人视图。</li>'
+          + '<li>可查看：本人测评结果、运动处方、健康知识库，并上传成绩。</li>'
+          + '<li>在「多模态采集」拍照或选图，照片会<b>实时同步到大屏</b>。</li></ol>';
       } else {
-        b.innerHTML = '<div class="qr-note">当前以本机文件方式打开，未连接任何服务器，无法生成局域网二维码。</div>'
-          + '<button class="login-guest-btn" style="margin-top:12px" onclick="UI.enterGuest()">以访客身份体验（无需扫码）</button>'
-          + '<ol class="steps" style="margin-top:14px"><li>点「以访客身份体验」即可进入系统，自动分配独立账号，只读浏览。</li>'
-          + '<li>若想演示「手机扫码 → 拍照 → 大屏同步」：用自己手机开「个人热点」，本机连该热点后运行 <b>启动校园访问.py</b>，再扫顶栏二维码（全程不依赖校园网）。</li></ol>';
+        b.innerHTML = '<div class="qr-note">当前未启动本地服务，无法生成局域网二维码。请在校园网环境下启动本地服务后再扫码。</div>';
       }
     }
     if (m) m.classList.add("on");
