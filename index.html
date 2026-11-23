@@ -694,9 +694,41 @@ body.clean .note-ex{display:none !important}
 .quiz-card .qc-ans{font-size:11.8px;color:#15803d;background:#e7f6ed;border-radius:6px;padding:5px 9px;margin-top:auto}
 .quiz-card button{margin-top:10px;align-self:flex-start}
 
+/* ============ 六轮改造：简洁主控式布局 ============ */
+/* 主辅分栏：左侧学生列表 + 右侧当前学生详情，点击即联动，不跳顶 */
+.gmd{display:grid;grid-template-columns:290px 1fr;gap:16px;align-items:start}
+.gmd .md-list{max-height:560px;overflow-y:auto;overscroll-behavior:contain;padding-right:3px}
+.md-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;cursor:pointer;margin-bottom:7px;transition:all .13s;background:#fff}
+.md-item:hover{border-color:var(--brand);background:#f7faff}
+.md-item.on{border-color:var(--brand);background:var(--brand-l);box-shadow:0 2px 8px rgba(37,99,235,.14)}
+.md-ava{width:34px;height:34px;flex:0 0 34px;border-radius:9px;background:linear-gradient(140deg,#dbeafe,#bfdbfe);color:#1d4ed8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.md-item.on .md-ava{background:linear-gradient(140deg,#3b82f6,#2563eb);color:#fff}
+.md-meta{flex:1;min-width:0}
+.md-meta b{font-size:14px;display:block;line-height:1.25}
+.md-meta small{font-size:11px;color:var(--text-3)}
+.md-score{text-align:right;font-size:15px;font-weight:800;color:var(--text)}
+.md-score small{display:block;font-size:11px;font-weight:700}
+/* 精简 KPI 条 */
+.mini-kpi{display:flex;gap:12px;flex-wrap:wrap}
+.mini-kpi .mk{flex:1;min-width:130px;background:#f8fafd;border:1px solid var(--line);border-radius:11px;padding:11px 14px}
+.mini-kpi .mk .l{font-size:12px;color:var(--text-2)}
+.mini-kpi .mk .v{font-size:23px;font-weight:800;margin-top:2px;line-height:1.15}
+/* 分段标签切换 */
+.seg{display:inline-flex;background:#eef2f8;border-radius:10px;padding:3px;gap:2px}
+.seg button{border:none;background:transparent;padding:6px 15px;border-radius:8px;font:inherit;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;transition:.14s}
+.seg button.on{background:#fff;color:var(--brand);box-shadow:0 1px 4px rgba(19,35,56,.12)}
+/* 表单网格：标签在上，输入在下 */
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 14px}
+.form-grid .fg label{display:block;font-size:12.5px;color:var(--text-2);font-weight:600;margin-bottom:5px}
+.form-grid .fg .mini-in{width:100%}
+.form-grid .fg-wide{grid-column:1/-1}
+.sec-label{font-size:12px;font-weight:700;color:var(--text-3);letter-spacing:.4px;margin:2px 0 8px}
+/* 概览数字带单位 */
+.big-num{font-size:34px;font-weight:800;letter-spacing:-.5px;line-height:1.1}
+.hint-soft{font-size:12px;color:var(--text-3);line-height:1.6}
+
 </style>
 </head>
-<script src="kb_data.js"></script>
 <script src="std_data.js"></script>
 <body data-page-node-id="rueupgLJWuotmX2xLBkSLK">
 <div id="app" data-page-node-id="fuZW8fFdyEw9dfeVxITZj7">
@@ -792,6 +824,7 @@ body.clean .note-ex{display:none !important}
    全部在本机计算，不联网、不调用外部模型；每条命中都可追溯到来源。
    ===================================================================== */
 const KB = (function(){
+  /* 数据后台异步装载：首屏不等待 2.8MB 知识库，登录页先渲染；装载完成由 load() 注入 */
   var DOCS = (typeof window!=="undefined" && window.KB_DOCS) ? window.KB_DOCS : [];
   var META = (typeof window!=="undefined" && window.KB_META) ? window.KB_META : {count:DOCS.length,chars:0,sourceCount:0};
   /* 体测项目 -> 知识库分类/关键词别名，便于按项目精准取知识 */
@@ -881,8 +914,18 @@ const KB = (function(){
     var m={}; DOCS.forEach(function(d){ m[d.cat]=(m[d.cat]||0)+1; });
     return Object.keys(m).map(function(k){return {name:k,count:m[k]};}).sort(function(a,b){return b.count-a.count;});
   }
+  function load(docs, meta){
+    if (!docs || !docs.length) return false;
+    DOCS = docs;
+    if (meta){
+      META.count = meta.count;
+      META.chars = meta.chars;
+      META.sourceCount = meta.sourceCount;
+    }
+    return true;
+  }
   return { all:function(){return DOCS;}, meta:META, search:search, byItem:byItem, byCat:byCat, categories:categories,
-           aliases:ITEM_ALIAS, ready:DOCS.length>0 };
+           aliases:ITEM_ALIAS, load:load, get ready(){ return DOCS.length>0; } };
 })();
 
 /* ---------------- 1. 国标评分表（2014修订 · 高中一年级） ---------------- */
@@ -3688,105 +3731,107 @@ function renderHeatmap(){
 }
 
 /* 教师②：处方效果追踪（跨学期复测 + 建议推送）——逐步闭环 */
+/* 教师②：处方效果追踪——主辅式：左学生清单 + 右该生复测闭环（点击联动，不跳顶） */
 function renderRxEffect(){
   var students = visibleStudents();
   var stu = STUDENTS.find(function(x){return x.id===STATE.stuId;}) || students[0] || STUDENTS[0];
   var logs = rxLogsOf(stu.id);
   var pushedLogs = logs.filter(function(r){return r.status==="pushed";});
   var scores = TERMS.map(function(t){return getScore(stu,t.id).total;});
-  var watchKeys = ITEMS.slice().sort(function(a,b){
+  var dFirst = scores[0], dLast = scores[scores.length-1], gain = Math.round((dLast-dFirst)*10)/10;
+  var weakKeys = ITEMS.slice().sort(function(a,b){
     return getScore(stu,STATE.term).parts[a.key].score-getScore(stu,STATE.term).parts[b.key].score;
   }).slice(0,3).map(function(x){return x.key;});
   var SER_COLORS = ["#dc2626","#f59e0b","#0891b2"];
-  var itemSeries = watchKeys.map(function(k,i){
+  var itemSeries = weakKeys.map(function(k,i){
     return { data:TERMS.map(function(t){return getScore(stu,t.id).parts[k].score;}), color:SER_COLORS[i] };
   });
-  var watchLegend = watchKeys.map(function(k,i){
+  var watchLegend = weakKeys.map(function(k,i){
     return '<span><i style="background:'+SER_COLORS[i]+'"></i>'+itemName(stu.gender,k)+'</span>';
   }).join("");
   var all = students.map(function(s){return getScore(s,STATE.term).total-getScore(s,TERMS[0].id).total;});
   var avg = all.length ? Math.round(all.reduce(function(a,b){return a+b;},0)/all.length*10)/10 : 0;
 
-  var picker = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>选择学生查看处方闭环</h3>'
-    + '<span class="sub">共 '+students.length+' 人</span></div><div class="track-pick">'
-    + students.slice(0,60).map(function(s){
-        return '<div class="track-chip '+(s.id===stu.id?"on":"")+'" onclick="UI.rxEffectPick(\''+s.id+'\')">'+s.name+'</div>';
-      }).join("")+'</div></div>';
+  /* 左：学生清单，点击即联动右侧，不跳顶 */
+  var list = students.map(function(s){
+    var t1=getScore(s,TERMS[0].id).total, t3=getScore(s,STATE.term).total;
+    var d=Math.round((t3-t1)*10)/10, cls=d>=6?"t-g":d>=0?"t-b":"t-r";
+    return '<div class="md-item '+(s.id===stu.id?'on':'')+'" onclick="UI.rxEffectPick(\''+s.id+'\')">'
+      + '<div class="md-ava">'+escapeHtml(s.name.slice(-2))+'</div>'
+      + '<div class="md-meta"><b>'+escapeHtml(s.name)+'</b><small>'+escapeHtml(s.cls)+'</small></div>'
+      + '<div class="md-score">'+t3+'<small><span class="tag '+cls+'">'+(d>=0?'+':'')+d+'</span></small></div>'
+      + '</div>';
+  }).join("");
 
-  /* 时间线：测评 → 生成 → 推送 → 复测 → 下一轮 */
-  var dFirst = scores[0], dLast = scores[scores.length-1], gain = Math.round((dLast-dFirst)*10)/10;
+  /* 五步闭环流程条 */
+  var stepDef = [['首次测评',true],['生成处方',true],['教师推送',pushedLogs.length>0],['复测验证',pushedLogs.length>0],['再处方',pushedLogs.length>1]];
+  var flow = '<div class="rx-flow">'+stepDef.map(function(s,i){
+      return (i?'<span class="fa">→</span>':'')+'<span class="fs '+(s[1]?'done':'')+'">'+(i+1)+'. '+s[0]+'</span>';
+    }).join('')+'</div>';
+
+  /* 时间线：测评 → 推送 → 复测 → 下一轮 */
   var weak0 = ITEMS.slice().sort(function(a,b){
     return getScore(stu,TERMS[0].id).parts[a.key].score-getScore(stu,TERMS[0].id).parts[b.key].score;
   })[0];
-  var weak1 = ITEMS.slice().sort(function(a,b){
-    return getScore(stu,STATE.term).parts[a.key].score-getScore(stu,STATE.term).parts[b.key].score;
-  })[0];
   var w0 = getScore(stu,TERMS[0].id).parts[weak0.key].score;
-  var w1 = getScore(stu,STATE.term).parts[weak1.key].score;
-
   var timeline = '<div class="tl-evidence">'
     + '<div class="tl-ev ok"><div class="d">'+TERMS[0].name+' · 首次测评</div><div class="t">总分 '+dFirst+' 分，最薄弱项为 '+itemName(stu.gender,weak0.key)+'（'+w0+' 分）。</div></div>'
     + pushedLogs.map(function(r,i){
+        var idx=Math.min(i+1,scores.length-1);
         return '<div class="tl-ev ai"><div class="d">第 '+(i+1)+' 轮 · '+fmtStamp(r.pushTs||r.ts)+' · 教师推送处方</div>'
           + '<div class="t">'+escapeHtml((r.plan||"").split("\n").slice(0,2).join(" "))+'…</div></div>'
-          + '<div class="tl-ev ok"><div class="d">复测 · '+TERMS[Math.min(i+1,TERMS.length-1)].name+'</div>'
-          + '<div class="t">总分提升至 '+scores[Math.min(i+1,scores.length-1)]+' 分。'+(w1>w0?'薄弱项 '+itemName(stu.gender,weak1.key)+' 由 '+w0+' 升至 '+w1+' 分，处方有效。':'仍有提升空间，进入下一轮。')+'</div></div>';
+          + '<div class="tl-ev ok"><div class="d">复测 · '+TERMS[idx].name+'</div>'
+          + '<div class="t">总分 '+scores[idx]+' 分，'+(scores[idx]>dFirst?'较首次提升 '+(scores[idx]-dFirst)+' 分，处方有效。':'继续跟踪下一轮。')+'</div></div>';
       }).join("")
-    + (!pushedLogs.length ? '<div class="tl-ev"><div class="d">待办</div><div class="t">该生尚未推送处方，请到「AI 运动处方」生成并审核推送。</div></div>' : '')
+    + (!pushedLogs.length ? '<div class="tl-ev"><div class="d">待办</div><div class="t">该生尚未推送处方，先在「AI 运动处方」生成并审核推送，闭环即可点亮。</div></div>' : '')
     + '</div>';
-
-  var rows = students.map(function(s){
-    var t1=getScore(s,TERMS[0].id).total, t3=getScore(s,STATE.term).total;
-    var d=Math.round((t3-t1)*10)/10;
-    var cls=d>=6?"t-g":d>=0?"t-b":"t-r";
-    var weak=weakItems(s,getScore(s,STATE.term)).slice(0,2).map(function(w){return w.name;}).join("、")||"保持";
-    return '<tr class="'+(s.id===stu.id?'row-on':'')+'" onclick="UI.rxEffectPick(\''+s.id+'\')" style="cursor:pointer">'
-      + '<td><b>'+s.name+'</b><div style="font-size:11px;color:#8b99ad">'+s.cls+'</div></td>'
-      + '<td class="num">'+t1+'</td><td class="num"><b>'+t3+'</b></td>'
-      + '<td><span class="tag '+cls+'">'+(d>=0?"↑":"↓")+' '+Math.abs(d).toFixed(1)+'</span></td>'
-      + '<td style="color:#5d6d85">'+weak+'</td>'
-      + '<td style="text-align:right"><button class="btn sm '+(s.id===stu.id?'pri':'')+'">查看</button></td></tr>';
-  }).join("");
 
   var targets = ["全体学生"].concat(classNamesOf(STATE.gradeFilter||DEFAULT_GRADE));
   var tOpts = targets.map(function(g){return '<option'+(STATE.rxTarget===g?' selected':'')+'>'+g+'</option>';}).join("");
 
   return filterBar()
-    + tmHead("处方效果追踪", (STATE.gradeFilter||"全校")+" · "+(STATE.classFilter||"全部班级")+" · 复测对比与闭环")
-    + '<div class="grid g3 mb16">'
-      + '<div class="kpi"><div class="kpi-l">追踪人数</div><div class="kpi-v">'+students.length+'</div></div>'
-      + '<div class="kpi"><div class="kpi-l">平均提升</div><div class="kpi-v" style="color:'+(avg>=0?'var(--ok)':'var(--bad)')+'">'+(avg>=0?'+':'')+avg+'</div></div>'
-      + '<div class="kpi"><div class="kpi-l">已推送处方</div><div class="kpi-v">'+Engage.list("rxlog").filter(function(r){return r.status==="pushed";}).length+' 份</div></div>'
+    + tmHead("处方效果追踪", (STATE.gradeFilter||"全校")+" · "+students.length+" 人 · 复测闭环")
+    + '<div class="mini-kpi mb16">'
+      + '<div class="mk"><div class="l">追踪人数</div><div class="v">'+students.length+'</div></div>'
+      + '<div class="mk"><div class="l">平均提升</div><div class="v" style="color:'+(avg>=0?'var(--ok)':'var(--bad)')+'">'+(avg>=0?'+':'')+avg+'<span style="font-size:13px"> 分</span></div></div>'
+      + '<div class="mk"><div class="l">已推送处方</div><div class="v">'+Engage.list("rxlog").filter(function(r){return r.status==="pushed";}).length+'<span style="font-size:13px"> 份</span></div></div>'
+      + '<div class="mk"><div class="l">该生变化</div><div class="v" style="color:'+(gain>=0?'var(--ok)':'var(--bad)')+'">'+(gain>=0?'+':'')+gain+'<span style="font-size:13px"> 分</span></div></div>'
     + '</div>'
-    + picker
-    + '<div class="grid g2 mb16">'
-      + '<div class="card"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' · 总分趋势</h3><span class="sub">累计 '+(gain>=0?"+":"")+gain+' 分</span></div>'
-        + lineChart([{data:scores,color:"#2563eb"}],TERMS.map(function(t){return t.label;}),520,200)
+    + '<div class="gmd">'
+      + '<div class="card"><div class="card-h"><span class="dot"></span><h3>选择学生</h3><span class="sub">点击看闭环</span></div>'
+        + '<div class="md-list">'+list+'</div></div>'
+      + '<div>'
+        + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>'+escapeHtml(stu.name)+' · 复测闭环</h3>'
+          + '<span class="sub">'+dFirst+' → '+dLast+' 分</span></div>'
+          + flow
+          + '<div class="mini-kpi mb12">'
+            + '<div class="mk"><div class="l">首次测评</div><div class="v">'+dFirst+'</div></div>'
+            + '<div class="mk"><div class="l">本次测评</div><div class="v">'+dLast+'</div></div>'
+            + '<div class="mk"><div class="l">累计提升</div><div class="v" style="color:'+(gain>=0?'var(--ok)':'var(--bad)')+'">'+(gain>=0?'+':'')+gain+'</div></div>'
+            + '<div class="mk"><div class="l">已推送轮次</div><div class="v">'+pushedLogs.length+'</div></div>'
+          + '</div>'
+          + '<div class="sec-label">总分趋势</div>'
+          + lineChart([{data:scores,color:"#2563eb"}],TERMS.map(function(t){return t.label;}),520,168)
+          + '<div class="sec-label" style="margin-top:14px">薄弱项得分变化</div>'
+          + lineChart(itemSeries,TERMS.map(function(t){return t.label;}),520,168)
+          + '<div class="legend" style="justify-content:center;margin-top:4px">'+watchLegend+'</div>'
+        + '</div>'
+        + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>逐步闭环</h3><span class="sub">测评 → 推送 → 复测 → 再处方</span></div>'+timeline+'</div>'
+        + '<div class="card"><div class="card-h"><span class="dot"></span><h3>生成下一阶段建议并推送</h3>'
+          + '<span class="sub">当前学生：'+escapeHtml(stu.name)+' · 依据复测结果检索知识库</span></div>'
+          + '<div class="grid g3 mb12">'
+            + '<div><div class="ck-label">推送对象</div><select id="rxTarget" class="mini-in">'+tOpts+'</select></div>'
+            + '<div><div class="ck-label">计划类型</div><select id="rxPlanType" class="mini-in"><option>下一阶段专项训练计划</option><option>薄弱项巩固练习</option><option>假期自主锻炼建议</option></select></div>'
+            + '<div class="ck-label" style="display:flex;align-items:flex-end"><button class="btn" style="width:100%" onclick="UI.rxSuggestAI()">'+icon("bulb",15)+' 生成 AI 建议</button></div>'
+          + '</div>'
+          + '<div class="ck-label">建议内容（可编辑，推送前可修改）</div>'
+          + '<textarea id="rxSuggest" class="rx-suggest" placeholder="点「生成 AI 建议」自动生成，或手动填写">'+escapeHtml(STATE.rxSuggest||"")+'</textarea>'
+          + '<div class="row mt12" style="gap:8px;justify-content:flex-end">'
+            + '<button class="btn pri" onclick="UI.rxPushPlan()">'+icon("send",15)+' 推送训练计划到学生端</button>'
+          + '</div></div>'
       + '</div>'
-      + '<div class="card"><div class="card-h"><span class="dot"></span><h3>薄弱项变化</h3><span class="sub">三项最弱项目</span></div>'
-        + lineChart(itemSeries,TERMS.map(function(t){return t.label;}),520,200)
-        + '<div class="legend" style="justify-content:center;margin-top:8px">'+watchLegend+'</div>'
-      + '</div>'
-    + '</div>'
-    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' · 逐步闭环</h3>'
-      + '<span class="sub">测评 → 推送 → 复测 → 再处方</span></div>'+timeline+'</div>'
-    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>复测明细 · 点击学生切换闭环</h3>'
-      + '<span class="sub">共 '+students.length+' 人 · 按提升幅度</span></div>'
-      + '<div class="tbl-wrap rx-tbl"><table><thead><tr><th>学生</th><th style="text-align:right">首次</th><th style="text-align:right">本次</th><th style="text-align:right">变化</th><th>待提升项</th><th style="text-align:right">闭环</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>'
-    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>生成下一阶段建议并推送</h3>'
-      + '<span class="sub">当前学生：'+stu.name+' · 依据复测结果检索知识库</span></div>'
-      + '<div class="grid g3 mb12">'
-        + '<div><div class="ck-label">推送对象</div><select id="rxTarget" class="mini-in">'+tOpts+'</select></div>'
-        + '<div><div class="ck-label">计划类型</div><select id="rxPlanType" class="mini-in"><option>下一阶段专项训练计划</option><option>薄弱项巩固练习</option><option>假期自主锻炼建议</option></select></div>'
-        + '<div class="ck-label" style="display:flex;align-items:flex-end"><button class="btn" style="width:100%" onclick="UI.rxSuggestAI()">'+icon("bulb",15)+' 生成 AI 建议</button></div>'
-      + '</div>'
-      + '<div class="ck-label">建议内容（可编辑，推送前可修改）</div>'
-      + '<textarea id="rxSuggest" class="rx-suggest" placeholder="点「生成 AI 建议」自动生成，或手动填写">'+escapeHtml(STATE.rxSuggest||"")+'</textarea>'
-      + '<div class="row mt12" style="gap:8px;justify-content:flex-end">'
-        + '<button class="btn pri" onclick="UI.rxPushPlan()">'+icon("send",15)+' 推送训练计划到学生端</button>'
-      + '</div></div>';
+    + '</div>';
 }
-
 /* 教师③：答疑审核（对接学生端体测答疑）——大屏可读排版 */
 function renderAskReview(){
   var all = Engage.list("asks");
@@ -3901,6 +3946,13 @@ function kbDocCard(d){
     + '</div>';
 }
 function kbSearchUI(){
+  if (typeof KB==="undefined" || !KB.ready){
+    return '<div class="card" style="text-align:center;padding:40px 20px">'
+      + '<div style="font-size:17px;font-weight:700;color:var(--text)">知识库正在后台加载…</div>'
+      + '<div class="hint-soft" style="margin-top:8px">首次打开需下载本地知识库（约 70 万字），加载完成后本页会自动刷新，其他功能不受影响。</div>'
+      + (STATE && STATE.kbError ? '<div class="hint-soft" style="margin-top:10px;color:var(--bad)">加载失败，请检查 kb_data.js 是否与网页在同一目录后刷新。</div>' : '')
+      + '</div>';
+  }
   var cats = KB.categories();
   var active = STATE.kbCat||"";
   var q = STATE.kbQuery||"";
@@ -4071,6 +4123,8 @@ function renderAccounts(){
   var custom = CustomAccounts.all();
   var all = ACCOUNTS.map(function(a){ return {a:a, builtin:true}; })
     .concat(custom.map(function(a){ return {a:a, builtin:false}; }));
+  var nTeacher = all.filter(function(o){return o.a.role==="teacher";}).length;
+  var nStu = all.filter(function(o){return o.a.role==="student";}).length;
   var rows = all.map(function(o){
     var a=o.a;
     return '<tr><td><b>'+escapeHtml(a.user)+'</b></td><td>'+escapeHtml(a.name||"")+'</td>'
@@ -4090,37 +4144,44 @@ function renderAccounts(){
         + '<button class="btn" onclick="UI.acctCancel()">取消</button>'
         + '<button class="btn pri" onclick="UI.acctConfirm()">'+icon("check",15)+' 确认导入 '+imp.rows.length+' 个</button></div></div>';
   }
-  return tmHead("账号管理 · 学生与教师", "模板一键导入 · 平台添加 · 仅管理员可操作")
-    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>导入账号</h3>'
-      + '<span class="sub">支持 CSV / Excel 复制粘贴 · 表头：账号,姓名,密码,角色,班级,绑定学生姓名</span></div>'
-      + '<div class="acct-import">'
-        + '<div class="acct-step"><b>① 下载模板</b><div class="sub">按模板填写账号信息</div>'
-          + '<div class="row mt12" style="gap:8px"><button class="btn" onclick="UI.acctTpl()">'+icon("sheet",15)+' 下载账号模板</button></div>'
-          + '<div class="acct-tip">角色填「教师」或「学生」；学生可填「绑定学生姓名」，登录后即查看该生成绩。</div></div>'
-        + '<div class="acct-step"><b>② 粘贴或选文件</b><div class="sub">粘贴表格内容，或选 CSV / XLSX</div>'
-          + '<textarea id="acctText" class="acct-text" placeholder="账号,姓名,密码,角色,班级,绑定学生姓名&#10;25101,李思远,123456,学生,高一(1)班,李思远&#10;t01,张老师,tea123,教师,高一(1)班,"></textarea>'
-          + '<div class="row mt12" style="gap:8px;flex-wrap:wrap">'
-            + '<button class="btn pri" onclick="UI.acctParseText()">'+icon("check",15)+' 解析粘贴内容</button>'
-            + '<label class="btn" style="cursor:pointer;margin-bottom:0">'+icon("up",15)+' 选择文件'
-            + '<input type="file" accept=".csv,.txt,.xlsx" style="display:none" onchange="UI.acctFile(this)"></label>'
-          + '</div></div>'
-      + '</div>'+preview+'</div>'
-    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>平台手动添加</h3>'
-      + '<span class="sub">逐个添加，立即生效</span></div>'
-      + '<div class="acct-add">'
-        + '<input id="aaUser" class="mini-in" placeholder="账号（学号/工号，唯一）">'
-        + '<input id="aaName" class="mini-in" placeholder="姓名">'
-        + '<input id="aaPwd" class="mini-in" placeholder="密码">'
-        + '<select id="aaRole" class="mini-in"><option value="student">学生</option><option value="teacher">教师</option></select>'
-        + '<input id="aaCls" class="mini-in" placeholder="班级（教师填任教班级）">'
-        + '<input id="aaBind" class="mini-in" placeholder="绑定学生姓名（学生账号用）">'
-        + '<button class="btn pri" onclick="UI.acctAddOne()">'+icon("plus",15)+' 添加账号</button>'
+  var tab = STATE.acctTab || "import";
+  var seg = '<div class="seg" style="margin-left:auto">'
+    + '<button class="'+(tab==="import"?"on":"")+'" onclick="UI.acctTab(\'import\')">批量导入</button>'
+    + '<button class="'+(tab==="add"?"on":"")+'" onclick="UI.acctTab(\'add\')">手动添加</button></div>';
+  var importBody = '<div class="grid g2">'
+    + '<div class="acct-step"><b>① 下载模板</b><div class="hint-soft" style="margin-top:5px">按表头填写：账号,姓名,密码,角色,班级,绑定学生姓名</div>'
+      + '<div class="row mt12"><button class="btn" onclick="UI.acctTpl()">'+icon("sheet",15)+' 下载账号模板</button></div>'
+      + '<div class="hint-soft" style="margin-top:10px">角色填「教师 / 学生」；学生账号填「绑定学生姓名」后，登录即查看该生成绩。</div></div>'
+    + '<div class="acct-step"><b>② 粘贴或选文件</b><div class="hint-soft" style="margin-top:5px">支持 CSV / XLSX，也可直接从 Excel 复制粘贴</div>'
+      + '<textarea id="acctText" class="acct-text" placeholder="账号,姓名,密码,角色,班级,绑定学生姓名&#10;25101,李思远,123456,学生,高一(1)班,李思远&#10;t01,张老师,tea123,教师,高一(1)班,"></textarea>'
+      + '<div class="row mt12" style="gap:8px;flex-wrap:wrap">'
+        + '<button class="btn pri" onclick="UI.acctParseText()">'+icon("check",15)+' 解析粘贴内容</button>'
+        + '<label class="btn" style="cursor:pointer;margin-bottom:0">'+icon("up",15)+' 选择文件'
+        + '<input type="file" accept=".csv,.txt,.xlsx" style="display:none" onchange="UI.acctFile(this)"></label>'
       + '</div></div>'
-    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>账号列表</h3>'
-      + '<span class="sub">内置 '+ACCOUNTS.length+' 个 · 自定义 '+custom.length+' 个</span></div>'
+    + '</div>' + preview;
+  var addBody = '<div class="form-grid">'
+    + '<div class="fg"><label>账号（学号 / 工号，唯一）</label><input id="aaUser" class="mini-in" placeholder="如 25101"></div>'
+    + '<div class="fg"><label>姓名</label><input id="aaName" class="mini-in" placeholder="如 李思远"></div>'
+    + '<div class="fg"><label>密码</label><input id="aaPwd" class="mini-in" placeholder="如 123456"></div>'
+    + '<div class="fg"><label>角色</label><select id="aaRole" class="mini-in"><option value="student">学生</option><option value="teacher">教师</option></select></div>'
+    + '<div class="fg"><label>班级（教师填任教班级）</label><input id="aaCls" class="mini-in" placeholder="如 高一(1)班"></div>'
+    + '<div class="fg"><label>绑定学生姓名（学生账号用）</label><input id="aaBind" class="mini-in" placeholder="登录后查看该生成绩"></div>'
+    + '<div class="fg fg-wide"><button class="btn pri" onclick="UI.acctAddOne()">'+icon("plus",15)+' 添加账号</button></div>'
+    + '</div>';
+  return tmHead("账号管理", "内置 "+ACCOUNTS.length+" 个 · 自定义 "+custom.length+" 个 · 仅管理员")
+    + '<div class="mini-kpi mb16">'
+      + '<div class="mk"><div class="l">内置账号</div><div class="v">'+ACCOUNTS.length+'</div></div>'
+      + '<div class="mk"><div class="l">自定义账号</div><div class="v">'+custom.length+'</div></div>'
+      + '<div class="mk"><div class="l">教师账号</div><div class="v">'+nTeacher+'</div></div>'
+      + '<div class="mk"><div class="l">学生账号</div><div class="v">'+nStu+'</div></div>'
+    + '</div>'
+    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>添加账号</h3>'+seg+'</div>'
+      + (tab==="import" ? importBody : addBody)
+    + '</div>'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>账号列表</h3><span class="sub">共 '+all.length+' 个账号</span></div>'
       + '<div class="tbl-wrap"><table><thead><tr><th>账号</th><th>姓名</th><th>角色</th><th>班级 / 范围</th><th style="text-align:right">操作</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
 }
-
 /* 教师：希沃大屏投放页——推送任务全屏轮播展示 */
 function renderBigTask(){
   var list = (Engage.list("tasks")||[]).filter(function(t){ return t.channel && t.channel.indexOf("大屏")>=0 || STATE.screenQueue && STATE.screenQueue.indexOf(t.id)>=0; });
@@ -4216,70 +4277,89 @@ function renderCoach(){
 }
 
 function renderTrack(){
-  const stu = STUDENTS.find(s=>s.id===STATE.stuId) || STUDENTS[0];
-  const scores = TERMS.map(t=>getScore(stu, t.id).total);
-  const st = TERMS.map(t=>classStats(t.id));
-  const G = stu.gender;
+  var students = visibleStudents();
+  var stu = STUDENTS.find(function(s){return s.id===STATE.stuId;}) || students[0] || STUDENTS[0];
+  var scores = TERMS.map(function(t){return getScore(stu, t.id).total;});
+  var G = stu.gender;
+  var chg = Math.round((scores[2]-scores[0])*10)/10;
 
-  const itemSeries = ITEMS.map(i=>{
-    const data = TERMS.map(t=>getScore(stu,t.id).parts[i.key].score);
-    const delta = data[2] - data[0];
-    const col = delta>0?"#15803d":delta<0?"#dc2626":"#5d6d85";
+  var itemSeries = ITEMS.map(function(i){
+    var data = TERMS.map(function(t){return getScore(stu,t.id).parts[i.key].score;});
+    var delta = data[2] - data[0];
+    var col = delta>0?"#15803d":delta<0?"#dc2626":"#5d6d85";
     return '<tr><td>'+itemName(G,i.key)+'</td>'
-      + TERMS.map((t,idx)=>'<td class="num" style="text-align:right;color:'+scoreColor(data[idx])+';font-weight:700">'+data[idx]+'</td>').join("")
+      + TERMS.map(function(t,idx){return '<td class="num" style="text-align:right;color:'+scoreColor(data[idx])+';font-weight:700">'+data[idx]+'</td>';}).join("")
       + '<td class="num" style="text-align:right;font-weight:800;color:'+col+'">'+(delta>0?"+":"")+delta+'</td>'
       + '<td><span class="tag '+(delta>4?"t-g":delta>=0?"t-b":"t-r")+'">'+(delta>4?"明显提升":delta>=0?"稳中有进":"需关注")+'</span></td></tr>';
   }).join("");
 
-  const clsSeries = TERMS.map(t=>st[TERMS.indexOf(t)].avg);
-  const passSeries = TERMS.map(t=>st[TERMS.indexOf(t)].passRate);
-  const goodSeries = TERMS.map(t=>st[TERMS.indexOf(t)].goodRate);
+  /* 左：学生清单，点击右侧联动，不跳顶 */
+  var list = students.map(function(s){
+    var a=getScore(s,TERMS[0].id).total, b=getScore(s,STATE.term).total;
+    var d=Math.round((b-a)*10)/10, cls=d>=6?"t-g":d>=0?"t-b":"t-r";
+    return '<div class="md-item '+(s.id===stu.id?'on':'')+'" onclick="UI.pick(\''+s.id+'\')">'
+      + '<div class="md-ava">'+escapeHtml(s.name.slice(-2))+'</div>'
+      + '<div class="md-meta"><b>'+escapeHtml(s.name)+'</b><small>'+escapeHtml(s.cls)+'</small></div>'
+      + '<div class="md-score">'+b+'<small><span class="tag '+cls+'">'+(d>=0?'+':'')+d+'</span></small></div>'
+      + '</div>';
+  }).join("");
 
-  const improve = visibleStudents().map(s=>{
-    const a = getScore(s,"t1").total, b = getScore(s,STATE.term).total;
-    return { s, d: Math.round((b-a)*10)/10, a, b };
-  }).sort((x,y)=>y.d-x.d);
-  const up = improve.filter(x=>x.d>0).length;
-  var picker = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>选择学生查看成长曲线</h3>'
-    + '<span class="sub">'+(STATE.classFilter||STATE.gradeFilter||"全校")+' · 共 '+visibleStudents().length+' 人</span></div>'
-    + '<div class="track-pick big" onwheel="event.stopPropagation()">'+visibleStudents().slice(0,60).map(function(s){
-        var b=getScore(s,STATE.term).total;
-        return '<div class="track-chip '+(s.id===STATE.stuId?"on":"")+'" onclick="UI.pick(\''+s.id+'\');UI.go(\'track\')">'+s.name+' · '+b+'</div>';
-      }).join("")+'</div></div>';
+  var st = TERMS.map(function(t){return classStats(t.id);});
+  var clsSeries = st.map(function(x){return x.avg;});
+  var passSeries = st.map(function(x){return x.passRate;});
+  var goodSeries = st.map(function(x){return x.goodRate;});
+  var improve = students.map(function(s){
+    var a=getScore(s,"t1").total, b=getScore(s,STATE.term).total;
+    return {s:s,d:Math.round((b-a)*10)/10,a:a,b:b};
+  }).sort(function(x,y){return y.d-x.d;});
+  var up = improve.filter(function(x){return x.d>0;}).length;
+  var weakNow = weakItems(stu,getScore(stu,STATE.term)).slice(0,2).map(function(w){return w.name;}).join("、")||"保持";
 
-  return ''
-  + (isStudent() ? '' : filterBar())
-  + (isStudent() ? '' : picker)
-  + (isStudent() ? '' : renderExecCard())
-  + '<div class="grid g4 mb16">'
-    + '<div class="kpi green"><div class="kpi-l">'+stu.name+' 三次总分</div><div class="kpi-v g">'+scores[0]+' → '+scores[2]+'</div><div class="kpi-s">累计 '+(scores[2]-scores[0]>0?"+":"")+Math.round((scores[2]-scores[0])*10)/10+' 分</div></div>'
-    + '<div class="kpi blue"><div class="kpi-l">班级平均分走势</div><div class="kpi-v b">'+clsSeries[0]+' → '+clsSeries[2]+'</div><div class="kpi-s">'+TERMS[0].name+' 起</div></div>'
-    + '<div class="kpi cyan"><div class="kpi-l">及格率变化</div><div class="kpi-v c">'+passSeries[0]+' → '+passSeries[2]+'<span class="kpi-u">%</span></div><div class="kpi-s">持续跟踪三个学期</div></div>'
-    + '<div class="kpi purple"><div class="kpi-l">成绩提升人数</div><div class="kpi-v p">'+up+'<span class="kpi-u">/ '+STUDENTS.length+'</span></div><div class="kpi-s">相对首次测评</div></div>'
-  + '</div>'
-  + '<div class="grid g2 mb16">'
-    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' · 总分变化</h3><span class="sub">'+stu.id+'</span></div>'
-      + lineChart([{ data: scores, color:"#2563eb" }], TERMS.map(t=>t.label), 520, 200)
-      + '<div class="tbl-wrap mt12"><table class="tb"><thead><tr><th>项目</th>'
-        + TERMS.map(t=>'<th style="text-align:right">'+t.label+'</th>').join("")
-        + '<th style="text-align:right">变化</th><th style="text-align:right">判断</th></tr></thead><tbody>'+itemSeries+'</tbody></table></div>'
+  var studentPanel = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>'+escapeHtml(stu.name)+' · 成长曲线</h3>'
+      + '<span class="sub">'+stu.id+' · '+(chg>=0?'累计 +':'')+chg+' 分</span></div>'
+    + '<div class="mini-kpi mb12">'
+      + '<div class="mk"><div class="l">首次测评</div><div class="v">'+scores[0]+'</div></div>'
+      + '<div class="mk"><div class="l">本次测评</div><div class="v">'+scores[2]+'</div></div>'
+      + '<div class="mk"><div class="l">累计变化</div><div class="v" style="color:'+(chg>=0?'var(--ok)':'var(--bad)')+'">'+(chg>=0?'+':'')+chg+'</div></div>'
+      + '<div class="mk"><div class="l">当前薄弱项</div><div class="v" style="font-size:13.5px;padding-top:9px;line-height:1.35">'+escapeHtml(weakNow)+'</div></div>'
     + '</div>'
-    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>班级整体趋势</h3><span class="sub">平均分 / 及格率 / 优良率</span></div>'
-      + lineChart([
-          { data: clsSeries,  color:"#2563eb" },
-          { data: passSeries, color:"#f59e0b" },
-          { data: goodSeries, color:"#15803d" }
-        ], TERMS.map(t=>t.label), 520, 196)
-      + '<div class="legend" style="justify-content:center;margin-top:10px">'
-        + '<span><i style="background:#2563eb"></i>平均分</span><span><i style="background:#f59e0b"></i>及格率 %</span><span><i style="background:#15803d"></i>优良率 %</span></div>'
-      + '<div class="tbl-wrap mt12"><table class="tb"><thead><tr><th>进步最多</th><th style="text-align:right">起始</th><th style="text-align:right">当前</th><th style="text-align:right">提升</th></tr></thead><tbody>'
-        + improve.slice(0,5).map(x=>'<tr onclick="UI.pick(\''+x.s.id+'\')" style="cursor:pointer"><td><b>'+x.s.name+'</b></td><td class="num" style="text-align:right">'+x.a+'</td><td class="num" style="text-align:right">'+x.b+'</td><td class="num" style="text-align:right;color:#15803d;font-weight:800">+'+x.d+'</td></tr>').join("")
-        + '</tbody></table></div>'
+    + lineChart([{data:scores,color:"#2563eb"}],TERMS.map(function(t){return t.label;}),520,176)
+    + '<div class="sec-label" style="margin-top:14px">单项跨学期明细</div>'
+    + '<div class="tbl-wrap"><table class="tb"><thead><tr><th>项目</th>'
+      + TERMS.map(function(t){return '<th style="text-align:right">'+t.label+'</th>';}).join("")
+      + '<th style="text-align:right">变化</th><th style="text-align:right">判断</th></tr></thead><tbody>'+itemSeries+'</tbody></table></div>'
+    + '</div>';
+
+  if (isStudent()) return studentPanel;
+
+  var classPanel = '<div class="card mt16"><div class="card-h"><span class="dot" style="background:var(--cyan)"></span><h3>班级整体趋势</h3>'
+      + '<span class="sub">平均分 '+clsSeries[0]+' → '+clsSeries[2]+' · '+up+' 人提升</span></div>'
+    + '<div class="mini-kpi mb12">'
+      + '<div class="mk"><div class="l">平均分走势</div><div class="v">'+clsSeries[0]+' → '+clsSeries[2]+'</div></div>'
+      + '<div class="mk"><div class="l">及格率变化</div><div class="v">'+passSeries[0]+' → '+passSeries[2]+'<span style="font-size:13px">%</span></div></div>'
+      + '<div class="mk"><div class="l">优良率变化</div><div class="v">'+goodSeries[0]+' → '+goodSeries[2]+'<span style="font-size:13px">%</span></div></div>'
+      + '<div class="mk"><div class="l">成绩提升人数</div><div class="v">'+up+'<span style="font-size:13px"> / '+students.length+'</span></div></div>'
     + '</div>'
-  + '</div>'
-  ;
+    + '<div class="grid g2">'
+      + '<div>'+lineChart([
+          {data:clsSeries,color:"#2563eb"},{data:passSeries,color:"#f59e0b"},{data:goodSeries,color:"#15803d"}
+        ],TERMS.map(function(t){return t.label;}),500,190)
+        + '<div class="legend" style="justify-content:center;margin-top:4px">'
+          + '<span><i style="background:#2563eb"></i>平均分</span><span><i style="background:#f59e0b"></i>及格率 %</span><span><i style="background:#15803d"></i>优良率 %</span></div></div>'
+      + '<div><div class="sec-label">进步最多</div><div class="tbl-wrap"><table class="tb"><thead><tr><th>学生</th><th style="text-align:right">起始</th><th style="text-align:right">当前</th><th style="text-align:right">提升</th></tr></thead><tbody>'
+        + improve.slice(0,5).map(function(x){return '<tr onclick="UI.pick(\''+x.s.id+'\')" style="cursor:pointer"><td><b>'+x.s.name+'</b></td><td class="num" style="text-align:right">'+x.a+'</td><td class="num" style="text-align:right">'+x.b+'</td><td class="num" style="text-align:right;color:#15803d;font-weight:800">+'+x.d+'</td></tr>';}).join("")
+        + '</tbody></table></div></div>'
+    + '</div></div>';
+
+  return filterBar()
+    + '<div class="gmd">'
+      + '<div class="card"><div class="card-h"><span class="dot"></span><h3>选择学生</h3><span class="sub">共 '+students.length+' 人</span></div>'
+        + '<div class="md-list">'+list+'</div></div>'
+      + '<div>'+studentPanel+'</div>'
+    + '</div>'
+    + classPanel
+    + '<div class="mt16">'+renderExecCard()+'</div>';
 }
-
 /* 成长追踪页：训练打卡执行率卡片（仅教师/管理员可见，学生视图不展示） */
 function renderExecCard(){
   const term = STATE.term;
@@ -4720,7 +4800,7 @@ const UI = {
     STATE.stuId = sid;                 /* 关键：切换闭环对象，否则点击无反应 */
     STATE.rxTarget = s.cls;
     STATE.rxSuggest = this._rxAI(s, "下一阶段专项训练计划");
-    this.go("rxEffect");
+    this.go("rxEffect", true); /* 保留滚动位置：点击学生不跳回页面顶部 */
   },
   rxSuggestAI(){
     var sid = STATE.stuId;
@@ -5102,7 +5182,9 @@ const UI = {
   isAdmin(){
     return !!(STATE.user && STATE.user.role === "admin");
   },
-  go(id){
+  go(id, keepScroll){
+    var _st = 0;
+    if (keepScroll){ var _v = document.getElementById("view"); _st = _v ? _v.scrollTop : 0; }
     if (STATE.feedTimer){ clearInterval(STATE.feedTimer); STATE.feedTimer = null; STATE.feedAfter = 0; }
     if (!PAGES.some(p=>p.id===id)) return;
     if (!pageAllowed(id)) id = defaultPage();
@@ -5150,7 +5232,8 @@ const UI = {
     }
     view.innerHTML = html;
     view.className = "fade";
-    view.scrollTop = 0;
+    view.scrollTop = keepScroll ? _st : 0;
+    if (keepScroll) view.classList.remove("fade");
     this.saveChip();
   },
   role(id){
@@ -5190,7 +5273,12 @@ const UI = {
   pick(id){
     if (!STUDENTS.some(s=>s.id===id)) return;
     STATE.stuId = id;
-    this.go(STATE.page);
+    /* 保留滚动位置：成长追踪等页点击学生联动数据时不跳回顶部 */
+    this.go(STATE.page, true);
+  },
+  acctTab(t){
+    STATE.acctTab = t;
+    this.go("accounts", true);
   },
   setCapMode(m){
     STATE.capMode = m;
@@ -5592,7 +5680,32 @@ const UI = {
   }, { passive:true });
   Store.init();
   Checkin.init();
-    Engage.init();
+  Engage.init();
+  /* 知识库后台异步装载：先让登录页秒开，2.8MB 数据在后台下载解析完成后再激活检索 */
+  (function loadKBAsync(){
+    function activate(){
+      if (typeof KB!=="undefined" && window.KB_DOCS && window.KB_DOCS.length){
+        KB.load(window.KB_DOCS, window.KB_META);
+        STATE.kbLoaded = true;
+        /* 若当前停留的页面依赖知识库，装载完成后就地重渲染一次 */
+        var p = STATE.page;
+        if (p==="kb"||p==="s_kb"||p==="coach"||p==="s_ask"||p==="askReview"||p==="rx"||p==="s_rx"||p==="rxEffect"||p==="quizBank"||p==="s_quiz"||p==="home"||p==="s_home"){
+          try { UI.go(p, true); } catch(e){}
+        }
+      }
+    }
+    /* 若数据已随页面内联提供则直接激活，否则动态注入脚本 */
+    if (window.KB_DOCS && window.KB_DOCS.length){ activate(); return; }
+    var s = document.createElement("script");
+    s.src = "kb_data.js";
+    s.async = true;
+    s.onload = activate;
+    s.onerror = function(){
+      STATE.kbError = true;
+      /* 装载失败不改变首屏，知识库相关函数已有 ready 守卫 */
+    };
+    (document.head||document.body).appendChild(s);
+  })();
   STATE.served = !!shareUrl();
   try { document.body.classList.toggle("clean", STATE.clean); } catch(e){}
   // 统一走账号登录页：三类账号各自独立，登录后按角色进入对应端，不提供访客/切换捷径
