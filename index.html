@@ -427,11 +427,6 @@ body.clean .note-ex{display:none !important}
 .login-btn:hover{background:#1e40af}
 .login-foot{font-size:11.5px;color:#94a3b8;text-align:center;margin-top:16px;line-height:1.7}
 .login-tagline{font-size:13px;color:#7b8aa0;letter-spacing:1px;margin:2px 0 22px}
-.login-feat{display:flex;flex-direction:column;gap:13px;margin:6px 0 20px}
-.login-feat-i{display:flex;align-items:flex-start;gap:11px}
-.login-feat-i .lf-ic{flex:none;width:26px;height:26px;border-radius:8px;background:#e8f0ff;color:#1d4ed8;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
-.login-feat-i b{display:block;font-size:13.5px;color:#12202f;margin-bottom:2px}
-.login-feat-i small{display:block;font-size:11.8px;color:#7b8aa0;line-height:1.5}
 
 /* ---------- 扫码进入 / 手机实时上传 ---------- */
 .qr-btn{display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border:1px solid #d3ddec;border-radius:15px;
@@ -503,11 +498,6 @@ body.clean .note-ex{display:none !important}
 .save-x{margin-left:2px;padding:3px 7px;border-radius:9px;background:rgba(59,109,17,.12);color:#3b6d11;font-size:11.5px;cursor:pointer;line-height:1.2}
 .save-x:hover{background:rgba(59,109,17,.24)}
 .save-x:active{background:rgba(59,109,17,.34)}
-/* 访客模式提示条（底部浮层，可关闭） */
-.guest-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:60;max-width:min(700px,92vw);background:#0f172a;color:#e2e8f0;border:1px solid #1e293b;box-shadow:0 12px 32px rgba(2,6,23,.38);border-radius:12px;padding:11px 40px 11px 16px;font-size:12.5px;line-height:1.65}
-.guest-bar b{color:#7dd3fc;font-weight:700}
-.gb-x{position:absolute;top:5px;right:10px;cursor:pointer;color:#94a3b8;font-size:17px;line-height:1;padding:0 3px}
-.gb-x:hover{color:#e2e8f0}
 .role-b.on[style]{cursor:default}
 /* 演示路线导览（首页顶部，评委一键跟随） */
 .tour{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;margin-bottom:16px}
@@ -611,7 +601,6 @@ body.clean .note-ex{display:none !important}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM21 21h-1M17 21v-1"/></svg>
           扫码进入
         </button>
-        <div class="role-sw" id="roleSw" data-page-node-id="dsgbGmSQJwSOoGXLZoTBAs"></div>
       </div>
     </header>
     <div id="view" data-page-node-id="ZIMzrZmA7tMXqce7BhtRQj"></div>
@@ -651,8 +640,6 @@ body.clean .note-ex{display:none !important}
     <div id="qrModalBody"></div>
   </div>
 </div>
-
-<div id="guestBar" class="guest-bar" style="display:none"></div>
 
 <script>
 "use strict";
@@ -1643,7 +1630,7 @@ var Engage = {
       var detail = itemKey==="vc" ? (raw+" 毫升")
                  : itemKey==="bmi" ? ("BMI "+fmtNum(raw))
                  : itemKey==="run50" ? (fmtSec(raw)+" 秒")
-                 : itemKey==="endur" ? (fmtSec(raw)+" 秒")
+                 : itemKey==="endur" ? (fmtDur(raw))
                  : itemKey==="jump" ? ((Math.round(raw)/100).toFixed(2)+" 米")
                  : (raw+" 个");
       parts.push("结合你的体测数据："+ITEM_NAMES[itemKey]+"本次 "+detail+"，单项 "+pv.score+" 分"+(pv.score<72?"，属于需要重点提升的项目。":"，已达到较好水平。"));
@@ -1736,6 +1723,9 @@ const ACCOUNTS = [
   { id:"teacher", user:"teacher", pwd:"123456", name:"教师",  role:"teacher",
     scope:"任教班级", color:"#1d4ed8",
     desc:"录入与维护任教班级的体测数据，生成并推送个性化运动处方。" },
+  { id:"student", user:"student", pwd:"123456", name:"学生",  role:"student",
+    scope:"仅本人", color:"#0891b2",
+    desc:"查看本人的测评结果、运动处方与成长记录。" },
   { id:"admin",   user:"17851290925",   pwd:"Sxz1907", name:"管理员", role:"admin",
     scope:"全校", color:"#6d28d9",
     desc:"负责全校数据、评分标准版本与账号管理。" }
@@ -2336,14 +2326,15 @@ function shareUrl(){
   try { if (location.protocol === "http:" || location.protocol === "https:") return location.origin + location.pathname; } catch(e){}
   return "";
 }
-/* 访客入口地址：优先用服务器注入的本机局域网地址（window.__LAN_BASE__），
+/* 扫码入口地址：优先用服务器注入的本机局域网地址（window.__LAN_BASE__），
    这样无论大屏用 127.0.0.1 还是 localhost 打开，扫码出来的都是手机能连上的地址；
-   未注入时回退到当前页地址。路径统一用根路径 /?guest=1，避免出现中文文件名导致部分扫码器/微信打不开。 */
+   扫开后进入登录页，用户输入本人账号密码登录（学生/教师/管理员各自账号）。
+   路径统一用根路径，避免出现中文文件名导致部分扫码器/微信打不开。 */
 function guestUrl(){
-  try { if (window.__LAN_BASE__) return window.__LAN_BASE__ + "/?guest=1"; } catch (e) {}
+  try { if (window.__LAN_BASE__) return window.__LAN_BASE__ + "/"; } catch (e) {}
   var base = shareUrl();
   if (!base) return "";
-  return base + (base.indexOf("?") >= 0 ? "&" : "?") + "guest=1";
+  return base;
 }
 /* 生成二维码 SVG（默认纠错 M，自动选最小版本） */
 function qrSvg(text, px, border){
@@ -4136,6 +4127,12 @@ const UI = {
     try { go = window.confirm ? window.confirm("确定要退出登录吗？") : true; } catch(e){ go = true; }
     if (!go) return;
     STATE.user = null;
+    // 清空角色与筛选状态，避免上一个账号的视图/筛选残留到下一个账号
+    STATE.role = "";
+    STATE.stuId = STUDENTS[0].id;
+    STATE.gradeFilter = DEFAULT_GRADE;
+    STATE.classFilter = "";
+    STATE.genderFilter = "";
     const mask = document.getElementById("loginMask");
     if (mask) mask.className = "login-mask";
     const u=document.getElementById("lgUser"), p=document.getElementById("lgPwd"), e=document.getElementById("lgErr");
@@ -4322,10 +4319,8 @@ const UI = {
     if (!el) return;
     if (!STATE.user){ el.innerHTML = ""; return; }
     const a = STATE.user;
-    let tail = "";
-    if (STATE.role === "guest") tail = " · 扫码访问";
     el.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:'+a.color+';display:inline-block"></span>'
-      + a.name + tail
+      + a.name
       + '<span class="out" onclick="UI.logout()">退出</span>';
   },
   /* ---------- 产品视图固定：说明文字永久隐藏，界面不再出现任何模式开关 ---------- */
@@ -4729,14 +4724,17 @@ const UI = {
     var el = document.getElementById("loginQR");
     if (!el) return;
     if (!STATE.served){
-      el.innerHTML = '<div class="qr-note">扫码在学生手机 / 平板上打开，需在校园网环境下启动本地服务。<br>本机可直接用账号登录。</div>';
+      el.innerHTML = '<div class="qr-tip" style="margin-top:8px;line-height:1.9">'
+        + '<div style="font-size:14px;font-weight:700;color:#16202f;margin-bottom:8px">校园网访问</div>'
+        + '启动本地服务后，学生可用手机扫码登录，查看本人测评结果与运动处方。<br>'
+        + '本机可直接用账号登录。</div>';
       return;
     }
     var url = guestUrl();
-    el.innerHTML = '<div class="qr-card"><div class="qr-cap">扫码在手机 / 平板上进入</div>'
+    el.innerHTML = '<div class="qr-card"><div class="qr-cap">扫码在手机 / 平板上打开</div>'
       + qrSvg(url, 172, 3)
       + '<div class="qr-url">'+escapeHtml(url)+'</div>'
-      + '<div class="qr-tip">学生扫码进入后仅可查看本人的测评结果与处方。</div></div>';
+      + '<div class="qr-tip">用本人账号密码登录。学生登录后仅可查看自己的测评结果与处方。</div></div>';
   },
   openQR(){
     var b = document.getElementById("qrModalBody");
@@ -4746,11 +4744,11 @@ const UI = {
         var u = guestUrl();
         b.innerHTML = qrSvg(u, 240, 4)
           + '<div class="qr-url" style="margin-top:12px">'+escapeHtml(u)+'</div>'
-          + '<ol class="steps" style="margin-top:14px"><li>用手机 / 平板相机扫码，以学生身份进入本人视图。</li>'
-          + '<li>可查看：本人测评结果、运动处方、健康知识库，并上传成绩。</li>'
-          + '<li>在「多模态采集」拍照或选图，照片会<b>实时同步到大屏</b>。</li></ol>';
+          + '<ol class="steps" style="margin-top:14px"><li>用手机 / 平板相机扫码打开登录页，输入本人账号密码。</li>'
+          + '<li>学生登录后查看本人测评结果、运动处方与健康知识库。</li>'
+          + '<li>登录后账号即确定身份，教师 / 学生 / 管理员各自独立、不可切换。</li></ol>';
       } else {
-        b.innerHTML = '<div class="qr-note">当前未启动本地服务，无法生成局域网二维码。请在校园网环境下启动本地服务后再扫码。</div>';
+        b.innerHTML = '<div class="qr-tip">当前未启动本地服务，无法生成局域网二维码。请在校园网环境下启动本地服务后再扫码。</div>';
       }
     }
     if (m) m.classList.add("on");
@@ -4758,42 +4756,6 @@ const UI = {
   closeQR(){
     var m = document.getElementById("qrModal");
     if (m) m.classList.remove("on");
-  },
-  /* ---------- 访客模式：扫码自动进入，按标签页分配独立账号 ---------- */
-  enterGuest(){
-    var g = this._guestIdentity();
-    STATE.user = { id:"guest", name:g.account, role:"guest", color:g.color };
-    STATE.role = "guest";
-    STATE.stuId = selfStudent().id;
-    STATE.genderFilter = "";
-    var mask = document.getElementById("loginMask");
-    if (mask) mask.className = "login-mask off";
-    var bar = document.getElementById("guestBar");
-    if (bar){
-      bar.style.display = "block";
-      bar.innerHTML = '<b>访客模式</b>：您已自动登录为 <b>'+escapeHtml(g.account)+'</b>，密码 <b>'+escapeHtml(g.pwd)+'</b>（仅本机可用，可自由体验）。您的操作仅限本次体验。'
-        + '<span class="gb-x" onclick="UI.closeGuestBar()" title="收起">&times;</span>';
-    }
-  },
-  _guestIdentity(){
-    try {
-      var raw = sessionStorage.getItem("guestToken");
-      if (raw){ var o = JSON.parse(raw); if (o && o.account) return o; }
-    } catch(e){}
-    var n = String(Math.floor(100 + Math.random() * 900));   // 三位数编号
-    var o = { account: "访客" + n, pwd: this._randPwd(6), color: "#0ea5e9" };
-    try { sessionStorage.setItem("guestToken", JSON.stringify(o)); } catch(e){}
-    return o;
-  },
-  _randPwd(len){
-    var s = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";   // 去掉易混字符 I O 0 1
-    var r = "";
-    for (var i = 0; i < len; i++) r += s.charAt(Math.floor(Math.random() * s.length));
-    return r;
-  },
-  closeGuestBar(){
-    var b = document.getElementById("guestBar");
-    if (b) b.style.display = "none";
   }
 };
 
@@ -4804,16 +4766,9 @@ const UI = {
     Engage.init();
   STATE.served = !!shareUrl();
   try { document.body.classList.toggle("clean", STATE.clean); } catch(e){}
-  var params = null;
-  try { params = new URLSearchParams(location.search); } catch(e){ params = null; }
-  var isGuest = !!(params && params.get && params.get("guest") === "1");
-  if (isGuest){
-    UI.enterGuest();
-  } else {
-    UI.loginRender();
-    UI.fillLoginQR();
-    UI.pickAccount("admin");
-  }
+  // 统一走账号登录页：三类账号各自独立，登录后按角色进入对应端，不提供访客/切换捷径
+  UI.loginRender();
+  UI.fillLoginQR();
   UI.nav();
   UI.roles();
   UI.chip();
