@@ -379,6 +379,65 @@ kbd{
 .fade{animation:fadeUp .34s cubic-bezier(.2,.7,.3,1) both}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.42}}
 .puls{animation:pulse 1.5s ease-in-out infinite}
+
+/* ===== 第四轮：热力图 / 处方流程 / 审核 / 任务推送 ===== */
+.heat-wrap{border:1px solid var(--line);border-radius:12px;padding:14px 16px 16px;background:#fff}
+.heat-head,.heat-row{display:grid;grid-template-columns:100px repeat(7,minmax(44px,1fr));gap:7px;align-items:center}
+.heat-head{margin-bottom:8px}
+.heat-head .hk{text-align:center;font-size:12px;color:#5d6d85;font-weight:700;padding:0 0 8px;border-bottom:1px solid var(--line)}
+.heat-head .hk:first-child{text-align:left;border-bottom:none}
+.heat-row{padding:4px 0;border-bottom:1px dashed #eef2f8}
+.heat-row:last-child{border-bottom:none}
+.heat-name{font-size:13.5px;font-weight:700;color:#16202f;white-space:nowrap;overflow:visible;padding-left:2px}
+.heat-name small{font-size:11px;color:#8b99ad;font-weight:500;margin-left:4px}
+.heat-cell{height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14.5px;transition:transform .15s,box-shadow .15s;cursor:default}
+.heat-cell:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(19,35,56,.14)}
+.heat-cell.ex{background:#dcfce7;color:#166534}
+.heat-cell.good{background:#bbf7d0;color:#166534}
+.heat-cell.mid{background:#fef9c3;color:#854d0e}
+.heat-cell.pass{background:#fed7aa;color:#9a3412}
+.heat-cell.low{background:#fecaca;color:#991b1b}
+.heat-scroll{max-height:560px;overflow:auto}
+.heat-legend{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:12px;font-size:12.5px;color:var(--text-2)}
+.heat-legend i{width:24px;height:14px;border-radius:4px;display:inline-block;vertical-align:-2px;margin-right:5px}
+.track-pick{display:flex;flex-wrap:wrap;gap:7px;max-height:104px;overflow-y:auto}
+.track-chip{border:1px solid var(--line-2);background:#fff;border-radius:9px;padding:6px 11px;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--text-2);transition:all .14s;white-space:nowrap}
+.track-chip:hover{border-color:var(--brand);color:var(--brand)}
+.track-chip.on{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 3px 10px rgba(37,99,235,.25)}
+.ar-card{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px;background:#fff}
+.ar-head{display:flex;align-items:center;gap:10px;padding:11px 15px;background:linear-gradient(92deg,#f7fafd,#eef4fc);border-bottom:1px solid var(--line)}
+.ar-head .who{font-size:14.5px;font-weight:800}
+.ar-head .ts{font-size:11.5px;color:var(--text-3);margin-left:auto}
+.ar-body{padding:14px 16px}
+.ar-q{background:#f4f8ff;border:1px solid #dbe6f6;border-radius:10px;padding:11px 14px;font-size:15px;color:#16202f;line-height:1.7}
+.ar-q .lb{font-size:11.5px;color:var(--brand);font-weight:800;display:block;margin-bottom:3px}
+.ar-ai{margin-top:11px;border:1px solid #cde7ee;background:#f2fbfd;border-radius:10px;padding:13px 15px}
+.ar-ai .lb{font-size:11.5px;color:var(--cyan);font-weight:800;display:block;margin-bottom:5px}
+.ar-ai .txt{font-size:16px;line-height:1.85;color:#0f3a4a;white-space:pre-wrap}
+.ar-edit{margin-top:11px}
+.ar-edit textarea{width:100%;min-height:110px;border:1px solid var(--line-2);border-radius:9px;padding:11px 13px;font-family:inherit;font-size:15px;line-height:1.7;color:var(--text);resize:vertical;outline:none}
+.ar-edit textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.rx-flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:4px 0 14px}
+.rx-flow .fs{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--text-3);padding:5px 11px;border-radius:20px;background:#eef2f8}
+.rx-flow .fs.on{background:var(--brand);color:#fff}
+.rx-flow .fs.done{background:var(--ok-l);color:var(--ok)}
+.rx-flow .fa{color:#aab8cc;font-size:13px}
+.tl-evidence{border-left:2px solid var(--line-2);padding-left:16px;margin-left:6px}
+.tl-ev{position:relative;padding-bottom:14px}
+.tl-ev::before{content:"";position:absolute;left:-21px;top:4px;width:10px;height:10px;border-radius:50%;background:#fff;border:2.5px solid var(--brand)}
+.tl-ev.ai::before{border-color:var(--cyan)} .tl-ev.ok::before{border-color:var(--ok)}
+.tl-ev .d{font-size:11.5px;color:var(--text-3);font-weight:700}
+.tl-ev .t{font-size:14px;color:var(--text);line-height:1.7;margin-top:2px}
+.tp-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tp-preview{margin-top:10px;border:1px dashed var(--line-2);border-radius:10px;padding:12px;background:#fbfdff}
+.tp-preview video{width:100%;max-height:220px;border-radius:8px;background:#0f172a;display:block}
+.tp-preview .vp-empty{color:var(--text-3);font-size:12.5px;text-align:center;padding:14px}
+.ev-step{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-3);font-weight:700}
+.ev-step.on{color:var(--brand)}
+.ev-step .n{width:22px;height:22px;border-radius:50%;background:#eef2f8;color:var(--text-2);display:flex;align-items:center;justify-content:center;font-size:12px}
+.ev-step.on .n{background:var(--brand);color:#fff}
+@media(max-width:900px){.heat-head,.heat-row{grid-template-columns:76px repeat(7,minmax(34px,1fr));gap:4px}.heat-name{font-size:12px}.heat-cell{height:34px;font-size:12.5px}}
+
 @media print{#sidebar,#topbar{display:none}#main{overflow:visible}#view{overflow:visible;padding:0}}
 
 /* ---------- 纯净 / 讲解 双模式 ---------- */
@@ -654,7 +713,7 @@ body.clean .note-ex{display:none !important}
 
 /* =====================================================================
    10-A 本地知识库检索引擎（KB）
-   数据源：kb_data.js（window.KB_DOCS / KB_META），1330 条 / 51 万字 / 16 类权威来源。
+   数据源：kb_data.js（window.KB_DOCS / KB_META），1814 条 / 66 万字 / 16 类权威来源。
    设计：中文 bigram 分词 + 字段加权打分 + 分类别名映射 + 出处回溯。
    全部在本机计算，不联网、不调用外部模型；每条命中都可追溯到来源。
    ===================================================================== */
@@ -1190,6 +1249,46 @@ function makePrescription(stu, termId){
   return { keep:false, items:sections, focus, strong, total: sc.total, level: sc.level };
 }
 
+
+/* ---------------- 5b. 处方全生命周期记录（生成→编辑→审核→推送→复测闭环） ----------------
+   所有记录写入 Engage.data.rxlog，本地持久化；同一学生可有多轮（round），
+   每轮对应一次"生成建议"，复测后生成下一轮，形成逐步闭环与趋势。 */
+function rxDraftText(stu, termId){
+  var sc = getScore(stu, termId), rx = makePrescription(stu, termId);
+  var term = TERMS.find(function(t){return t.id===termId;}) || {name:""};
+  if (rx.keep){
+    return "【"+stu.name+" · "+stu.grade+"("+stu.cls.replace(/^.*\(|\)$/g,"")+") · "+term.name+"】\n"
+      + "本次总分 "+sc.total+" 分（"+sc.level+"），各项目均在 72 分以上，暂无针对性补弱项目。\n"
+      + "建议维持现有锻炼习惯：每周累计运动不少于 150 分钟，保持优势项目的同时关注均衡发展。\n"
+      + "4 周后复测，届时再依据新数据评估。";
+  }
+  var out = "【"+stu.name+" · "+stu.grade+" · "+term.name+"】\n"
+    + "本次总分 "+sc.total+" 分（"+sc.level+"），需重点提升 "+rx.focus.length+" 项。\n";
+  rx.items.forEach(function(sec,i){
+    out += "\n"+"一二三四五"[i]+"、"+sec.name+"（"+sec.score+" 分）— "+sec.lib.title+"\n";
+    sec.lib.items.forEach(function(it){
+      out += "  · "+it.t+"："+it.d+"\n";
+    });
+    out += "  注意："+sec.lib.tip+"\n";
+  });
+  if (rx.strong && rx.strong.length){
+    out += "\n优势保持："+rx.strong.map(function(x){return x.name+"("+x.score+")";}).join("、")+"。\n";
+  }
+  out += "\n强度：每周 3~4 次、每次约 30 分钟、中等强度；4 周后复测再评估。\n";
+  var kb = (typeof KB!=="undefined" && KB.ready) ? KB.byItem(rx.focus[0].key,1) : [];
+  out += "【知识出处】"+((kb.length && kb[0].doc.src) ? kb[0].doc.src : "田麦久《运动训练学》（人民体育出版社）");
+  return out;
+}
+function rxLogsOf(sid){
+  return Engage.list("rxlog").filter(function(r){return r.sid===sid;})
+    .sort(function(a,b){return (a.ts||0)-(b.ts||0);});
+}
+function rxPushedOf(sid){
+  var all = rxLogsOf(sid).filter(function(r){return r.status==="pushed";});
+  return all.length ? all[all.length-1] : null;
+}
+function rxRoundOf(sid){ return rxLogsOf(sid).length + 1; }
+
 /* ---------------- 6. 图标 ---------------- */
 const ICO = {
   filter:'<path d="M3 5h18M6 12h12M10 19h4"/>',
@@ -1352,7 +1451,7 @@ const PAGES = [
   { id:"askReview",name:"答疑审核",    ico:"chat",  desc:"审核 AI 基于体测数据给出的建议并反馈学生", roles:"tm" },
   { id:"health",  name:"运动健康档案", ico:"users", desc:"学生运动损伤/营养上报与关联档案", roles:"tm" },
   { id:"taskPush",name:"训练任务推送", ico:"send",  desc:"按体测薄弱项智能分组，推送针对性练习", roles:"tm" },
-  { id:"kb",      name:"体测知识库",   ico:"book",  desc:"51 万字本地知识库 · 按项目分类检索 · 逐条标注出处", roles:"tm", badge:"核心" },
+  { id:"kb",      name:"体测知识库",   ico:"book",  desc:"66 万字本地知识库 · 按项目分类检索 · 逐条标注出处", roles:"tm", badge:"核心" },
   { id:"quizBank",name:"体测知识小测", ico:"sheet", desc:"围绕测试方法/国标标准组建随堂小测", roles:"tm" },
   { id:"evalReview",name:"训练课评价", ico:"bulb",  desc:"学生对体测训练课的评价汇总与反馈", roles:"tm" },
   { id:"track",   name:"成长追踪",     ico:"track", desc:"跨学期纵向对比与趋势", roles:"tm" },
@@ -1418,6 +1517,13 @@ const STATE = {
   pushDraft: {},       // 训练任务推送表单
   bankPick: [],        // 题库组卷已选题号
   focusGroup: "",      // 热力图聚焦的体测项目
+  rxDraftFor: "",      // 当前正在编辑处方的学生 id
+  rxDraftText: "",     // 可编辑的处方正文（AI 生成初稿，教师可改）
+  rxReviewed: false,   // 教师是否已审核当前草稿
+  rxEditOpen: false,   // 是否展开重新编辑
+  tpVideo: null,       // 训练任务推送：本地上传的视频 {name,size,url}
+  evalCourse: "",      // 训练课评价：本节课信息输入
+  evalSurvey: null,    // 生成的 AI 问卷 {qs:[...]}
   bigScreen: false     // 希沃大屏模式开关
 };
 
@@ -1541,7 +1647,7 @@ var Checkin = {
 var LS_ENGAGE = "fitness_demo_engage_v2";
 var Engage = {
   ok:false,
-  data:{ asks:[], health:[], tasks:[], quiz:[], evals:[] },
+  data:{ asks:[], health:[], tasks:[], quiz:[], evals:[], rxlog:[], surveys:[] },
   init(){
     var raw=null;
     try { raw=window.localStorage.getItem(LS_ENGAGE); this.ok=true; } catch(e){ this.ok=false; }
@@ -1549,7 +1655,7 @@ var Engage = {
       try {
         var d=JSON.parse(raw);
         if (d && d.v===1 && d.data){
-          ["asks","health","tasks","quiz","evals"].forEach(function(k){
+          ["asks","health","tasks","quiz","evals","rxlog","surveys"].forEach(function(k){
             if (Array.isArray(d.data[k])) Engage.data[k]=d.data[k];
           });
         }
@@ -1601,7 +1707,7 @@ var Engage = {
     catch(e){ this.ok=false; return false; }
   },
   clear(){
-    this.data={ asks:[], health:[], tasks:[], quiz:[], evals:[] };
+    this.data={ asks:[], health:[], tasks:[], quiz:[], evals:[], rxlog:[], surveys:[] };
     if (this.ok){ try { window.localStorage.removeItem(LS_ENGAGE); } catch(e){} }
   },
   /* AI 依据学生体测数据 + 本地知识库检索生成答疑（离线可用，回答带出处） */
@@ -1774,8 +1880,7 @@ function filterBar(opts){
       + '<option value="M"'+(S==="M"?' selected':'')+'>男生</option>'
       + '<option value="F"'+(S==="F"?' selected':'')+'>女生</option></select>'
     + (opts.term===false?'':'<label>学期</label><select class="fb-sel" onchange="UI.setTerm(this.value)">'+tOpts+'</select>')
-    + '<span class="fb-count" style="margin-left:auto">当前 '+visibleStudents().length+' 人 / 可访问 '
-      + (isTeacher ? STUDENTS.filter(function(s){return s.grade==="高一";}).length : STUDENTS.length) + ' 人</span>'
+    + '<span class="fb-count" style="margin-left:auto">当前显示 '+visibleStudents().length+' 人 · 全校在册 '+STUDENTS.length+' 人</span>'
     + '</div>';
   return html;
 }
@@ -1836,7 +1941,7 @@ function renderHome(){
     + '<div class="tour-t">快捷入口 ▸</div>'
     + '<div class="tour-step" onclick="UI.go(\'capture\')"><span class="tour-n">＋</span><div><b>录入体测数据</b><span>逐项录入 / 批量导入</span></div></div>'
     + '<div class="tour-step" onclick="UI.go(\'rx\')"><span class="tour-n">✚</span><div><b>生成运动处方</b><span>薄弱项 · 一人一策</span></div></div>'
-    + '<div class="tour-step" onclick="UI.go(\'kb\')"><span class="tour-n">▤</span><div><b>查知识库</b><span>51 万字 · 有出处</span></div></div>'
+    + '<div class="tour-step" onclick="UI.go(\'kb\')"><span class="tour-n">▤</span><div><b>查知识库</b><span>66 万字 · 有出处</span></div></div>'
     + '<div class="tour-step" onclick="UI.go(\'heatmap\')"><span class="tour-n">▦</span><div><b>薄弱项热力图</b><span>全班项目达标率</span></div></div>'
     + '<div class="tour-step" onclick="UI.openQR()"><span class="tour-n">▣</span><div><b>扫码进入学生端</b><span>希沃大屏课堂使用</span></div></div>'
   + '</div>';
@@ -1854,12 +1959,11 @@ function renderHome(){
   + '<div class="grid g21 mb16">'
     + '<div class="card"><div class="card-h"><span class="dot"></span><h3>班级体质画像</h3><span class="sub">'+term.name+' · 各项目平均得分（满分 100）</span></div>'
       + '<div style="display:flex;justify-content:center">'+radar(st.partAvg, 300)+'</div>'
-      + '<div class="note note-ex mt12">雷达面积越小、越靠内侧的项目为班级共性薄弱环节。当前最薄弱项为 <b>'+weak1.name+'</b>（'+weak1.v+' 分，权重 '+weak1.w+'%）与 <b>'+weak2.name+'</b>（'+weak2.v+' 分）。按“高分顶向=a 加权平均”自动计算总分。</div>'
+      + '<div class="row wrap" style="justify-content:center;gap:8px;margin-top:10px"><span class="sub" style="margin:0">最薄弱项</span><span class="tag t-r">'+weak1.name+' '+weak1.v+' 分</span><span class="tag t-a">'+weak2.name+' '+weak2.v+' 分</span></div>'
     + '</div>'
     + '<div class="card"><div class="card-h"><span class="dot"></span><h3>等级分布</h3></div>'
       + '<div style="display:flex;justify-content:center;padding:4px 0 10px">'+donut(st.lv, st.n, 200)+'</div>'
       + '<div class="row wrap" style="gap:12px 16px;margin-bottom:14px">'+lvRow+'</div>'
-      + '<div class="note cyan"><b>读法</b>：国标规定学年总分 90.0 分及以上为优秀，80.0–89.9 为良好，60.0–79.9 为及格，59.9 及以下不及格；良好及以上方可参加评优评奖。</div>'
     + '</div>'
   + '</div>'
 
@@ -2417,8 +2521,12 @@ function supportsSpeech(){
 function pickVoice(){
   try {
     var vs = window.speechSynthesis.getVoices() || [];
-    for (var i=0;i<vs.length;i++) if (/^zh/i.test(vs[i].lang)) return vs[i];
-    for (var j=0;j<vs.length;j++) if (/CN|Chinese|中文/i.test((vs[j].lang||"") + " " + (vs[j].name||""))) return vs[j];
+    var zh = vs.filter(function(v){ return /^zh/i.test(v.lang||"") || /Chinese|中文|普通话|CN/i.test((v.lang||"")+" "+(v.name||"")); });
+    if (!zh.length) return null;
+    var natural = /natural|neural|xiaoxiao|yunxi|huihui|yaoyao|kangkang|晓晓|云希|慧慧|自然|在线/i;
+    for (var i=0;i<zh.length;i++) if (natural.test(zh[i].name||"")) return zh[i];
+    for (var j=0;j<zh.length;j++) if (!/david|mark|zira/i.test(zh[j].name||"")) return zh[j];
+    return zh[0];
   } catch(e){}
   return null;
 }
@@ -2496,7 +2604,7 @@ function speakSeq(lines, i){
   catch(e){ STATE.voiceOn=false; STATE.voiceMsg="此浏览器无法创建语音对象，朗读不可用。"; UI.go("capture"); return; }
   var v = pickVoice();
   if (v) u.voice = v;
-  u.lang = "zh-CN"; u.rate = 0.92; u.pitch = 1; u.volume = 1;
+  u.lang = "zh-CN"; u.rate = 1; u.pitch = 1.05; u.volume = 1;
   u.onend = function(){ speakSeq(lines, i+1); };
   u.onerror = function(){
     STATE.voiceOn = false;
@@ -2533,14 +2641,14 @@ function photoBox(){
       + '</div>'
       + '<div class="row mt12">' + (STATE.camLive ? '<button class="btn pri" onclick="UI.camShoot()">'+icon("shot",15)+' 拍照</button>' : '')
       + '<button class="btn" onclick="UI.camClose()">关闭摄像头</button></div>'
-      + '<div class="note note-ex mt12">视频流只在本机预览与抓帧，<b>不联网、不上传</b>；关闭摄像头后画面立即释放。</div>';
+      ;
   }
   if (STATE.photo){
     var p = STATE.photo;
     return '<div class="photo-box"><img src="'+p.src+'" alt="现场拍摄的成绩单"></div>'
       + '<div class="row mt12"><button class="btn" onclick="UI.camClear()">删除这张</button>'
       + '<span class="tag t-g">'+p.w+' × '+p.h+' · 约 '+p.kb+' KB</span></div>'
-      + '<div class="note note-ex mt12">照片仅保存在<b>当前浏览器会话</b>中，不写入本地存档、不上传服务器，关闭页面即销毁——这是处理学生纸质材料时的隐私底线。</div>';
+      ;
   }
   return null;
 }
@@ -2572,34 +2680,17 @@ function panelVoice(){
     return '<div class="vline"><span class="vline-n">'+n+'</span><span>'+l.t+'</span></div>';
   }).join("");
 
-  return '<div class="grid g2">'
-    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>为什么只做「朗读」，不做「听写」</h3></div>'
-      + '<div style="font-size:13.5px;color:#5d6d85;line-height:1.78">'
-      + '语音这条口子里其实藏着两件事：<b>听写</b>（把话转成字）和<b>朗读</b>（把字念出来）。两者的可用条件完全不同。<br><br>'
-      + '<b>朗读可以离线做</b>——浏览器调用设备自带的语音引擎，音频不出本机，不需要联网。所以用在了最能省事的地方：'
-      + '录完成绩后让系统<b>逐项念一遍</b>，录入者边听边对照纸质表，听出差错当场改。<br><br>'
-      + '<b>听写不行</b>——主流浏览器的语音识别会把音频发到云端处理，校园内网环境下既不通也不该通。'
-      + '把它作为"已实现"的功能交付，是对使用者的不负责任。'
+  return '<div class="card"><div class="card-h"><span class="dot"></span><h3>语音成绩复核</h3>'
+    + '<span class="sub">选择学生 · 逐项朗读 · 当场核对</span></div>'
+    + '<div class="row wrap" style="gap:14px;align-items:flex-start">'
+      + '<div style="flex:0 0 190px;padding:12px 13px;border-radius:9px;background:#f4f8ff;border:1px solid #d3ddec">'
+        + '<div style="font-size:12px;color:#5d6d85;margin-bottom:6px">核对对象</div>'+picker
+        + '<div style="font-size:12px;color:#8b99ad;margin-top:10px;line-height:1.6">共 '+lines.length+' 条成绩</div>'
       + '</div>'
-      + '<div class="mt12">'+[
-          ['听写（语音识别）','依赖云端，校内不可控','不使用'],
-          ['朗读（语音合成）','设备本地引擎，离线可用','已接入']
-        ].map(function(r){
-          var tagCls = r[2] === "已接入" ? "t-g" : "t-n";
-          return '<div class="rx-item"><div class="rx-item-n">·</div><div class="rx-item-t"><b>'+r[0]+'</b>'
-            + '<div class="rx-dose">'+r[1]+'</div></div><span class="tag '+tagCls+'" style="margin-left:auto">'+r[2]+'</span></div>';
-        }).join('')
+      + '<div style="flex:1;min-width:260px">'
+        + '<div style="max-height:250px;overflow:auto;border:1px solid #e8eef6;border-radius:9px;padding:6px">'+script+'</div>'
+        + '<div class="row mt12">'+ctl+'</div>'
       + '</div>'
-    + '</div>'
-
-    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>语音成绩复核</h3><span class="sub">离线合成 · 不联网</span></div>'
-      + '<div style="padding:10px 12px;border-radius:9px;background:#f4f8ff;border:1px solid #d3ddec;margin-bottom:12px">'
-        + '<div style="font-size:12px;color:#5d6d85;margin-bottom:6px">核对对象</div>'
-        + picker
-      + '</div>'
-      + '<div style="max-height:230px;overflow:auto;border:1px solid #e8eef6;border-radius:9px;padding:6px">'+script+'</div>'
-      + '<div class="row mt12">'+ctl+'</div>'
-      + (ok ? '<div class="note note-ex mt12">演示提示：首次点击朗读前先试音一次，确认希沃大屏已连接音响——听不到声音的现场演示没有任何意义。</div>' : '')
     + '</div>'
     + '</div>';
 }
@@ -2645,10 +2736,7 @@ function ocrCtl(){
   }
   return '<div class="row mt12" style="flex-wrap:wrap">'+btns+'</div>'
     + (STATE.camErr ? '<div class="note amber mt12">'+STATE.camErr+'</div>' : "")
-    + '<div class="note note-ex mt12"><b>可用范围说清楚</b>：拍照<b>真实可用</b>——调用本机摄像头抓帧留存，视频不出本机。'
-    + '但<b>数值自动识别尚未接入</b>：没有用本校真实纸质表校准过，就不该给出准确率承诺。'
-    + '当前定位是<b>拍照留档、回到办公室录入</b>，先把操场上的誊录时间省下来。</div>'
-    + '<button class="btn mt12" onclick="UI.ocrNext()">进入成绩回填</button>';
+    + '';
 }
 
 
@@ -2664,8 +2752,7 @@ function renderCapture(){
     return '<div class="stu-c '+(mode===m.id?"on":"")+'" style="cursor:pointer" onclick="UI.setCapMode(\''+m.id+'\')">'
       + '<div class="row" style="gap:9px;margin-bottom:8px">'
       + '<span style="width:34px;height:34px;border-radius:9px;background:'+(mode===m.id?"#2563eb":"#e8f0ff")+';color:'+(mode===m.id?"#fff":"#1d4ed8")+';display:flex;align-items:center;justify-content:center">'+icon(m.ico,18)+'</span>'
-      + '<b style="font-size:14.5px">'+m.name+'</b><span class="tag '+m.t+'" style="margin-left:auto">'+m.tag+'</span></div>'
-      + '<div style="font-size:12.5px;color:#5d6d85;line-height:1.62">'+m.d+'</div></div>';
+      + '<b style="font-size:14px;white-space:nowrap">'+m.name+'</b><span class="tag '+m.t+'" style="margin-left:auto;white-space:nowrap">'+m.tag+'</span></div></div>';
   }).join("");
 
   let detail = "", header = "", sub = "";
@@ -2690,8 +2777,7 @@ function renderCapture(){
           + (photoBox() || ocrSample())
         + '</div>'
         + '<div style="flex:1;min-width:230px">'
-          + '<div class="card-h" style="margin-bottom:8px"><span class="dot"></span><h3>为什么要拍照</h3></div>'
-          + '<div style="font-size:13.5px;color:#5d6d85;line-height:1.75">体测现场最耗时的一步，是把纸质表上的<b>手写成绩</b>逐项誊录到电脑。以本班为例，8 个项目 × 42 人 = 336 个数值，两名教师誊录约需 40 分钟，且手写的 3 和 8、1 和 7 容易看错。<br><br>拍照之后，教师可以从<b>当场逐字誊录</b>退到<b>回到办公室照着照片录入</b>，先把占着操场的时间还给课堂。</div>'
+          + '<div class="card-h" style="margin-bottom:8px"><span class="dot"></span><h3>拍照留档</h3></div>'
           + ocrCtl()
         + '</div></div>';
     } else if (stage === 1){
@@ -2714,8 +2800,6 @@ function renderCapture(){
           + '</svg></div>'
         + '<div style="flex:1;min-width:230px">'
           + '<div class="card-h" style="margin-bottom:8px"><span class="dot"></span><h3>识别框选过程</h3></div>'
-          + '<div class="note note-ex cyan">演示说明：本页<b>没有</b>实现一个真实的识别引擎。识别效果取决于字体、光照、拍摄角度，在未用本校真实纸质表做过校准之前，不宜宣称准确率。此处展示的是<b>交互流程与结果呈现方式</b>，识别内核待用真实样本训练后接入。</div>'
-          + '<div class="mt12" style="font-size:13px;color:#5d6d85;line-height:1.7">预期定位字段：身高 / 体重 / 肺活量 / 50 米 / 立定跳远 / 坐位体前屈 / 引体向上（仰卧起坐）/ 耐力跑。</div>'
           + '<div class="row mt12"><span class="puls tag t-c">识别中</span><button class="btn pri" onclick="UI.ocrNext()">查看回填结果</button></div>'
         + '</div></div>';
     } else {
@@ -2725,12 +2809,8 @@ function renderCapture(){
           + '<table class="tb"><thead><tr><th>项目</th><th style="text-align:right">识别值</th><th style="text-align:right">状态</th></tr></thead><tbody>'
           + rows.map(r=>'<tr><td>'+r[0]+'</td><td class="num" style="text-align:right;font-weight:700">'+r[1]+'</td><td style="text-align:right"><span class="tag '+(r[2]==="确定"?"t-g":"t-r")+'">'+r[2]+'</span></td></tr>').join("")
           + '</tbody></table>'
-          + '<div class="note amber mt12">低置信度数值<b>不会静默写入</b>数据文件，必须由教师点确认或手改后才生效——这是本模块的设计底线。</div></div>'
-        + '<div><div class="card-h" style="margin-bottom:8px"><span class="dot"></span><h3>效率对比估算</h3></div>'
-          + hbarRow("人工誊录", 100, "#dc2626", "约 40 分钟")
-          + hbarRow("OCR + 人工复核", 26, "#15803d", "约 10 分钟")
-          + '<div class="note note-ex mt12">估算口径：本班 42 人 × 8 项。OCR 耗时按“拍摄 + 复核低置信项”计，实际因纸质表版式而异。</div>'
-          + '<button class="btn mt12" onclick="UI.ocrReset()">重新拍摄</button></div>'
+          + '<div class="row mt12"><button class="btn" onclick="UI.ocrReset()">重新拍摄</button>'
+          + '<button class="btn pri" onclick="UI.ocrNext()">确认回填到录入表</button></div></div>'
         + '</div>';
     }
     detail = '<div class="card"><div class="card-h"><span class="dot"></span><h3>'+header+'</h3><span class="sub">'+sub+'</span></div>'
@@ -2739,10 +2819,9 @@ function renderCapture(){
       + '</div>'+ocrBody+'</div>';
   }
 
-  let feedCard = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>手机实时上传 · 大屏同步</h3>'
-    + '<span class="sub">'+(STATE.served ? '手机扫码进入后拍照，自动出现在这里' : '扫码上传的照片实时同步')+'</span></div>'
-    + '<div class="feed-wall" id="feedWall">'+demoFeedHtml()+'</div>'
-    + '<div class="note note-ex mt12">所有上传仅保存在本机与现场网络内，不上传任何外部服务；演示结束后可清空 <code>uploads.json</code>。请避免上传未成年人正面特写。</div>'
+  let feedCard = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>手机拍照 · 大屏实时同步</h3>'
+    + '<span class="sub">'+(STATE.served ? '手机扫码进入后拍照，照片自动出现在这里' : '需启动本地服务：双击桌面「一键启动-校园访问」')+'</span></div>'
+    + '<div class="feed-wall" id="feedWall">'+(STATE.served ? '' : '<div class="empty">启动校园服务并用手机扫码后，现场照片会实时显示在这里。</div>')+'</div>'
     + '</div>';
   if (STATE.served){ startFeed(); }
 
@@ -3064,68 +3143,81 @@ function renderRx(){
   const stu = STUDENTS.find(s=>s.id===STATE.stuId) || STUDENTS[0];
   const sc = getScore(stu, STATE.term);
   const rx = makePrescription(stu, STATE.term);
-  const G = stu.gender;
-
-  let body = "";
-  if (rx.keep){
-    body = '<div class="note"><b>'+stu.name+'</b> 本次测评各项目均在 72 分以上，无需针对性补弱处方。建议维持现有锻炼习惯，以优势项目带动全面发展。</div>';
-  } else {
-    body = rx.items.map(sec=>{
-      return '<div class="rx-sec"><div class="rx-h">'+icon("bulb",15)+' 薄弱项 '+sec.name+'（'+sec.score+' 分）</div>'
-        + '<div class="rx-b"><div style="font-weight:700;margin-bottom:8px;color:#16202f">'+sec.lib.title+'</div>'
-        + sec.lib.items.map(it=>'<div class="rx-item"><div class="rx-item-n">'+it.n.slice(0,1)+'</div>'
-            + '<div class="rx-item-t"><b>'+it.t+'</b><div class="rx-dose">'+it.d+'</div></div></div>').join("")
-        + '<div class="note cyan mt12" style="font-size:12.5px">'+sec.lib.tip+'</div>'
-        + '</div></div>';
-    }).join("");
-  }
-
-  // 课时框架
-  const plan = [
-    { p:"准备部分", t:"约 8 分钟", c:"慢跑 400 米 + 关节活动 + 动态拉伸（弓步转体、摆腿各 2×8 拍）", hint:"针对薄弱项柔韧不足者优先安排"},
-    { p:"基本部分", t:"约 28 分钟", c:"主教材：薄弱项针对性练习 3 组循环；辅教材：优势项保持性练习 1 组", hint:"练习密度目标 ≥ 60%"},
-    { p:"结束部分", t:"约 6 分钟", c:"静态拉伸 + 呼吸调整 + 本课小结与目标布置", hint:"平均心率预计 135–155 次/分"}
-  ];
-  const planHtml = plan.map(x=>'<div class="rx-item"><div class="rx-item-n">'+x.p.slice(0,1)+'</div>'
-    + '<div class="rx-item-t"><b>'+x.p+' · '+x.t+'</b><div>'+x.c+'</div><div class="rx-dose">'+x.hint+'</div></div></div>').join("");
+  const logs = rxLogsOf(stu.id);
+  const pushed = rxPushedOf(stu.id);
+  const isEditing = (STATE.rxDraftFor===stu.id);
+  const stage = pushed ? "已推送" : (STATE.rxReviewed ? "已审核" : (isEditing ? "草稿编辑" : "待生成"));
 
   const cards = visibleStudents().filter(s=>!STATE.genderFilter || s.gender===STATE.genderFilter)
     .map(s=>{
       const c = getScore(s, STATE.term);
-      return '<div class="stu-c '+(s.id===STATE.stuId?"on":"")+'" onclick="UI.pick(\''+s.id+'\');UI.go(\'rx\')">'
+      var pv = rxPushedOf(s.id);
+      return '<div class="stu-c '+(s.id===STATE.stuId?"on":"")+'" onclick="UI.rxPick(\''+s.id+'\')">'
         + '<div class="stu-nm">'+s.name+'<span style="font-size:11px;color:#8b99ad;font-weight:400">'+(s.gender==="M"?"男":"女")+'</span></div>'
         + '<div class="stu-id">'+s.id+'</div>'
         + '<div class="stu-sc" style="color:'+scoreColor(c.total)+'">'+c.total+'</div>'
-        + '<div class="stu-meta">'+c.level+' · BMI '+c.bmi+'</div></div>';
+        + '<div class="stu-meta">'+(pv?'<span class="tag t-g" style="padding:1px 6px;font-size:10px">已推送 '+rxLogsOf(s.id).length+' 轮</span>':c.level+' · BMI '+c.bmi)+'</div></div>';
     }).join("");
+
+  const flow = '<div class="rx-flow">'
+    + [["① 选择学生",true],["② 生成处方",isEditing||!!pushed],["③ 教师编辑",isEditing||!!pushed],["④ 审核签发",STATE.rxReviewed||!!pushed],["⑤ 推送学生",!!pushed]]
+      .map(function(x,i){ return '<span class="fs '+((x[1])?(i===4&&pushed?'done':'on'):'')+'">'+x[0]+'</span>'+(i<4?'<span class="fa">›</span>':''); }).join("")
+    + '</div>';
+
+  var main = "";
+  if (!isEditing && !pushed){
+    main = '<div class="card"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' · 体测概览</h3>'
+      + '<span class="sub">总分 '+sc.total+' · '+sc.level+' · '+TERMS.find(function(t){return t.id===STATE.term;}).name+'</span></div>'
+      + '<div class="grid g4 mb16">'
+        + ITEMS.map(function(it){ var p=sc.parts[it.key]; return '<div class="kpi"><div class="kpi-l">'+itemName(stu.gender,it.key)+'</div>'
+            + '<div class="kpi-v" style="font-size:23px;color:'+scoreColor(p.score)+'">'+p.score+'</div>'
+            + '<div class="kpi-s">'+(p.score<72?'<span class="tag t-r" style="padding:1px 6px;font-size:10px">薄弱</span>':'达标')+'</div></div>'; }).join("")
+      + '</div>'
+      + '<div class="row"><button class="btn pri" onclick="UI.rxGenerate(\''+stu.id+'\')">'+icon("bulb",15)+' 依据该生成成 AI 处方初稿</button>'
+      + '<span class="hint">生成后可逐字编辑，教师审核通过才可推送</span></div></div>';
+  } else {
+    var text = isEditing ? STATE.rxDraftText : pushed.plan;
+    var ta = '<div class="ar-edit"><div class="ck-label">'+(pushed&&!isEditing?'已推送版本（可修改后重新推送）':'处方正文 · 教师可编辑')+'</div>'
+      + '<textarea id="rxText" '+(pushed&&!isEditing?'readonly':'')+'>'+escapeHtml(text||"")+'</textarea></div>';
+    main = '<div class="card"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' · 个性化运动处方</h3>'
+      + '<span class="sub">第 '+(logs.length||1)+' 轮 · '+stage+'</span></div>'
+      + flow
+      + '<div class="row wrap" style="gap:8px">'
+        + rx.focus.map(function(f){return '<span class="tag t-r">'+f.name+' '+f.score+' 分</span>';}).join("")
+      + '</div>'
+      + ta
+      + '<div class="row wrap mt12" style="gap:8px">'
+        + ((!pushed||isEditing) ? '<button class="btn" onclick="UI.rxSaveDraft()">保存修改</button>' : '')
+        + ((!pushed||isEditing) && !STATE.rxReviewed ? '<button class="btn pri" onclick="UI.rxReview()">'+icon("check",15)+' 教师审核通过</button>' : '')
+        + ((STATE.rxReviewed||pushed) ? '<button class="btn pri" onclick="UI.rxPush(\''+stu.id+'\')">'+icon("send",15)+' '+(pushed?'更正并重新推送':'推送到学生端')+'</button>' : '')
+        + (pushed && !isEditing ? '<button class="btn" onclick="UI.rxReedit(\''+stu.id+'\')">重新编辑</button>' : '')
+      + '</div>'
+      + (pushed ? '<div class="rx-pushed mt12"><span class="ic">'+icon("hand",16)+'</span>已推送 · '+fmtStamp(pushed.pushTs)+' · '+escapeHtml(pushed.editor||"体育老师")+'</div>' : '')
+      + '</div>';
+  }
+
+  var history = logs.length ? '<div class="card"><div class="card-h"><span class="dot"></span><h3>处方历史（逐步闭环）</h3>'
+      + '<span class="sub">共 '+logs.length+' 轮</span></div><div class="tl-evidence">'
+      + logs.map(function(r,i){
+          var st = r.status==="pushed"?'<span class="tag t-g">已推送</span>':'<span class="tag t-a">'+stageName(r.status)+'</span>';
+          return '<div class="tl-ev '+(r.status==="pushed"?'ok':'ai')+'"><div class="d">第 '+(i+1)+' 轮 · '+fmtStamp(r.ts)+' · '+TERMS.find(function(t){return t.id===r.term;}).name+' '+st+'</div>'
+            + '<div class="t">'+escapeHtml((r.plan||"").split("\n")[0])+(r.editNote?' · '+escapeHtml(r.editNote):'')+'</div></div>';
+        }).join("")
+      + '</div></div>' : '';
 
   return ''
   + filterBar()
   + '<div class="grid g12 mb16">'
-    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' 的个性化运动处方</h3>'
-      + '<span class="sub">总分 '+sc.total+' · '+sc.level+'</span></div>'
-      + (rx.keep ? '' : '<div class="row wrap mb12" style="gap:7px">'
-          + rx.focus.map(f=>'<span class="tag t-r">'+f.name+' '+f.score+' 分</span>').join("")
-          + (rx.strong&&rx.strong.length?'<span style="font-size:12px;color:#8b99ad;margin-left:6px">优势保持：</span>':'')
-          + (rx.strong?rx.strong.map(s=>'<span class="tag t-g">'+s.name+' '+s.score+'</span>').join(""):'')
-        + '</div>')
-      + body
-      + (STATE.pushedRx===stu.id ? '<div class="rx-pushed"><span class="ic">'+icon("hand",16)+'</span>已推送到 <b>'+stu.name+'</b> 的学生端</div>' : '')
-      + '<div class="rx-sec"><div class="rx-h">'+icon("sheet",15)+' 课时框架（4 周 · 每周 3 次）</div><div class="rx-b">'+planHtml+'</div></div>'
-      + '<div class="row wrap" style="gap:8px"><button class="btn" onclick="window.print()">'+icon("dl",15)+' 打印 / 导出本报告</button>'
-      + '<button class="btn pri" onclick="UI.pushRx(\''+stu.id+'\')">'+icon("send",15)+' 推送给学生端</button>'
-      + '<span class="hint">打印可另存为 PDF；推送保留教师署名，便于课堂发放与家校沟通</span></div>'
-      + askPanel(stu)
-    + '</div>'
+    + main
     + '<div class="card"><div class="card-h"><span class="dot"></span><h3>选择学生</h3>'
-      + '<span class="sub">'+(isStudent() ? '仅本人（学生视图）' : (STATE.gradeFilter||"全校")+' · '+(STATE.classFilter||"全部班级")+' · 共 '+visibleStudents().length+' 人')+'</span></div>'
+      + '<span class="sub">点击学生查看数据并生成处方</span></div>'
       + '<div style="max-height:600px;overflow-y:auto;padding-right:4px"><div class="stu-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">'+cards+'</div></div>'
     + '</div>'
   + '</div>'
+  + history
   + renderCheckin(stu);
 }
-
-
+function stageName(st){ return st==="pushed"?"已推送":st==="reviewed"?"已审核":st==="edited"?"已编辑":"草稿"; }
 /* ================= 学生端板块（体质健康垂直闭环） ================= */
 function myStu(){ return selfStudent(); }
 function myScore(){ return getScore(myStu(), STATE.term); }
@@ -3211,8 +3303,30 @@ function renderSTask(){
       + '<div class="sub" style="margin-top:10px">来源：'+t.from+'</div>'
       + '</div>';
   }).join("");
+  // 训练课问卷：教师发布后学生可填写
+  var surveys = Engage.list("surveys").filter(function(sv){ return sv.target==="全体学生" || sv.target===s.cls; });
+  var surveyHtml = "";
+  if (surveys.length){
+    surveyHtml = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>训练课评价问卷</h3><span class="sub">请如实评价本节课</span></div>'
+      + surveys.map(function(sv){
+          var done = Engage.list("evals").some(function(e){return e.surveyId===sv.id && e.sid===s.id;});
+          if (done) return '<div class="ar-ai" style="background:var(--ok-l);border-color:#bbf7d0"><span class="lb" style="color:var(--ok)">已提交</span><div style="font-size:14px">'+escapeHtml(sv.course||"")+'</div></div>';
+          var radios = (sv.qs||[]).map(function(q,i){
+            return '<div class="ck-label" style="margin-top:8px">'+escapeHtml(q)+'</div>'
+              + '<div class="row wrap" style="gap:6px">'+[1,2,3,4,5].map(function(n){
+                  return '<label class="ck-b" style="flex:0 0 46px;text-align:center;cursor:pointer" onclick="UI.evalAns('+i+','+n+')"><input type="radio" name="ev_'+sv.id+'_'+i+'" '+(STATE.evalAns&&STATE.evalAns[i]===n?'checked':'')+'> '+n+'</label>';
+                }).join("")+'</div>';
+          }).join("");
+          return '<div class="ar-card"><div class="ar-head"><span class="tag t-c">待填写</span><span class="who" style="font-size:13.5px">'+escapeHtml(sv.course||"训练课")+'</span><span class="ts">'+fmtStamp(sv.ts)+'</span></div>'
+            + '<div class="ar-body">'+radios
+            + '<div class="ck-label" style="margin-top:8px">一句话建议（可选）</div>'
+            + '<input id="evNote_'+sv.id+'" class="mini-in" style="text-align:left" placeholder="如：希望增加个别指导">'
+            + '<div class="row mt12"><button class="btn pri" onclick="UI.evalSubmit(\''+sv.id+'\')">提交评价</button></div></div></div>';
+        }).join("") + '</div>';
+  }
   return stuHead("我的体测任务", "本人 · "+s.name)
-    + '<div style="margin-top:6px">'+rows+'</div>'
+    + surveyHtml
+    + '<div style="margin-top:6px">'+rows+'</div>';
     + '<div class="row" style="margin-top:auto;padding-top:16px;gap:8px"><button class="btn pri" onclick="UI.go(\'s_rx\')">查看处方详情</button><button class="btn" onclick="UI.go(\'s_track\')">看我的成长曲线</button></div>'
     + '</div>';
 }
@@ -3240,21 +3354,28 @@ function renderSReport(){
     + '</div>';
 }
 
-/* 学生端④：我的运动处方 */
+/* 学生端④：我的运动处方（显示教师审核后推送的版本） */
 function renderSRx(){
-  var s=myStu(), sc=myScore(), weak=weakItems(s,sc);
-  var rx = makePrescription(s, STATE.term);
-  var pushed = STATE.pushedRx===s.id;
-  var items = weak.map(function(w,i){
-    return '<div class="rx-item"><div class="rx-item-n">'+(i+1)+'</div><div><div class="rx-item-t">'+itName(w.key,s.gender)+' 专项提升</div><div class="sub">'+rxTip(w.key)+'</div></div></div>';
+  var s=myStu(), sc=myScore(), pushed=rxPushedOf(s.id);
+  if (!pushed){
+    return stuHead("我的个性化运动处方", "等待老师审核推送")
+      + '<div class="card"><div class="empty">'+icon("rx",44)+'<div style="margin-top:10px">老师尚未推送运动处方。完成体测后，老师会依据你的数据生成并审核处方，届时这里会显示。</div></div></div>'
+      + '<div class="row mt12"><button class="btn pri" onclick="UI.go(\'s_ask\')">先问问 AI 我的薄弱项</button></div></div>';
+  }
+  var lines = String(pushed.plan||"").split("\n").filter(function(x){return String(x).trim();});
+  var items = lines.map(function(L,i){
+    if (/^(一|二|三|四|五)、/.test(L)) return '<div class="rx-sec"><div class="rx-h">'+icon("bulb",15)+' '+escapeHtml(L.replace(/^[一二三四五]、/,""))+'</div></div>';
+    return '<div class="vline"><span class="vline-n">'+(i+1)+'</span><span>'+escapeHtml(L)+'</span></div>';
   }).join("");
-  return stuHead("我的个性化运动处方", "AI 生成 · 老师已确认")
-    + '<div class="note cyan">'+icon("rx",15)+' 这是 AI 依据你本学期体测数据、针对薄弱项生成的一人一策处方，已经体育老师审核。</div>'
-    + '<div class="rx-sec" style="margin-top:10px">'+items+'</div>'
-    + '<div class="rx-dose"><b>运动强度</b>：每周 3~4 次 · 每次 30 分钟 · 中等强度　　<b>周期</b>：4 周后复测</div>'
+  return stuHead("我的个性化运动处方", "体育老师审核推送 · 第 "+rxLogsOf(s.id).filter(function(r){return r.status==="pushed";}).length+" 轮")
+    + '<div class="note cyan">'+icon("rx",15)+' 这是体育老师依据你的体测数据生成、审核后推送的一人一策处方，推送时间 '+fmtStamp(pushed.pushTs)+'。</div>'
+    + '<div class="rx-sec" style="margin-top:10px"><div class="rx-h">'+icon("sheet",15)+' 处方正文</div>'
+      + '<div class="rx-b" style="white-space:pre-wrap;font-size:14.5px;line-height:1.85">'+escapeHtml(pushed.plan||"")+'</div></div>'
+    + '<div class="rx-dose mt12"><b>运动强度</b>：每周 3~4 次 · 每次 30 分钟 · 中等强度　　<b>周期</b>：4 周后复测</div>'
     + '<div class="row" style="margin-top:10px;gap:8px"><button class="btn pri" onclick="UI.go(\'s_ask\')">对处方有疑问？问问 AI</button><button class="btn" onclick="UI.go(\'s_task\')">我的任务</button></div>'
     + '</div>';
 }
+
 function rxTip(key){
   var m={
     bmi:"均衡饮食 + 每周 150 分钟有氧，控制含糖饮料",
@@ -3389,95 +3510,162 @@ function tmHead(title, sub){
 /* 教师①：薄弱项班级热力图（原创卖点） */
 function renderHeatmap(){
   var students = visibleStudents();
-  var focus = STATE.focusGroup || "run50";
-  var rows = students.map(function(s){
-    var sc=getScore(s,STATE.term);
-    var cells = ITEMS.map(function(it){
-      var p=sc.parts[it.key]; var sco=p?p.score:0;
-      var bg = sco>=90?"#dcfce7":sco>=80?"#bbf7d0":sco>=70?"#fef9c3":sco>=60?"#fed7aa":"#fecaca";
-      var fg = sco>=80?"#166534":sco>=60?"#92400e":"#991b1b";
-      return '<td style="text-align:center;background:'+bg+';color:'+fg+';font-weight:700;border-radius:6px">'+sco+'</td>';
-    }).join("");
-    return '<tr><td style="white-space:nowrap">'+s.name+'</td>'+cells+'</tr>';
+  var sc = function(it,s){ var p=getScore(s,STATE.term).parts[it.key]; return p?p.score:0; };
+  var lv = function(v){ return v>=90?"ex":v>=80?"good":v>=70?"mid":v>=60?"pass":"low"; };
+  var head = ITEMS.map(function(it){
+    return '<div class="hk">'+itName(it.key,"M").replace("引体向上","力量").replace("仰卧起坐","力量").replace("1000 米跑","耐力").replace("800 米跑","耐力")+'</div>';
   }).join("");
-  var head = ITEMS.map(function(it){return '<th style="text-align:center">'+itName(it.key,"M").replace("引体向上","力量").replace("仰卧起坐","力量").replace("1000 米跑","耐力").replace("800 米跑","耐力")+'</th>';}).join("");
+  var rows = students.map(function(s){
+    var cells = ITEMS.map(function(it){
+      var v=sc(it,s);
+      return '<div class="heat-cell '+lv(v)+'" title="'+s.name+' · '+itName(it.key,s.gender)+' '+v+' 分">'+v+'</div>';
+    }).join("");
+    return '<div class="heat-row"><div class="heat-name">'+s.name+'<small>'+(s.gender==="M"?"男":"女")+'</small></div>'+cells+'</div>';
+  }).join("");
   var stat = classStats(STATE.term);
   var weakest = ITEMS.slice().sort(function(a,b){return stat.partAvg[a.key]-stat.partAvg[b.key];})[0];
   return filterBar()
-    + tmHead("薄弱项热力图", (STATE.gradeFilter||"全校")+" · "+(STATE.classFilter||"全部班级")+" · 项目得分分布")
-    + '<div class="tbl-wrap" style="margin-top:10px"><table><thead><tr><th>学生</th>'+head+'</tr></thead><tbody>'+rows+'</tbody></table></div>'
-    + '<div class="row" style="margin-top:10px;gap:8px"><span class="sub">图例：</span>'
-      + '<span class="tag t-g">≥90 优秀</span><span class="tag t-b">80-89 良好</span><span class="tag t-a">60-79 及格</span><span class="tag t-r">&lt;60 待提升</span></div>'
+    + tmHead("薄弱项热力图", (STATE.gradeFilter||"全校")+" · "+(STATE.classFilter||"全部班级")+" · "+students.length+" 人")
+    + '<div class="heat-wrap" style="margin-top:10px">'
+      + '<div class="row wrap" style="gap:8px;margin-bottom:12px"><span class="tag t-r">全班最薄弱：'+itName(weakest.key,"M")+' '+stat.partAvg[weakest.key]+' 分</span>'
+      + '<span class="sub">每格为该生该项目国标得分，颜色越红越需重点提升</span></div>'
+      + '<div class="heat-scroll"><div class="heat-head"><div class="hk">学生</div>'+head+'</div>'+rows+'</div>'
+      + '<div class="heat-legend"><span>图例：</span>'
+        + '<span><i style="background:#dcfce7"></i>≥90 优秀</span><span><i style="background:#bbf7d0"></i>80-89 良好</span>'
+        + '<span><i style="background:#fef9c3"></i>70-79 中等</span><span><i style="background:#fed7aa"></i>60-69 及格</span>'
+        + '<span><i style="background:#fecaca"></i>&lt;60 待提升</span></div>'
     + '</div>';
 }
 
-/* 教师②：处方效果追踪（跨学期复测 + 建议推送） */
+/* 教师②：处方效果追踪（跨学期复测 + 建议推送）——逐步闭环 */
 function renderRxEffect(){
   var students = visibleStudents();
+  var stu = STUDENTS.find(function(x){return x.id===STATE.stuId;}) || students[0] || STUDENTS[0];
+  var logs = rxLogsOf(stu.id);
+  var pushedLogs = logs.filter(function(r){return r.status==="pushed";});
+  var scores = TERMS.map(function(t){return getScore(stu,t.id).total;});
+  var watchKeys = ITEMS.slice().sort(function(a,b){
+    return getScore(stu,STATE.term).parts[a.key].score-getScore(stu,STATE.term).parts[b.key].score;
+  }).slice(0,3).map(function(x){return x.key;});
+  var SER_COLORS = ["#dc2626","#f59e0b","#0891b2"];
+  var itemSeries = watchKeys.map(function(k,i){
+    return { data:TERMS.map(function(t){return getScore(stu,t.id).parts[k].score;}), color:SER_COLORS[i] };
+  });
+  var watchLegend = watchKeys.map(function(k,i){
+    return '<span><i style="background:'+SER_COLORS[i]+'"></i>'+itemName(stu.gender,k)+'</span>';
+  }).join("");
+  var all = students.map(function(s){return getScore(s,STATE.term).total-getScore(s,TERMS[0].id).total;});
+  var avg = all.length ? Math.round(all.reduce(function(a,b){return a+b;},0)/all.length*10)/10 : 0;
+
+  var picker = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>选择学生查看处方闭环</h3>'
+    + '<span class="sub">共 '+students.length+' 人</span></div><div class="track-pick">'
+    + students.slice(0,60).map(function(s){
+        return '<div class="track-chip '+(s.id===stu.id?"on":"")+'" onclick="UI.rxEffectPick(\''+s.id+'\')">'+s.name+'</div>';
+      }).join("")+'</div></div>';
+
+  /* 时间线：测评 → 生成 → 推送 → 复测 → 下一轮 */
+  var dFirst = scores[0], dLast = scores[scores.length-1], gain = Math.round((dLast-dFirst)*10)/10;
+  var weak0 = ITEMS.slice().sort(function(a,b){
+    return getScore(stu,TERMS[0].id).parts[a.key].score-getScore(stu,TERMS[0].id).parts[b.key].score;
+  })[0];
+  var weak1 = ITEMS.slice().sort(function(a,b){
+    return getScore(stu,STATE.term).parts[a.key].score-getScore(stu,STATE.term).parts[b.key].score;
+  })[0];
+  var w0 = getScore(stu,TERMS[0].id).parts[weak0.key].score;
+  var w1 = getScore(stu,STATE.term).parts[weak1.key].score;
+
+  var timeline = '<div class="tl-evidence">'
+    + '<div class="tl-ev ok"><div class="d">'+TERMS[0].name+' · 首次测评</div><div class="t">总分 '+dFirst+' 分，最薄弱项为 '+itemName(stu.gender,weak0.key)+'（'+w0+' 分）。</div></div>'
+    + pushedLogs.map(function(r,i){
+        return '<div class="tl-ev ai"><div class="d">第 '+(i+1)+' 轮 · '+fmtStamp(r.pushTs||r.ts)+' · 教师推送处方</div>'
+          + '<div class="t">'+escapeHtml((r.plan||"").split("\n").slice(0,2).join(" "))+'…</div></div>'
+          + '<div class="tl-ev ok"><div class="d">复测 · '+TERMS[Math.min(i+1,TERMS.length-1)].name+'</div>'
+          + '<div class="t">总分提升至 '+scores[Math.min(i+1,scores.length-1)]+' 分。'+(w1>w0?'薄弱项 '+itemName(stu.gender,weak1.key)+' 由 '+w0+' 升至 '+w1+' 分，处方有效。':'仍有提升空间，进入下一轮。')+'</div></div>';
+      }).join("")
+    + (!pushedLogs.length ? '<div class="tl-ev"><div class="d">待办</div><div class="t">该生尚未推送处方，请到「AI 运动处方」生成并审核推送。</div></div>' : '')
+    + '</div>';
+
   var rows = students.map(function(s){
     var t1=getScore(s,TERMS[0].id).total, t3=getScore(s,STATE.term).total;
     var d=Math.round((t3-t1)*10)/10;
     var cls=d>=6?"t-g":d>=0?"t-b":"t-r";
-    var arrow=d>=0?"↑":"↓";
     var weak=weakItems(s,getScore(s,STATE.term)).slice(0,2).map(function(w){return w.name;}).join("、")||"保持";
     return '<tr><td><b>'+s.name+'</b><div style="font-size:11px;color:#8b99ad">'+s.cls+'</div></td>'
       + '<td class="num">'+t1+'</td><td class="num">'+t3+'</td>'
-      + '<td><span class="tag '+cls+'">'+arrow+' '+Math.abs(d).toFixed(1)+'</span></td>'
-      + '<td>'+weak+'</td>'
-      + '<td style="text-align:right"><button class="btn" style="padding:5px 10px;font-size:12px" onclick="UI.rxEffectPick(\''+s.id+'\')">生成建议</button></td></tr>';
+      + '<td><span class="tag '+cls+'">'+(d>=0?"↑":"↓")+' '+Math.abs(d).toFixed(1)+'</span></td>'
+      + '<td>'+weak+'</td><td style="text-align:right"><button class="btn sm" onclick="UI.rxEffectPick(\''+s.id+'\')">查看闭环</button></td></tr>';
   }).join("");
-  var all = students.map(function(s){return getScore(s,STATE.term).total-getScore(s,TERMS[0].id).total;});
-  var avg = all.length ? Math.round(all.reduce(function(a,b){return a+b;},0)/all.length*10)/10 : 0;
+
   var targets = ["全体学生"].concat(classNamesOf(STATE.gradeFilter||DEFAULT_GRADE));
   var tOpts = targets.map(function(g){return '<option'+(STATE.rxTarget===g?' selected':'')+'>'+g+'</option>';}).join("");
-  var draft = STATE.rxSuggest || "";
+
   return filterBar()
-    + tmHead("处方效果追踪", (STATE.gradeFilter||"全校")+" · "+(STATE.classFilter||"全部班级")+" · 复测对比")
+    + tmHead("处方效果追踪", (STATE.gradeFilter||"全校")+" · "+(STATE.classFilter||"全部班级")+" · 复测对比与闭环")
     + '<div class="grid g3 mb16">'
       + '<div class="kpi"><div class="kpi-l">追踪人数</div><div class="kpi-v">'+students.length+'</div></div>'
       + '<div class="kpi"><div class="kpi-l">平均提升</div><div class="kpi-v" style="color:'+(avg>=0?'var(--ok)':'var(--bad)')+'">'+(avg>=0?'+':'')+avg+'</div></div>'
-      + '<div class="kpi"><div class="kpi-l">显著进步</div><div class="kpi-v">'+all.filter(function(d){return d>=6;}).length+' 人</div></div>'
+      + '<div class="kpi"><div class="kpi-l">已推送处方</div><div class="kpi-v">'+Engage.list("rxlog").filter(function(r){return r.status==="pushed";}).length+' 份</div></div>'
     + '</div>'
-    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>复测明细与处方评估</h3></div>'
-      + '<div class="tbl-wrap"><table><thead><tr><th style="min-width:86px">学生</th><th style="text-align:right;min-width:52px">首次</th><th style="text-align:right;min-width:52px">本次</th><th style="min-width:64px">变化</th><th>待提升项</th><th style="text-align:right">操作</th></tr></thead><tbody>'+rows+'</tbody></table></div>'
+    + picker
+    + '<div class="grid g2 mb16">'
+      + '<div class="card"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' · 总分趋势</h3><span class="sub">累计 '+(gain>=0?"+":"")+gain+' 分</span></div>'
+        + lineChart([{data:scores,color:"#2563eb"}],TERMS.map(function(t){return t.label;}),520,200)
+      + '</div>'
+      + '<div class="card"><div class="card-h"><span class="dot"></span><h3>薄弱项变化</h3><span class="sub">三项最弱项目</span></div>'
+        + lineChart(itemSeries,TERMS.map(function(t){return t.label;}),520,200)
+        + '<div class="legend" style="justify-content:center;margin-top:8px">'+watchLegend+'</div>'
+      + '</div>'
     + '</div>'
-    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>生成建议并推送训练计划</h3>'
+    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' · 逐步闭环</h3>'
+      + '<span class="sub">测评 → 推送 → 复测 → 再处方</span></div>'+timeline+'</div>'
+    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>复测明细与快速生成</h3></div>'
+      + '<div class="tbl-wrap"><table><thead><tr><th style="min-width:86px">学生</th><th style="text-align:right">首次</th><th style="text-align:right">本次</th><th style="min-width:64px">变化</th><th>待提升项</th><th style="text-align:right">操作</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>生成下一阶段建议并推送</h3>'
       + '<span class="sub">依据复测结果，经本地知识库检索生成</span></div>'
       + '<div class="grid g2 mb12">'
         + '<div><div class="ck-label">推送对象</div><select id="rxTarget" class="mini-in">'+tOpts+'</select></div>'
         + '<div><div class="ck-label">计划类型</div><select id="rxPlanType" class="mini-in"><option>下一阶段专项训练计划</option><option>薄弱项巩固练习</option><option>假期自主锻炼建议</option></select></div>'
       + '</div>'
       + '<div class="ck-label">建议内容（可编辑）</div>'
-      + '<textarea id="rxSuggest" class="mini-in" style="width:100%;min-height:92px" placeholder="点「生成 AI 建议」自动生成，或手动填写">'+escapeHtml(draft)+'</textarea>'
+      + '<textarea id="rxSuggest" class="mini-in" style="width:100%;min-height:92px;text-align:left" placeholder="点「生成 AI 建议」自动生成，或手动填写">'+escapeHtml(STATE.rxSuggest||"")+'</textarea>'
       + '<div class="row mt12" style="gap:8px">'
         + '<button class="btn" onclick="UI.rxSuggestAI()">'+icon("bulb",15)+' 生成 AI 建议</button>'
         + '<button class="btn pri" onclick="UI.rxPushPlan()">'+icon("send",15)+' 推送训练计划</button>'
-      + '</div>'
-    + '</div>';
+      + '</div></div>';
 }
 
-/* 教师③：答疑审核（对接学生端体测答疑） */
+/* 教师③：答疑审核（对接学生端体测答疑）——大屏可读排版 */
 function renderAskReview(){
   var all = Engage.list("asks");
   var pending = all.filter(function(a){return a.status!=="done";});
   var done = all.filter(function(a){return a.status==="done";});
   var card = function(a){
-    return '<div class="card" style="margin-bottom:10px"><div class="card-h"><h3>'+a.who+'</h3><span class="sub">'+fmtStamp(a.ts)+'</span></div>'
-      + '<div class="msg"><div class="msg-who">学生问题</div><div>'+escapeHtml(a.q)+'</div></div>'
+    var draft = (STATE.arDraft&&STATE.arDraft[a.id]) || a.ai || "";
+    return '<div class="ar-card"><div class="ar-head"><span class="tag t-c">'+escapeHtml(a.who||"学生")+'</span>'
+      + '<span class="who">体测答疑审核</span><span class="ts">'+fmtStamp(a.ts)+'</span></div>'
+      + '<div class="ar-body">'
+      + '<div class="ar-q"><span class="lb">学生问题</span>'+escapeHtml(a.q)+'</div>'
+      + '<div class="ar-ai"><span class="lb">AI 参考建议（结合本人数据 + 本地知识库，可溯源）</span>'
+        + '<div class="txt">'+escapeHtml(a.ai||"")+'</div></div>'
       + (a.status==="done"
-          ? '<div class="msg"><div class="msg-who">已发送给学生</div><div>'+escapeHtml(a.teacher||"")+'</div></div><span class="tag t-g">已回复</span>'
-          : '<div class="row" style="margin-top:8px"><button class="btn" onclick="UI.arAI(\''+a.id+'\')">'+icon("bulb",15)+' 生成 AI 建议</button>'
-            + '<span class="sub">基于该生体测数据 + 本地知识库，可溯源</span></div>'
-            + '<div class="ck-label" style="margin-top:8px">审核后回复（可编辑）</div>'
-            + '<textarea id="ar_'+a.id+'" class="mini-in" style="width:100%;min-height:72px" placeholder="先点「生成 AI 建议」，再审核修改后推送">'+escapeHtml(STATE.arDraft&&STATE.arDraft[a.id]||"")+'</textarea>'
-            + '<div class="row" style="margin-top:8px"><button class="btn pri" onclick="UI.arSend(\''+a.id+'\')">'+icon("send",15)+' 推送给学生</button></div>')
-      + '</div>';
+          ? '<div class="ar-ai" style="background:var(--ok-l);border-color:#bbf7d0"><span class="lb" style="color:var(--ok)">已发送给学生</span>'
+            + '<div class="txt" style="color:#14532d">'+escapeHtml(a.teacher||"")+'</div></div>'
+          : '<div class="ar-edit"><div class="ck-label">审核后回复（AI 草稿可逐字修改）</div>'
+            + '<textarea id="ar_'+a.id+'" style="min-height:150px">'+escapeHtml(draft)+'</textarea></div>'
+            + '<div class="row mt12" style="gap:8px"><button class="btn" onclick="UI.arAI(\''+a.id+'\')">'+icon("bulb",15)+' 重新生成 AI 建议</button>'
+            + '<button class="btn pri" onclick="UI.arSend(\''+a.id+'\')">'+icon("send",15)+' 审核通过并推送学生</button></div>')
+      + '</div></div>';
   };
   return tmHead("体测答疑审核", (STATE.gradeFilter||"全校")+" · AI 起草 · 教师审核后发放")
-    + '<div class="card-h" style="margin-top:10px"><h3>待审核 '+pending.length+' 条</h3></div>'
-    + (pending.length?pending.map(card).join(""):'<div class="empty">暂无待审核问题</div>')
-    + '<div class="card-h" style="margin-top:14px"><h3>已回复 '+done.length+' 条</h3></div>'
-    + (done.length?done.map(card).join(""):'<div class="empty">暂无已回复</div>');
+    + '<div class="grid g3 mb16">'
+      + '<div class="kpi"><div class="kpi-l">待审核</div><div class="kpi-v" style="color:var(--warn)">'+pending.length+'</div></div>'
+      + '<div class="kpi"><div class="kpi-l">已回复</div><div class="kpi-v" style="color:var(--ok)">'+done.length+'</div></div>'
+      + '<div class="kpi"><div class="kpi-l">合计</div><div class="kpi-v">'+all.length+'</div></div>'
+    + '</div>'
+    + '<div class="card-h" style="margin:6px 2px 10px"><h3>待审核 '+pending.length+' 条</h3></div>'
+    + (pending.length?pending.map(card).join(""):'<div class="card"><div class="empty">暂无待审核问题</div></div>')
+    + '<div class="card-h" style="margin:16px 2px 10px"><h3>已回复 '+done.length+' 条</h3></div>'
+    + (done.length?done.map(card).join(""):'<div class="card"><div class="empty">暂无已回复</div></div>');
 }
 
 /* 教师④：运动健康档案 */
@@ -3496,26 +3684,51 @@ function renderHealth(){
     + '</div>';
 }
 
-/* 教师⑤：训练任务推送（按薄弱项分组） */
+/* 教师⑤：训练任务推送（按薄弱项分组 · 支持本地视频上传） */
 function renderTaskPush(){
   var groups = ["全体学生"].concat(classNamesOf(STATE.gradeFilter||DEFAULT_GRADE))
     .concat(["短跑薄弱组","耐力薄弱组","力量薄弱组","柔韧薄弱组"]);
   var recs = Engage.list("tasks");
   var gOpts = groups.map(function(g){return '<option>'+g+'</option>';}).join("");
   var list = recs.map(function(t){
-    return '<div class="ck-item"><div><b>'+icon("send",14)+' '+escapeHtml(t.title)+'</b><div class="sub">'+t.group+' · '+t.type+' · '+fmtStamp(t.ts)+'</div></div><span class="tag t-b">已推送</span></div>';
+    var ch = t.channel||"学生端";
+    var media = t.videoName ? '<span class="tag t-c" style="margin-left:6px">'+icon("cap",12)+' '+escapeHtml(t.videoName)+'</span>' : '';
+    return '<div class="ar-card" style="margin-bottom:9px"><div class="ar-head"><span class="tag t-b">'+escapeHtml(ch)+'</span>'
+      + '<span class="who" style="font-size:13.5px">'+escapeHtml(t.title)+'</span><span class="ts">'+fmtStamp(t.ts)+'</span></div>'
+      + '<div class="ar-body" style="padding:10px 15px"><div class="sub">推送对象：'+escapeHtml(t.group||"全体学生")+' · '+escapeHtml(t.type||"练习任务")+media+'</div>'
+      + (t.plan?'<div style="font-size:13.5px;color:var(--text-2);margin-top:6px;white-space:pre-wrap">'+escapeHtml(t.plan)+'</div>':'')
+      + '</div></div>';
   }).join("");
-  return tmHead("训练任务推送", "按体测薄弱项智能分组 · 针对性练习")
-    + '<div class="note cyan">依据薄弱项热力图，可给不同小组推送针对性练习任务，而不是泛泛的统一内容。学生端「我的任务」实时可见。</div>'
-    + '<div class="grid g2" style="margin-top:10px">'
-      + '<div><div class="ck-label">任务类型</div><select id="tpType" class="mini-in"><option>专项练习打卡</option><option>体测知识随堂测</option><option>训练视频课</option></select></div>'
-      + '<div><div class="ck-label">推送对象</div><select id="tpGroup" class="mini-in">'+gOpts+'</select></div>'
+  var vd = STATE.tpVideo;
+  var preview = vd
+    ? '<div class="tp-preview"><video id="tpVideoEl" controls src="'+vd.url+'"></video>'
+      + '<div class="row mt12"><span class="tag t-g">已选择：'+escapeHtml(vd.name)+' · '+Math.round(vd.size/1024)+' KB</span>'
+      + '<button class="btn sm" onclick="UI.tpVideoClear()">移除视频</button></div>'
+      + '<div class="hint mt12">视频以本地文件播放，推送后学生在「我的任务」中可打开学习；不上传外网。</div></div>'
+    : '<div class="tp-preview"><div class="vp-empty">未选择视频。选择「训练视频课」时，可点下方按钮从本机上传视频。</div></div>';
+  return filterBar()
+    + tmHead("训练任务推送", "按体测薄弱项分组 · 针对性练习 · 视频本地上传")
+    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>新建推送任务</h3>'
+      + '<span class="sub">填写后推送到学生端 / 希沃大屏</span></div>'
+      + '<div class="tp-form">'
+        + '<div><div class="ck-label">任务类型</div><select id="tpType" class="mini-in" onchange="UI.tpTypeChange()"><option>专项练习打卡</option><option>体测知识随堂测</option><option>训练视频课</option><option>图文学习资料</option></select></div>'
+        + '<div><div class="ck-label">推送对象</div><select id="tpGroup" class="mini-in">'+gOpts+'</select></div>'
+      + '</div>'
+      + '<div class="ck-label" style="margin-top:8px">任务标题</div><input id="tpTitle" class="mini-in" type="text" maxlength="40" placeholder="如：短跑爆发力专项训练（第 3 周）">'
+      + '<div class="ck-label" style="margin-top:8px">任务说明 / 学习要求（可选）</div>'
+      + '<textarea id="tpPlan" class="mini-in" style="width:100%;min-height:70px;text-align:left" placeholder="填写练习组次、视频观看要点或资料说明"></textarea>'
+      + '<div id="tpVideoBox" style="display:none;margin-top:10px"><div class="ck-label">上传训练视频（本地）</div>'
+        + '<label class="btn" style="cursor:pointer;margin-bottom:0">'+icon("cap",15)+' 选择本机视频'
+        + '<input type="file" accept="video/*" style="display:none" onchange="UI.tpVideoPick(this)"></label>'
+        + preview + '</div>'
+      + '<div class="ck-label" style="margin-top:10px">推送渠道</div>'
+      + '<div class="row wrap" style="gap:8px"><select id="tpChannel" class="mini-in" style="width:auto;min-width:150px">'
+        + '<option>学生端</option><option>希沃大屏</option><option>学生端 + 希沃大屏</option></select>'
+        + '<button class="btn pri" onclick="UI.tpSend()">'+icon("send",15)+' 推送任务</button>'
+        + '<button class="btn" onclick="UI.tpAI()">'+icon("bulb",15)+' AI 生成建议</button></div>'
     + '</div>'
-    + '<div class="ck-label" style="margin-top:8px">任务标题</div><input id="tpTitle" class="mini-in" type="text" maxlength="40" placeholder="如：短跑爆发力专项训练（第 3 周）">'
-    + '<div class="row" style="margin-top:8px"><button class="btn pri" onclick="UI.tpSend()">'+icon("send",15)+' 推送任务</button>'
-      + '<button class="btn" onclick="UI.tpAI()">'+icon("bulb",15)+' AI 生成建议</button></div>'
-    + '<div class="card-h" style="margin-top:14px"><h3>推送记录</h3><span class="sub">'+recs.length+' 条</span></div>'
-    + '<div class="ck-list">'+(list||'<div class="empty">暂无推送记录</div>')+'</div>'
+    + '<div class="card-h" style="margin:6px 2px 10px"><h3>推送记录</h3><span class="sub">'+recs.length+' 条</span></div>'
+    + (list||'<div class="card"><div class="empty">暂无推送记录</div></div>')
     + '</div>';
 }
 
@@ -3573,8 +3786,7 @@ function renderQuizBank(){
   var bank = quizBank();
   var picked = STATE.bankPick || [];
   var showAns = STATE.bankShowAns || {};
-  var targets = ["全体学生"].concat(classNamesOf(STATE.gradeFilter||DEFAULT_GRADE))
-    .concat(["耐力薄弱人群","速度薄弱人群","力量薄弱人群","柔韧薄弱人群"]);
+  var targets = ["全体学生", "高一年级", "耐力薄弱组", "速度薄弱组", "力量薄弱组"];
   var tOpts = targets.map(function(g){return '<option'+(STATE.quizTarget===g?' selected':'')+'>'+g+'</option>';}).join("");
   var cards = bank.map(function(q,i){
     var on = picked.indexOf(i)>=0;
@@ -3593,7 +3805,7 @@ function renderQuizBank(){
     + tmHead("体测知识小测 · 题库与组卷", "题目来自本地知识库 · 每题可溯源")
     + '<div class="card mb16"><div class="row wrap" style="gap:10px;align-items:center">'
       + '<label style="font-size:12.5px;color:var(--text-2);font-weight:600">推送对象</label>'
-      + '<select id="quizTarget" class="mini-in" style="min-width:180px">'+tOpts+'</select>'
+      + '<select id="quizTarget" class="mini-in" style="width:auto;min-width:126px">'+tOpts+'</select>'
       + '<span class="kb-stat" style="margin:0">题库共 <b>'+bank.length+'</b> 题，已选 <b>'+picked.length+'</b> 题</span>'
     + '</div></div>'
     + '<div class="quiz-bank-grid">'+cards+'</div>'
@@ -3601,36 +3813,67 @@ function renderQuizBank(){
     + '</div>';
 }
 
-/* 教师⑦：训练课评价汇总（AI 生成反馈 → 教师修改 → 推送人群） */
+/* 教师⑦：训练课评价 —— 输入课程信息 → AI 生成问卷 → 学生填写 → 查看反馈 */
 function renderEvalReview(){
   var ev = Engage.list("evals");
+  var surveys = Engage.list("surveys");
+  var cur = surveys.length ? surveys[0] : null;
+  var answered = ev.filter(function(e){return e.surveyId===(cur&&cur.id);});
   var avg = ev.length ? Math.round(ev.reduce(function(a,b){return a+(+b.score||0);},0)/ev.length*10)/10 : 0;
-  var rows = ev.map(function(e){
-    return '<div class="ck-item"><div><b>'+escapeHtml(e.course||"体测训练课")+'</b><div class="sub">'+escapeHtml(e.note||"")+'</div></div><span class="tag t-b">'+e.score+' 分</span></div>';
-  }).join("");
   var groups = ["全体学生"].concat(classNamesOf(STATE.gradeFilter||DEFAULT_GRADE));
   var tOpts = groups.map(function(g){return '<option'+(STATE.evalTarget===g?' selected':'')+'>'+g+'</option>';}).join("");
+
+  var step = '<div class="rx-flow">'
+    + [["① 填写本节课信息",true],["② AI 生成问卷",!!cur],["③ 学生填写",answered.length>0],["④ 查看反馈再推送",answered.length>0]]
+      .map(function(x,i){return '<span class="fs '+((x[1])?(i===3&&answered.length?'done':'on'):'')+'">'+x[0]+'</span>'+(i<3?'<span class="fa">›</span>':'');}).join("")+'</div>';
+
+  var inputCard = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>① 本节课信息</h3>'
+    + '<span class="sub">输入大致情况，AI 据此生成问卷</span></div>'
+    + '<div class="tp-form">'
+      + '<div><div class="ck-label">课程主题</div><input id="evCourse" class="mini-in" style="text-align:left" placeholder="如：立定跳远蹬摆协调整合课" value="'+escapeHtml(STATE.evalCourse||"")+'"></div>'
+      + '<div><div class="ck-label">推送对象</div><select id="evalTarget" class="mini-in">'+tOpts+'</select></div>'
+    + '</div>'
+    + '<div class="ck-label" style="margin-top:8px">主要练习内容与强度（一句话）</div>'
+    + '<input id="evContent" class="mini-in" style="text-align:left" placeholder="如：深蹲跳 3×12、台阶交换跳 3×10，中等强度，约 40 分钟">'
+    + '<div class="row mt12"><button class="btn pri" onclick="UI.evalGenSurvey()">'+icon("bulb",15)+' AI 生成本节课问卷</button></div></div>';
+
+  var surveyCard = '';
+  if (cur){
+    var qs = (cur.qs||[]).map(function(q,i){
+      return '<div class="rx-item"><div class="rx-item-n">'+(i+1)+'</div><div class="rx-item-t"><b>'+escapeHtml(q)+'</b>'
+        + '<div class="rx-dose">1 分很差 · 5 分很好</div></div></div>';
+    }).join("");
+    surveyCard = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>② 生成的 AI 问卷</h3>'
+      + '<span class="sub">'+escapeHtml(cur.course||"")+' · '+fmtStamp(cur.ts)+'</span></div>'
+      + '<div class="rx-sec">'+qs+'</div>'
+      + '<div class="row mt12"><span class="tag t-g">已发布到学生端</span>'
+      + '<button class="btn sm" onclick="UI.evalRepublish()">重新生成</button></div></div>';
+  } else {
+    surveyCard = '<div class="card mb16"><div class="empty">尚未生成本节课问卷。先在上方填写课程信息，再点「AI 生成本节课问卷」。</div></div>';
+  }
+
+  var feedbackCard = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>④ 学生反馈与改进推送</h3>'
+    + '<span class="sub">已收到 '+answered.length+' 份评价 · 平均 '+avg+' / 5</span></div>';
+  if (answered.length){
+    var rows = answered.map(function(a){
+      var stars = "★".repeat(Math.max(1,Math.min(5,+a.score||3)))+"☆".repeat(5-Math.max(1,Math.min(5,+a.score||3)));
+      return '<div class="ar-card" style="margin-bottom:8px"><div class="ar-head"><span class="who" style="font-size:13px">'+escapeHtml(a.who||"学生")+'</span>'
+        + '<span class="tag t-a" style="margin-left:auto;color:#b45309">'+stars+'</span><span class="ts">'+fmtStamp(a.ts)+'</span></div>'
+        + (a.note?'<div class="ar-body" style="padding:10px 15px;font-size:14px">'+escapeHtml(a.note)+'</div>':'')+'</div>';
+    }).join("");
+    feedbackCard += '<div>'+rows+'</div>'
+      + '<div class="ck-label mt12">改进反馈（AI 起草，教师可改）</div>'
+      + '<textarea id="evalText" class="mini-in" style="width:100%;min-height:88px;text-align:left">'+escapeHtml(STATE.evalDraft||"")+'</textarea>'
+      + '<div class="row mt12" style="gap:8px"><button class="btn" onclick="UI.evalAI()">'+icon("bulb",15)+' AI 生成改进反馈</button>'
+      + '<button class="btn pri" onclick="UI.evalPush()">'+icon("send",15)+' 推送反馈</button></div>';
+  } else {
+    feedbackCard += '<div class="empty" style="padding:26px">学生提交评价后，这里会展示每条反馈与平均分。</div>';
+  }
+  feedbackCard += '</div>';
+
   return filterBar()
-    + tmHead("训练课评价", (STATE.gradeFilter||"全校")+" · 学生反馈与改进推送")
-    + '<div class="grid g3 mb16">'
-      + '<div class="kpi"><div class="kpi-l">评价数</div><div class="kpi-v">'+ev.length+'</div></div>'
-      + '<div class="kpi"><div class="kpi-l">平均评分</div><div class="kpi-v">'+avg+' <span style="font-size:14px">/ 5</span></div></div>'
-      + '<div class="kpi"><div class="kpi-l">满意度</div><div class="kpi-v">'+(avg>=4?"高":avg>=3?"中":"待改进")+'</div></div>'
-    + '</div>'
-    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>学生评价明细</h3></div>'
-      + '<div class="ck-list">'+(rows||'<div class="empty">暂无评价，学生端提交后这里实时可见。</div>')+'</div>'
-    + '</div>'
-    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>改进反馈 · AI 生成与推送</h3>'
-      + '<span class="sub">教师修改后推送给指定人群</span></div>'
-      + '<div class="row wrap mb12" style="gap:10px;align-items:center">'
-        + '<label style="font-size:12.5px;color:var(--text-2);font-weight:600">推送对象</label>'
-        + '<select id="evalTarget" class="mini-in" style="min-width:180px">'+tOpts+'</select>'
-        + '<button class="btn" onclick="UI.evalAI()">'+icon("bulb",15)+' AI 生成反馈</button>'
-      + '</div>'
-      + '<div class="ck-label">反馈内容（可编辑）</div>'
-      + '<textarea id="evalText" class="mini-in" style="width:100%;min-height:88px" placeholder="点「AI 生成反馈」自动起草，或手动填写">'+escapeHtml(STATE.evalDraft||"")+'</textarea>'
-      + '<div class="row mt12"><button class="btn pri" onclick="UI.evalPush()">'+icon("send",15)+' 推送反馈</button></div>'
-    + '</div>';
+    + tmHead("训练课评价", (STATE.gradeFilter||"全校")+" · 课程信息 → AI 问卷 → 学生反馈")
+    + step + inputCard + surveyCard + feedbackCard;
 }
 
 /* 教师⑧：希沃大屏模式（原创卖点，贴合部署场景） */
@@ -3722,9 +3965,16 @@ function renderTrack(){
     return { s, d: Math.round((b-a)*10)/10, a, b };
   }).sort((x,y)=>y.d-x.d);
   const up = improve.filter(x=>x.d>0).length;
+  var picker = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>选择学生查看成长曲线</h3>'
+    + '<span class="sub">'+(STATE.classFilter||STATE.gradeFilter||"全校")+' · 共 '+visibleStudents().length+' 人</span></div>'
+    + '<div class="track-pick">'+visibleStudents().slice(0,60).map(function(s){
+        var b=getScore(s,STATE.term).total;
+        return '<div class="track-chip '+(s.id===STATE.stuId?"on":"")+'" onclick="UI.pick(\''+s.id+'\');UI.go(\'track\')">'+s.name+' · '+b+'</div>';
+      }).join("")+'</div></div>';
 
   return ''
   + (isStudent() ? '' : filterBar())
+  + (isStudent() ? '' : picker)
   + (isStudent() ? '' : renderExecCard())
   + '<div class="grid g4 mb16">'
     + '<div class="kpi green"><div class="kpi-l">'+stu.name+' 三次总分</div><div class="kpi-v g">'+scores[0]+' → '+scores[2]+'</div><div class="kpi-s">累计 '+(scores[2]-scores[0]>0?"+":"")+Math.round((scores[2]-scores[0])*10)/10+' 分</div></div>'
@@ -3752,16 +4002,7 @@ function renderTrack(){
         + '</tbody></table></div>'
     + '</div>'
   + '</div>'
-  + '<div class="card"><div class="card-h"><span class="dot"></span><h3>选择学生查看成长曲线</h3><span class="sub">'+(STATE.classFilter||STATE.gradeFilter||"全校")+' · 共 '+visibleStudents().length+' 人</span></div>'
-    + '<div class="stu-grid">'
-    + visibleStudents().slice(0,40).map(s=>{
-        const a=getScore(s,"t1").total,b=getScore(s,STATE.term).total;
-        return '<div class="stu-c '+(s.id===STATE.stuId?"on":"")+'" onclick="UI.pick(\''+s.id+'\');UI.go(\'track\')">'
-          + '<div class="stu-nm">'+s.name+'</div><div class="stu-id">'+s.id+'</div>'
-          + '<div class="stu-sc" style="color:'+scoreColor(b)+'">'+b+'<span style="font-size:12px;color:#8b99ad;font-weight:600"> (首 '+a+')</span></div>'
-          + '<div class="stu-meta" style="color:'+(b>=a?"#15803d":"#dc2626")+'">'+(b>=a?"+":"")+Math.round((b-a)*10)/10+'</div></div>';
-      }).join("")
-    + '</div></div>';
+  ;
 }
 
 /* 成长追踪页：训练打卡执行率卡片（仅教师/管理员可见，学生视图不展示） */
@@ -4236,21 +4477,59 @@ const UI = {
     alert("训练计划已推送到「"+grp+"」的学生端");
     this.go("rxEffect");
   },
-  /* —— 训练课评价：AI 生成反馈与推送 —— */
+  /* —— 训练课评价：课程信息 → AI 问卷 → 学生填写 → 反馈推送 —— */
+  evalGenSurvey(){
+    var course=(document.getElementById("evCourse")||{}).value||"";
+    var content=(document.getElementById("evContent")||{}).value||"";
+    var target=(document.getElementById("evalTarget")||{}).value||"全体学生";
+    if (!String(course).trim()){ alert("请先填写课程主题"); return; }
+    STATE.evalCourse = String(course).trim();
+    STATE.evalTarget = target;
+    var st = classStats(STATE.term);
+    var weak = ITEMS.slice().sort(function(a,b){return st.partAvg[a.key]-st.partAvg[b.key];})[0];
+    var qs = [
+      "本节课的练习强度是否适合你？",
+      "老师对动作要领的讲解是否清楚？",
+      "本节课的练习内容与你的薄弱项相关吗？",
+      "你在课堂上完成动作的信心如何？",
+      "希望下节课在哪些方面多做指导？（填写时可选）"
+    ];
+    /* 问卷题目结合本节课薄弱项，做到"依据课程信息生成" */
+    qs[2] = "本节课围绕"+itemName("M", weak.key)+"的练习，对你有帮助吗？";
+    Engage.add("surveys", { course:STATE.evalCourse, content:String(content).trim(), target:target, qs:qs, published:true });
+    STATE.evalAns = {};
+    alert("AI 已生成本节课问卷，并发布到学生端");
+    this.go("evalReview");
+  },
+  evalRepublish(){ this.evalGenSurvey(); },
+  evalAns(i,n){ STATE.evalAns = STATE.evalAns||{}; STATE.evalAns[i]=n; },
+  evalSubmit(sid){
+    var sv = Engage.list("surveys").find(function(x){return x.id===sid;});
+    if (!sv) return;
+    var ans = STATE.evalAns||{}, sum=0, cnt=0;
+    for (var k in ans){ if (k!=="4"){ sum+=+ans[k]; cnt++; } }
+    var score = cnt ? Math.round(sum/cnt*10)/10 : 3;
+    var nb = document.getElementById("evNote_"+sid);
+    var note = nb ? String(nb.value||"").trim() : "";
+    var s = myStu();
+    Engage.add("evals", { sid:s.id, who:s.name, surveyId:sid, course:sv.course, score:score, note:note, answers:ans });
+    STATE.evalAns = {};
+    alert("评价已提交，谢谢你的反馈");
+    this.go("s_task");
+  },
   evalAI(){
     var ev = Engage.list("evals");
     var avg = ev.length ? Math.round(ev.reduce(function(a,b){return a+(+b.score||0);},0)/ev.length*10)/10 : 0;
+    var sv = Engage.list("surveys")[0];
     var st = classStats(STATE.term);
     var weak = ITEMS.slice().sort(function(a,b){return st.partAvg[a.key]-st.partAvg[b.key];})[0];
     var kb = (typeof KB!=="undefined"&&KB.ready) ? KB.byItem(weak.key,1) : [];
     var src = kb.length ? kb[0].doc.src : "《义务教育体育与健康课程标准（2022年版）》";
-    var txt = "本期训练课学生评价 "+ev.length+" 份，平均 "+avg+" / 5 分。\n"
-      + "结合体质测评数据，全班待提升项目为"+itName(weak.key,"M")+"（均分 "+st.partAvg[weak.key]+"）。\n"
-      + "建议下一阶段：增加针对性练习密度，课堂安排分层任务，课后布置家庭巩固动作；关注后进学生的动作规范与参与体验。\n"
+    var txt = "《"+(sv?sv.course:"本节课")+"》学生评价 "+ev.length+" 份，平均 "+avg+" / 5 分。\n"
+      + "结合体质测评数据，全班待提升项目为"+itemName("M", weak.key)+"（均分 "+st.partAvg[weak.key]+"）。\n"
+      + "建议下一阶段：增加"+itemName("M", weak.key)+"的针对性练习密度，课堂分层布置任务，课后安排家庭巩固动作；关注评分较低学生的动作规范与参与体验。\n"
       + "【知识出处】"+src;
     STATE.evalDraft = txt;
-    var sel=document.getElementById("evalTarget");
-    if (sel) STATE.evalTarget = sel.value;
     this.go("evalReview");
   },
   evalPush(){
@@ -4258,7 +4537,7 @@ const UI = {
     if (!String(txt).trim()){ alert("请先生成或填写反馈内容"); return; }
     var grp=(document.getElementById("evalTarget")||{}).value||"全体学生";
     STATE.evalDraft=String(txt).trim(); STATE.evalTarget=grp;
-    Engage.add("tasks", { type:"训练课改进反馈", group:grp, title:String(txt).trim().slice(0,60), plan:String(txt).trim(), pushed:true });
+    Engage.add("tasks", { type:"训练课改进反馈", group:grp, title:String(txt).trim().slice(0,60), plan:String(txt).trim(), channel:"学生端", pushed:true });
     alert("改进反馈已推送到「"+grp+"」");
     this.go("evalReview");
   },
@@ -4269,17 +4548,46 @@ const UI = {
     Engage.update("health", id, { reply:txt });
     this.go("health");
   },
+  tpTypeChange(){
+    var sel=document.getElementById("tpType");
+    var box=document.getElementById("tpVideoBox");
+    if (box) box.style.display = (sel && sel.value==="训练视频课") ? "block" : "none";
+  },
+  tpVideoPick(input){
+    var f = input && input.files && input.files[0];
+    if (!f) return;
+    try {
+      var url = URL.createObjectURL(f);
+      STATE.tpVideo = { name:f.name, size:f.size, url:url };
+    } catch(e){ alert("此浏览器无法预览该视频，请换 Edge / Chrome"); return; }
+    this.go("taskPush");
+    this.tpTypeChange();
+  },
+  tpVideoClear(){
+    if (STATE.tpVideo && STATE.tpVideo.url){ try{ URL.revokeObjectURL(STATE.tpVideo.url); }catch(e){} }
+    STATE.tpVideo = null;
+    this.go("taskPush");
+    this.tpTypeChange();
+  },
   tpSend(){
     var type=(document.getElementById("tpType")||{}).value||"专项练习打卡";
     var group=(document.getElementById("tpGroup")||{}).value||"全体学生";
     var title=(document.getElementById("tpTitle")||{}).value||"";
+    var plan=(document.getElementById("tpPlan")||{}).value||"";
+    var channel=(document.getElementById("tpChannel")||{}).value||"学生端";
     if (!String(title).trim()){ alert("请填写任务标题"); return; }
-    Engage.add("tasks", { type:type, group:group, title:String(title).trim() });
+    if (type==="训练视频课" && !STATE.tpVideo){ alert("训练视频课请先上传一个本地视频"); return; }
+    Engage.add("tasks", { type:type, group:group, title:String(title).trim(), plan:String(plan).trim(),
+      channel:channel, videoName:(STATE.tpVideo?STATE.tpVideo.name:"") });
+    STATE.tpVideo = null;
+    alert("任务已推送到「"+channel+"」· "+group);
     this.go("taskPush");
   },
   tpAI(){
-    var inp=document.getElementById("tpTitle");
-    if (inp) inp.value="短跑爆发力专项训练（第 3 周）";
+    var inp=document.getElementById("tpTitle"), pl=document.getElementById("tpPlan");
+    var weak = ITEMS.slice().sort(function(a,b){return classStats(STATE.term).partAvg[a.key]-classStats(STATE.term).partAvg[b.key];})[0];
+    if (inp) inp.value=""+itemName("M", weak.key)+"专项提升训练（第 3 周）";
+    if (pl) pl.value="本周重点练习"+itemName("M", weak.key)+"：每周 3 次、每次 20 分钟，记录每次完成情况。";
   },
   bankPick(i){
     STATE.bankPick = STATE.bankPick || [];
@@ -4510,11 +4818,74 @@ const UI = {
     if (el) el.value = q;
     this.rxAsk();
   },
-  /* 一键推送处方到学生端（演示：记录并给出确认；真实环境写入学生专属处方库） */
-  pushRx(id){
-    STATE.pushedRx = id;
+  /* ---- 处方闭环：选学生 → 生成 → 编辑 → 审核 → 推送 → 更正 ---- */
+  rxPick(id){
+    STATE.stuId = id;
+    STATE.rxDraftFor = "";
+    STATE.rxDraftText = "";
+    STATE.rxReviewed = false;
+    STATE.rxEditOpen = false;
     this.go("rx");
   },
+  rxGenerate(id){
+    var s = STUDENTS.find(function(x){return x.id===id;}) || STUDENTS[0];
+    STATE.rxDraftFor = id;
+    STATE.rxDraftText = rxDraftText(s, STATE.term);
+    STATE.rxReviewed = false;
+    STATE.rxEditOpen = false;
+    Engage.add("rxlog", { sid:id, term:STATE.term, status:"draft", plan:STATE.rxDraftText, editor:(STATE.user?STATE.user.name:"体育老师") });
+    this.go("rx");
+  },
+  rxSaveDraft(){
+    var ta = document.getElementById("rxText");
+    if (!ta) return;
+    STATE.rxDraftText = String(ta.value||"");
+    STATE.rxReviewed = false;
+    var logs = Engage.list("rxlog");
+    var last = null;
+    for (var i=0;i<logs.length;i++) if (logs[i].sid===STATE.rxDraftFor && logs[i].status!=="pushed") last=logs[i];
+    if (last) Engage.update("rxlog", last.id, { plan:STATE.rxDraftText, status:"edited", editNote:"教师已修改", ts:Date.now() });
+    alert("修改已保存，请审核后再推送");
+    this.go("rx");
+  },
+  rxReview(){
+    var ta = document.getElementById("rxText");
+    if (ta) STATE.rxDraftText = String(ta.value||"");
+    if (!String(STATE.rxDraftText||"").trim()){ alert("处方内容为空，不能审核"); return; }
+    STATE.rxReviewed = true;
+    var logs = Engage.list("rxlog");
+    var last = null;
+    for (var i=0;i<logs.length;i++) if (logs[i].sid===STATE.rxDraftFor && logs[i].status!=="pushed") last=logs[i];
+    if (last) Engage.update("rxlog", last.id, { plan:STATE.rxDraftText, status:"reviewed", reviewedBy:(STATE.user?STATE.user.name:"体育老师") });
+    else Engage.add("rxlog", { sid:STATE.rxDraftFor, term:STATE.term, status:"reviewed", plan:STATE.rxDraftText, editor:(STATE.user?STATE.user.name:"体育老师") });
+    this.go("rx");
+  },
+  rxPush(id){
+    var ta = document.getElementById("rxText");
+    var plan = ta ? String(ta.value||"") : (STATE.rxDraftText||"");
+    if (!String(plan).trim()){ alert("处方内容为空，不能推送"); return; }
+    var s = STUDENTS.find(function(x){return x.id===id;}) || STUDENTS[0];
+    /* 找到当前草稿记录，改为 pushed；否则新建一条 */
+    var logs = Engage.list("rxlog"), cur=null;
+    for (var i=0;i<logs.length;i++) if (logs[i].sid===id && logs[i].status!=="pushed") cur=logs[i];
+    if (cur) Engage.update("rxlog", cur.id, { status:"pushed", plan:plan, pushTs:Date.now(), editor:(STATE.user?STATE.user.name:"体育老师") });
+    else Engage.add("rxlog", { sid:id, term:STATE.term, status:"pushed", plan:plan, pushTs:Date.now(), editor:(STATE.user?STATE.user.name:"体育老师") });
+    STATE.pushedRx = id;
+    STATE.rxDraftFor = "";
+    STATE.rxReviewed = false;
+    alert("已推送到 "+s.name+" 的学生端，学生登录后即可查看");
+    this.go("rx");
+  },
+  rxReedit(id){
+    var p = rxPushedOf(id);
+    STATE.rxDraftFor = id;
+    STATE.rxDraftText = p ? p.plan : "";
+    STATE.rxReviewed = false;
+    STATE.rxEditOpen = true;
+    this.go("rx");
+  },
+  /* 保留兼容：旧调用入口 */
+  pushRx(id){ this.rxPush(id); },
   /* ---------- 训练打卡 ---------- */
   ckPick(btn){
     const all = document.querySelectorAll(".ck-b");
