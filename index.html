@@ -255,6 +255,26 @@ table.tb tbody tr.sel{background:var(--brand-l)}
 .ck-exec-foot{margin-top:14px;border-top:1px dashed var(--line-2);padding-top:13px}
 .ck-sub{font-size:12.5px;color:var(--text-2);font-weight:600;margin-bottom:9px;display:flex;align-items:center;gap:10px}
 .ck-toggle{border:1px solid var(--line-2);background:#fff;color:var(--brand);padding:3px 12px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit}
+.acct-import{display:grid;grid-template-columns:1fr 1.3fr;gap:16px}
+.acct-step{border:1px solid var(--line);border-radius:12px;padding:14px}
+.acct-step b{font-size:14px;color:#12202f}
+.acct-step .sub{margin:4px 0 2px}
+.acct-tip{margin-top:10px;font-size:11.5px;color:#5d6d85;background:#f7fafd;border-radius:8px;padding:9px 11px;line-height:1.7}
+.acct-text{width:100%;min-height:150px;margin-top:8px;border:1px solid var(--line-2);border-radius:9px;padding:10px 12px;font:inherit;font-size:12.5px;line-height:1.7;text-align:left;resize:vertical;outline:none}
+.acct-text:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.acct-preview{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+.acct-pv-h{font-weight:800;color:#12202f;margin-bottom:10px;font-size:14px}
+.acct-err{margin-top:8px;color:#b91c1c;font-size:12px;background:#fef2f2;border-radius:8px;padding:8px 11px}
+.acct-add{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.acct-add .btn{grid-column:1/-1;justify-self:start}
+.coach-abilities{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.coach-ab{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:11px;padding:12px;background:#fbfdff}
+.coach-ab .ab-ico{width:34px;height:34px;flex:none;border-radius:9px;background:#e8f0ff;color:var(--brand);display:flex;align-items:center;justify-content:center}
+.coach-ab b{display:block;font-size:13.5px;color:#12202f;margin-bottom:3px}
+.coach-ab small{display:block;font-size:11.5px;color:var(--text-3);line-height:1.5}
+.coach-quick{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.coach-quick .cq-title{font-weight:800;color:#12202f;font-size:13.5px;margin-bottom:9px}
+.coach-foot{margin-top:14px;font-size:11.5px;color:var(--text-3);line-height:1.6;padding:10px 12px;background:#f7fafd;border-radius:9px}
 .ck-list{display:flex;flex-wrap:wrap;gap:8px;max-height:92px;overflow:hidden;transition:max-height .25s ease}
 .ck-list.open{max-height:560px;overflow-y:auto}
 .ck-chip{display:inline-flex;flex-direction:column;gap:1px;background:var(--warn-l);color:#92400e;border:1px solid var(--warn);border-radius:9px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;line-height:1.3;transition:all .15s}
@@ -400,7 +420,11 @@ kbd{
 .heat-scroll{max-height:560px;overflow:auto}
 .heat-legend{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:12px;font-size:12.5px;color:var(--text-2)}
 .heat-legend i{width:24px;height:14px;border-radius:4px;display:inline-block;vertical-align:-2px;margin-right:5px}
-.track-pick{display:flex;flex-wrap:wrap;gap:7px;max-height:104px;overflow-y:auto}
+.cap-card .row{align-items:flex-start;flex-wrap:wrap}
+.cap-mname{font-size:13.5px;line-height:1.4;min-width:0;flex:1 1 100%;display:block;margin-top:2px}
+.cap-card .tag{margin-left:0!important}
+.track-pick{display:flex;flex-wrap:wrap;gap:9px;max-height:190px;overflow-y:auto;padding:4px 2px;overscroll-behavior:contain}
+.track-pick.big .track-chip{font-size:14.5px;padding:10px 15px;border-radius:10px}
 .track-chip{border:1px solid var(--line-2);background:#fff;border-radius:9px;padding:6px 11px;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--text-2);transition:all .14s;white-space:nowrap}
 .track-chip:hover{border-color:var(--brand);color:var(--brand)}
 .track-chip.on{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 3px 10px rgba(37,99,235,.25)}
@@ -429,6 +453,38 @@ kbd{
 .tl-ev .d{font-size:11.5px;color:var(--text-3);font-weight:700}
 .tl-ev .t{font-size:14px;color:var(--text);line-height:1.7;margin-top:2px}
 .tp-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tp-full{grid-column:1/-1}
+.tp-plan{min-height:66px}
+.tp-channel{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.tp-hint{margin-top:9px;font-size:12px;color:#5d6d85;background:#f7fafd;border-radius:8px;padding:8px 11px;line-height:1.6}
+.rx-suggest{width:100%;min-height:96px;text-align:left;border:1px solid var(--line-2);border-radius:9px;padding:11px 13px;font:inherit;font-size:14px;line-height:1.7;resize:vertical;outline:none}
+.rx-suggest:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.rx-tbl tr{cursor:pointer}
+.rx-tbl tr.row-on{background:#eff6ff}
+.rx-tbl tr:hover{background:#f7fafd}
+/* 希沃大屏投放 */
+.bt-wrap{background:linear-gradient(160deg,#0b1e3a,#123a6b);color:#fff;min-height:calc(100vh - 120px);border-radius:16px;padding:26px 30px}
+.bt-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.18);padding-bottom:18px}
+.bt-top h1{font-size:30px;margin:0;letter-spacing:1px}
+.bt-sub{font-size:15px;color:#93c5fd;margin-top:6px}
+.bt-ctl{display:flex;gap:8px;flex-wrap:wrap}
+.bt-ctl .btn{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.3)}
+.bt-ctl .btn.pri{background:#2563eb;border-color:#2563eb}
+.bt-body{display:grid;grid-template-columns:1fr 260px;gap:22px;margin-top:22px}
+.bt-stage{min-height:440px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:34px;display:flex;align-items:center;justify-content:center}
+.bt-slide{width:100%}
+.bt-slide .bt-tag{display:inline-block;background:#2563eb;border-radius:20px;padding:6px 16px;font-size:15px;margin-bottom:20px}
+.bt-slide .bt-title{font-size:44px;font-weight:900;line-height:1.3;margin-bottom:10px}
+.bt-slide .bt-desc{font-size:20px;color:#93c5fd;margin-bottom:22px}
+.bt-slide .bt-plan{font-size:20px;line-height:1.9;color:#e2e8f0;white-space:pre-wrap;background:rgba(0,0,0,.18);border-radius:12px;padding:18px 22px}
+.bt-media{margin-top:18px;background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.3);border-radius:12px;padding:24px;text-align:center}
+.bt-empty{font-size:20px;color:#93c5fd;text-align:center;line-height:1.8}
+.bt-side{display:flex;flex-direction:column;gap:16px}
+.bt-qr{background:#fff;color:#12202f;border-radius:14px;padding:16px;text-align:center}
+.bt-qr svg,.bt-qr img{max-width:150px}
+.bt-qr div{margin-top:8px;font-size:14px;font-weight:700}
+.bt-tip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:16px;font-size:14px;line-height:2;color:#dbeafe}
+.bt-tip b{display:block;font-size:16px;color:#fff;margin-bottom:6px}
 .tp-preview{margin-top:10px;border:1px dashed var(--line-2);border-radius:10px;padding:12px;background:#fbfdff}
 .tp-preview video{width:100%;max-height:220px;border-radius:8px;background:#0f172a;display:block}
 .tp-preview .vp-empty{color:var(--text-3);font-size:12.5px;text-align:center;padding:14px}
@@ -609,7 +665,25 @@ body.clean .note-ex{display:none !important}
 .kb-doc .kb-tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
 .kb-doc .kb-tags i{font-style:normal;font-size:11px;color:#5d6d85;background:#f1f5fb;border-radius:5px;padding:2px 8px}
 .kb-empty{text-align:center;color:var(--text-3);padding:48px 20px;font-size:14px}
-.quiz-bank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.quiz-cats{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.quiz-cat{border:1px solid var(--line-2);background:#fff;border-radius:18px;padding:6px 13px;font-size:12.5px;font-weight:700;color:var(--text-2);cursor:pointer;transition:.14s;white-space:nowrap}
+.quiz-cat:hover{border-color:var(--brand);color:var(--brand)}
+.quiz-cat.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.qc-toolbar{margin-bottom:6px}
+.qc-stat{margin-top:10px;font-size:12.5px;color:var(--text-3)}
+.quiz-bank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;padding-bottom:70px}
+.quiz-card{cursor:pointer;transition:.15s}
+.quiz-card:hover{border-color:#93b4f0;box-shadow:0 4px 16px rgba(37,99,235,.1)}
+.quiz-card .qc-q{font-size:15px;font-weight:800}
+.quiz-card .qc-opts{font-size:14px;line-height:1.9;color:#334155}
+.qc-foot{display:flex;align-items:center;gap:12px;margin-top:10px;padding-top:9px;border-top:1px solid var(--line);font-size:12.5px;color:var(--text-3)}
+.qc-foot .qc-picked{color:var(--brand);font-weight:800}
+.qc-foot .qc-act{margin-left:auto;color:var(--brand);cursor:pointer;font-weight:700}
+.qc-foot .qc-act.del{color:#dc2626}
+.qc-add input,.qc-add select{font-size:13px}
+.qc-add-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.qc-float{position:fixed;bottom:18px;right:26px;z-index:40;display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:30px;padding:9px 10px 9px 18px;box-shadow:0 8px 30px rgba(15,23,42,.18);font-weight:700;color:#12202f;font-size:13.5px}
+
 .quiz-card{border:1px solid var(--line);border-radius:12px;padding:15px 16px;background:#fff;display:flex;flex-direction:column;transition:.15s}
 .quiz-card.on{border-color:var(--brand);box-shadow:0 0 0 2px rgba(37,99,235,.12)}
 .quiz-card .qc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
@@ -1291,6 +1365,10 @@ function rxRoundOf(sid){ return rxLogsOf(sid).length + 1; }
 
 /* ---------------- 6. 图标 ---------------- */
 const ICO = {
+  check:'<path d="M20 6L9 17l-5-5"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  up:'<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 17v3h16v-3"/>',
+  screen:'<rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/>',
   filter:'<path d="M3 5h18M6 12h12M10 19h4"/>',
   book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 6h8M8 10h6"/>',
   mic:'<rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3M8.5 21h7"/>',
@@ -1456,6 +1534,8 @@ const PAGES = [
   { id:"evalReview",name:"训练课评价", ico:"bulb",  desc:"学生对体测训练课的评价汇总与反馈", roles:"tm" },
   { id:"track",   name:"成长追踪",     ico:"track", desc:"跨学期纵向对比与趋势", roles:"tm" },
   { id:"coach",   name:"处方顾问",     ico:"chat",  desc:"追问式体测数据问答（教师备课助手）", roles:"tm" },
+  { id:"bigTask", name:"大屏投放",     ico:"screen", desc:"推送任务投到希沃大屏全屏展示", roles:"tm" },
+  { id:"accounts",name:"账号管理",     ico:"users",  desc:"学生/教师账号模板导入与平台添加", roles:"tm" },
   /* —— 学生端（扫码进入，只看自己）—— */
   { id:"s_home",  name:"我的体质",     ico:"home",  desc:"我的体测画像与关键指标", roles:"s" },
   { id:"s_task",  name:"我的任务",     ico:"sheet", desc:"待测项目、补测提醒与录入进度", roles:"s" },
@@ -1516,6 +1596,8 @@ const STATE = {
   quizDone: false,
   pushDraft: {},       // 训练任务推送表单
   bankPick: [],        // 题库组卷已选题号
+  quizCat: "",         // 题库当前分类
+  quizKw: "",          // 题库检索词
   focusGroup: "",      // 热力图聚焦的体测项目
   rxDraftFor: "",      // 当前正在编辑处方的学生 id
   rxDraftText: "",     // 可编辑的处方正文（AI 生成初稿，教师可改）
@@ -1824,6 +1906,51 @@ function bmiFor(grade, gender){
 }
 function gradeOf(stu){ return (stu && stu.grade) || "高一"; }
 
+/* ---------------- 8.5b 自定义账号（学生/教师导入，存本机） ---------------- */
+var CustomAccounts = {
+  key:"fitness_custom_accounts",
+  all(){
+    try { var a=JSON.parse(window.localStorage.getItem(this.key)||"[]"); return Array.isArray(a)?a:[]; } catch(e){ return []; }
+  },
+  save(list){ try{ window.localStorage.setItem(this.key, JSON.stringify(list)); return true; }catch(e){ return false; } },
+  addMany(rows){
+    var list=this.all(), exist={};
+    list.forEach(function(a){ exist[a.user]=1; });
+    ACCOUNTS.forEach(function(a){ exist[a.user]=1; });
+    var added=0, skipped=0;
+    rows.forEach(function(r){
+      if (!r.user || !r.pwd || exist[r.user]){ skipped++; return; }
+      exist[r.user]=1;
+      list.push({ id:"u"+Date.now()+Math.floor(Math.random()*1000), user:r.user, pwd:r.pwd,
+        name:r.name||r.user, role:r.role||"student", cls:r.cls||"", bind:r.bind||"", scope:r.scope||"",
+        color:r.role==="teacher"?"#1d4ed8":"#0891b2", desc:r.desc||"导入账号" });
+      added++;
+    });
+    this.save(list);
+    return {added:added, skipped:skipped};
+  },
+  remove(id){ var l=this.all().filter(function(a){return a.id!==id;}); this.save(l); },
+  find(u,p){ return this.all().find(function(a){ return a.user===u && a.pwd===p; }); }
+};
+/* 解析账号 CSV：学号/账号,姓名,密码,角色,班级,绑定学生姓名 */
+function parseAccountCSV(text){
+  var rows=parseCSV(text);
+  var out=[], err=[];
+  rows.forEach(function(r,i){
+    if (!r.length) return;
+    if (i===0 && /账号|学号|user/i.test(r[0])) return;  /* 表头 */
+    var user=String(r[0]||"").trim();
+    var name=String(r[1]||"").trim();
+    var pwd=String(r[2]||"").trim();
+    var roleRaw=String(r[3]||"").trim();
+    var cls=String(r[4]||"").trim();
+    var bind=String(r[5]||"").trim();
+    if (!user || !pwd){ if (user||pwd) err.push("第"+(i+1)+"行缺账号或密码"); return; }
+    var role = /师|teacher|t/i.test(roleRaw) ? "teacher" : "student";
+    out.push({ user:user, pwd:pwd, name:name||user, role:role, cls:cls, bind:bind, scope:role==="teacher"?(cls||"任教班级"):"仅本人" });
+  });
+  return { rows:out, err:err };
+}
 /* ---------------- 8.5 账号与权限 ---------------- */
 const ACCOUNTS = [
   { id:"teacher", user:"teacher", pwd:"123456", name:"教师",  role:"teacher",
@@ -2749,10 +2876,10 @@ function renderCapture(){
   ];
   const mode = STATE.capMode;
   let modeCards = modes.map(m=>{
-    return '<div class="stu-c '+(mode===m.id?"on":"")+'" style="cursor:pointer" onclick="UI.setCapMode(\''+m.id+'\')">'
+    return '<div class="stu-c cap-card '+(mode===m.id?"on":"")+'" style="cursor:pointer" onclick="UI.setCapMode(\''+m.id+'\')">'
       + '<div class="row" style="gap:9px;margin-bottom:8px">'
       + '<span style="width:34px;height:34px;border-radius:9px;background:'+(mode===m.id?"#2563eb":"#e8f0ff")+';color:'+(mode===m.id?"#fff":"#1d4ed8")+';display:flex;align-items:center;justify-content:center">'+icon(m.ico,18)+'</span>'
-      + '<b style="font-size:14px;white-space:nowrap">'+m.name+'</b><span class="tag '+m.t+'" style="margin-left:auto;white-space:nowrap">'+m.tag+'</span></div></div>';
+      + '<b class="cap-mname">'+m.name+'</b><span class="tag '+m.t+'" style="margin-left:auto;flex:none">'+m.tag+'</span></div></div>';
   }).join("");
 
   let detail = "", header = "", sub = "";
@@ -3453,34 +3580,57 @@ function renderSQuiz(){
     + '</div>';
 }
 /* 题库：优先从本地知识库的"题目"类条目解析，保证题目有出处；失败时用内置兜底题 */
-function quizBank(){
-  var fallback = [
-    {q:"50 米跑主要反映学生的哪项身体素质？", opts:["柔韧性","速度/爆发力","耐力","力量"], a:1},
-    {q:"肺活量测试时，正确的做法是？", opts:["快速吹一次即可","深吸气后尽力呼气","边跑边吹","多次短促吹气"], a:1},
-    {q:"《国家学生体质健康标准》目前执行的是哪一版？", opts:["2002 年","2007 年","2014 年修订","2020 年"], a:2},
-    {q:"坐位体前屈主要测量的是？", opts:["下肢柔韧性","上肢力量","心肺耐力","反应速度"], a:0},
-    {q:"耐力跑测试后，合理的做法是？", opts:["立即坐下休息","慢慢走动放松","马上大量饮水","继续冲刺"], a:1}
+/* 把知识库题目的子类归一到 10 大主类，保证题库分类清晰 */
+function quizCatOf(d){
+  var t = (d.sub||"");  // 只用子类名匹配，避免"测试题库"大类前缀干扰
+  var M = [
+    ["测试与国标",["国标","数据诚信","BMI","身体成分","体重管理","测试与国标"]],
+    ["心肺耐力",["心肺耐力","肺活量","耐力跑","800米","1000米"]],
+    ["速度与爆发力",["速度与爆发力","50米","短跑","速度","起跑"]],
+    ["下肢爆发力",["下肢爆发力","立定跳远","跳远","弹跳"]],
+    ["肌肉力量与耐力",["肌肉力量与耐力","引体向上","仰卧起坐","力量素质"]],
+    ["柔韧素质",["柔韧素质","坐位体前屈","柔韧"]],
+    ["营养与膳食",["营养与膳食","膳食","补糖补盐","营养"]],
+    ["运动损伤与安全",["运动损伤与安全","损伤处理","热身","安全"]],
+    ["健康生活方式",["健康生活方式","睡眠","恢复","心理"]],
+    ["运动常识",["运动常识","训练原则","超量恢复","渐进超负荷","常识"]]
   ];
+  for (var i=0;i<M.length;i++){
+    var kws=M[i][1];
+    for (var j=0;j<kws.length;j++){ if (t.indexOf(kws[j])>=0) return M[i][0]; }
+  }
+  return "运动常识";
+}
+function quizBank(){
+  /* 题库：全部来自本地知识库"题目"类（305+ 分类题），并叠加管理员自建题 */
   var qs=[];
   try {
-    var pool = (typeof KB!=="undefined" && KB.ready)
-      ? KB.all().filter(function(d){ return d.kind==="题目"; }) : [];
-    /* 只保留四个选项的单选题，从中均匀抽取 12 题 */
-    var single = pool.filter(function(d){
-      var m=String(d.body||"").match(/选项：([\s\S]*?)\n正确答案/);
-      return m && m[1].split(" / ").length===4;
+    var pool = (typeof KB!=="undefined" && KB.ready) ? KB.all().filter(function(d){ return d.kind==="题目"; }) : [];
+    pool.forEach(function(d){
+      var m=String(d.body||"").match(/题干：([\s\S]*?)\n选项：([\s\S]*?)\n正确答案：([^\n]*)/);
+      if (!m) return;
+      var opts=m[2].split(" / ").map(function(x){return x.trim();});
+      var ai=opts.indexOf(m[3].trim());
+      if (ai>=0 && opts.length===4 && m[1].trim()) qs.push({q:m[1].trim(), opts:opts, a:ai, cat:quizCatOf(d), src:d.src||""});
     });
-    var step = Math.max(1, Math.floor(single.length/12));
-    for (var i=0;i<single.length && qs.length<12;i+=step){
-      var m = String(single[i].body||"").match(/题干：([\s\S]*?)\n选项：([\s\S]*?)\n正确答案：([^\n]*)/);
-      if (!m) continue;
-      var opts = m[2].split(" / ").map(function(x){return x.trim();});
-      var ansTxt = m[3].trim();
-      var ai = opts.indexOf(ansTxt);
-      if (ai>=0 && opts.length===4 && m[1].trim()) qs.push({q:m[1].trim(), opts:opts, a:ai, src:single[i].src});
-    }
   } catch(e){}
-  return qs.length>=6 ? qs : fallback;
+  /* 叠加自建题（可见于所有角色，保证跨会话可用） */
+  try {
+    var custom = JSON.parse(window.localStorage.getItem("fitness_custom_quiz")||"[]");
+    if (Array.isArray(custom)) custom.forEach(function(x){ if (x&&x.q&&x.opts&&x.opts.length===4) qs.push({q:x.q,opts:x.opts,a:x.a,cat:x.cat||"自建题",src:x.src||"教师自建",custom:true,id:x.id}); });
+  } catch(e){}
+  if (!qs.length){
+    qs=[
+      {q:"《国家学生体质健康标准》目前执行的是哪一版？",opts:["2002 年","2007 年","2014 年修订","2020 年"],a:2,cat:"测试与国标",src:"教育部"},
+      {q:"50 米跑主要反映学生的哪项身体素质？",opts:["柔韧性","速度/爆发力","耐力","力量"],a:1,cat:"速度与爆发力",src:"《运动训练学》"},
+      {q:"坐位体前屈主要测量的是？",opts:["下肢柔韧性","上肢力量","心肺耐力","反应速度"],a:0,cat:"柔韧素质",src:"教育部"}
+    ];
+  }
+  return qs;
+}
+function quizCats(){
+  var set={}; quizBank().forEach(function(q){ set[q.cat||"综合"]=1; });
+  return Object.keys(set).sort();
 }
 
 /* 学生端⑧：成长曲线 */
@@ -3590,10 +3740,12 @@ function renderRxEffect(){
     var d=Math.round((t3-t1)*10)/10;
     var cls=d>=6?"t-g":d>=0?"t-b":"t-r";
     var weak=weakItems(s,getScore(s,STATE.term)).slice(0,2).map(function(w){return w.name;}).join("、")||"保持";
-    return '<tr><td><b>'+s.name+'</b><div style="font-size:11px;color:#8b99ad">'+s.cls+'</div></td>'
-      + '<td class="num">'+t1+'</td><td class="num">'+t3+'</td>'
+    return '<tr class="'+(s.id===stu.id?'row-on':'')+'" onclick="UI.rxEffectPick(\''+s.id+'\')" style="cursor:pointer">'
+      + '<td><b>'+s.name+'</b><div style="font-size:11px;color:#8b99ad">'+s.cls+'</div></td>'
+      + '<td class="num">'+t1+'</td><td class="num"><b>'+t3+'</b></td>'
       + '<td><span class="tag '+cls+'">'+(d>=0?"↑":"↓")+' '+Math.abs(d).toFixed(1)+'</span></td>'
-      + '<td>'+weak+'</td><td style="text-align:right"><button class="btn sm" onclick="UI.rxEffectPick(\''+s.id+'\')">查看闭环</button></td></tr>';
+      + '<td style="color:#5d6d85">'+weak+'</td>'
+      + '<td style="text-align:right"><button class="btn sm '+(s.id===stu.id?'pri':'')+'">查看</button></td></tr>';
   }).join("");
 
   var targets = ["全体学生"].concat(classNamesOf(STATE.gradeFilter||DEFAULT_GRADE));
@@ -3618,19 +3770,20 @@ function renderRxEffect(){
     + '</div>'
     + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>'+stu.name+' · 逐步闭环</h3>'
       + '<span class="sub">测评 → 推送 → 复测 → 再处方</span></div>'+timeline+'</div>'
-    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>复测明细与快速生成</h3></div>'
-      + '<div class="tbl-wrap"><table><thead><tr><th style="min-width:86px">学生</th><th style="text-align:right">首次</th><th style="text-align:right">本次</th><th style="min-width:64px">变化</th><th>待提升项</th><th style="text-align:right">操作</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>'
+    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>复测明细 · 点击学生切换闭环</h3>'
+      + '<span class="sub">共 '+students.length+' 人 · 按提升幅度</span></div>'
+      + '<div class="tbl-wrap rx-tbl"><table><thead><tr><th>学生</th><th style="text-align:right">首次</th><th style="text-align:right">本次</th><th style="text-align:right">变化</th><th>待提升项</th><th style="text-align:right">闭环</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>'
     + '<div class="card"><div class="card-h"><span class="dot"></span><h3>生成下一阶段建议并推送</h3>'
-      + '<span class="sub">依据复测结果，经本地知识库检索生成</span></div>'
-      + '<div class="grid g2 mb12">'
+      + '<span class="sub">当前学生：'+stu.name+' · 依据复测结果检索知识库</span></div>'
+      + '<div class="grid g3 mb12">'
         + '<div><div class="ck-label">推送对象</div><select id="rxTarget" class="mini-in">'+tOpts+'</select></div>'
         + '<div><div class="ck-label">计划类型</div><select id="rxPlanType" class="mini-in"><option>下一阶段专项训练计划</option><option>薄弱项巩固练习</option><option>假期自主锻炼建议</option></select></div>'
+        + '<div class="ck-label" style="display:flex;align-items:flex-end"><button class="btn" style="width:100%" onclick="UI.rxSuggestAI()">'+icon("bulb",15)+' 生成 AI 建议</button></div>'
       + '</div>'
-      + '<div class="ck-label">建议内容（可编辑）</div>'
-      + '<textarea id="rxSuggest" class="mini-in" style="width:100%;min-height:92px;text-align:left" placeholder="点「生成 AI 建议」自动生成，或手动填写">'+escapeHtml(STATE.rxSuggest||"")+'</textarea>'
-      + '<div class="row mt12" style="gap:8px">'
-        + '<button class="btn" onclick="UI.rxSuggestAI()">'+icon("bulb",15)+' 生成 AI 建议</button>'
-        + '<button class="btn pri" onclick="UI.rxPushPlan()">'+icon("send",15)+' 推送训练计划</button>'
+      + '<div class="ck-label">建议内容（可编辑，推送前可修改）</div>'
+      + '<textarea id="rxSuggest" class="rx-suggest" placeholder="点「生成 AI 建议」自动生成，或手动填写">'+escapeHtml(STATE.rxSuggest||"")+'</textarea>'
+      + '<div class="row mt12" style="gap:8px;justify-content:flex-end">'
+        + '<button class="btn pri" onclick="UI.rxPushPlan()">'+icon("send",15)+' 推送训练计划到学生端</button>'
       + '</div></div>';
 }
 
@@ -3694,7 +3847,8 @@ function renderTaskPush(){
     var ch = t.channel||"学生端";
     var media = t.videoName ? '<span class="tag t-c" style="margin-left:6px">'+icon("cap",12)+' '+escapeHtml(t.videoName)+'</span>' : '';
     return '<div class="ar-card" style="margin-bottom:9px"><div class="ar-head"><span class="tag t-b">'+escapeHtml(ch)+'</span>'
-      + '<span class="who" style="font-size:13.5px">'+escapeHtml(t.title)+'</span><span class="ts">'+fmtStamp(t.ts)+'</span></div>'
+      + '<span class="who" style="font-size:13.5px">'+escapeHtml(t.title)+'</span><span class="ts">'+fmtStamp(t.ts)+'</span>'
+      + '<button class="btn sm" style="margin-left:8px" onclick="UI.taskToScreen(\''+t.id+'\')">'+icon("screen",12)+' 投到大屏</button></div>'
       + '<div class="ar-body" style="padding:10px 15px"><div class="sub">推送对象：'+escapeHtml(t.group||"全体学生")+' · '+escapeHtml(t.type||"练习任务")+media+'</div>'
       + (t.plan?'<div style="font-size:13.5px;color:var(--text-2);margin-top:6px;white-space:pre-wrap">'+escapeHtml(t.plan)+'</div>':'')
       + '</div></div>';
@@ -3709,25 +3863,28 @@ function renderTaskPush(){
   return filterBar()
     + tmHead("训练任务推送", "按体测薄弱项分组 · 针对性练习 · 视频本地上传")
     + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>新建推送任务</h3>'
-      + '<span class="sub">填写后推送到学生端 / 希沃大屏</span></div>'
+      + '<span class="sub">按体测薄弱项分组 · 针对性练习</span></div>'
       + '<div class="tp-form">'
         + '<div><div class="ck-label">任务类型</div><select id="tpType" class="mini-in" onchange="UI.tpTypeChange()"><option>专项练习打卡</option><option>体测知识随堂测</option><option>训练视频课</option><option>图文学习资料</option></select></div>'
         + '<div><div class="ck-label">推送对象</div><select id="tpGroup" class="mini-in">'+gOpts+'</select></div>'
+        + '<div class="tp-full"><div class="ck-label">任务标题</div><input id="tpTitle" class="mini-in" type="text" maxlength="40" placeholder="如：短跑爆发力专项训练（第 3 周）"></div>'
+        + '<div class="tp-full"><div class="ck-label">任务说明 / 学习要求（可选）</div>'
+        + '<textarea id="tpPlan" class="mini-in tp-plan" placeholder="填写练习组次、视频观看要点或资料说明"></textarea></div>'
       + '</div>'
-      + '<div class="ck-label" style="margin-top:8px">任务标题</div><input id="tpTitle" class="mini-in" type="text" maxlength="40" placeholder="如：短跑爆发力专项训练（第 3 周）">'
-      + '<div class="ck-label" style="margin-top:8px">任务说明 / 学习要求（可选）</div>'
-      + '<textarea id="tpPlan" class="mini-in" style="width:100%;min-height:70px;text-align:left" placeholder="填写练习组次、视频观看要点或资料说明"></textarea>'
       + '<div id="tpVideoBox" style="display:none;margin-top:10px"><div class="ck-label">上传训练视频（本地）</div>'
         + '<label class="btn" style="cursor:pointer;margin-bottom:0">'+icon("cap",15)+' 选择本机视频'
         + '<input type="file" accept="video/*" style="display:none" onchange="UI.tpVideoPick(this)"></label>'
         + preview + '</div>'
-      + '<div class="ck-label" style="margin-top:10px">推送渠道</div>'
-      + '<div class="row wrap" style="gap:8px"><select id="tpChannel" class="mini-in" style="width:auto;min-width:150px">'
+      + '<div class="tp-channel"><div class="ck-label">推送渠道</div>'
+        + '<div class="row wrap" style="gap:8px"><select id="tpChannel" class="mini-in" style="width:auto;min-width:180px" onchange="UI.tpChannelHint()">'
         + '<option>学生端</option><option>希沃大屏</option><option>学生端 + 希沃大屏</option></select>'
         + '<button class="btn pri" onclick="UI.tpSend()">'+icon("send",15)+' 推送任务</button>'
-        + '<button class="btn" onclick="UI.tpAI()">'+icon("bulb",15)+' AI 生成建议</button></div>'
+        + '<button class="btn" onclick="UI.tpAI()">'+icon("bulb",15)+' AI 生成建议</button>'
+        + '<button class="btn" onclick="UI.go(\'bigTask\')">'+icon("screen",15)+' 打开大屏</button></div>'
+        + '<div class="tp-hint" id="tpChannelHint">学生端：学生扫码登录后，在「我的任务」查看并完成。</div>'
+      + '</div>'
     + '</div>'
-    + '<div class="card-h" style="margin:6px 2px 10px"><h3>推送记录</h3><span class="sub">'+recs.length+' 条</span></div>'
+    + '<div class="card-h" style="margin:6px 2px 10px"><h3>推送记录</h3><span class="sub">'+recs.length+' 条 · 点「投到大屏」即时展示</span></div>'
     + (list||'<div class="card"><div class="empty">暂无推送记录</div></div>')
     + '</div>';
 }
@@ -3784,36 +3941,64 @@ function renderSKb(){
 }
 function renderQuizBank(){
   var bank = quizBank();
+  var cats = quizCats();
+  var cur = STATE.quizCat||"";
+  var kw = (STATE.quizKw||"").trim();
   var picked = STATE.bankPick || [];
   var showAns = STATE.bankShowAns || {};
+  var canManage = canEdit();   /* 教师/管理员可增删题 */
+  /* 按分类 + 关键词过滤（在过滤后的子集内用索引，避免选题错位） */
+  var filtered = bank.map(function(q,i){ return {q:q, i:i}; }).filter(function(o){
+    var okCat = !cur || (o.q.cat||"综合")===cur;
+    var okKw = !kw || (o.q.q+o.q.opts.join("")+(o.q.cat||"")).indexOf(kw)>=0;
+    return okCat && okKw;
+  });
   var targets = ["全体学生", "高一年级", "耐力薄弱组", "速度薄弱组", "力量薄弱组"];
   var tOpts = targets.map(function(g){return '<option'+(STATE.quizTarget===g?' selected':'')+'>'+g+'</option>';}).join("");
-  var cards = bank.map(function(q,i){
+  var cards = filtered.slice(0,60).map(function(o,idx){
+    var q=o.q, i=o.i;
     var on = picked.indexOf(i)>=0;
-    var opts = q.opts.map(function(o,j){ return '<span>'+String.fromCharCode(65+j)+'. '+escapeHtml(o)+'</span>'; }).join("");
-    return '<div class="quiz-card '+(on?'on':'')+'">'
-      + '<div class="qc-top"><div class="qc-q">'+(i+1)+'. '+escapeHtml(q.q)+'</div><span class="qc-no">'+(on?'已选':'单选')+'</span></div>'
+    var opts = q.opts.map(function(op,j){ return '<span>'+String.fromCharCode(65+j)+'. '+escapeHtml(op)+'</span>'; }).join("");
+    return '<div class="quiz-card '+(on?'on':'')+'" onclick="UI.bankPick('+i+')" title="点击选中/取消">'
+      + '<div class="qc-top"><div class="qc-q">'+(idx+1)+'. '+escapeHtml(q.q)+'</div><span class="qc-no">'+(q.cat||"综合")+'</span></div>'
       + '<div class="qc-opts">'+opts+'</div>'
-      + (showAns[i] ? '<div class="qc-ans">正确答案：'+escapeHtml(q.opts[q.a])+(q.src?' · 出处：'+escapeHtml(q.src):'')+'</div>' : '')
-      + '<div class="row" style="gap:8px">'
-        + '<button class="btn '+(on?'pri':'')+'" onclick="UI.bankPick('+i+')">'+(on?'✓ 已选':'＋ 选题')+'</button>'
-        + '<button class="btn" style="background:#f1f5fb" onclick="UI.bankShowAns('+i+')">'+(showAns[i]?'隐藏答案':'查看答案')+'</button>'
-      + '</div>'
-      + '</div>';
+      + (showAns[i] ? '<div class="qc-ans">正确答案：'+escapeHtml(q.opts[q.a])+(q.src?' · 出处：'+escapeHtml(q.src):'')+'</div>':'')
+      + '<div class="qc-foot"><span class="'+(on?'qc-picked':'')+'">'+(on?'✓ 已选中':'点击卡片选中')+'</span>'
+      + '<span class="qc-act" onclick="event.stopPropagation();UI.bankShowAns('+i+')">'+(showAns[i]?'隐藏答案':'查看答案')+'</span>'
+      + (canManage && q.custom ? '<span class="qc-act del" onclick="event.stopPropagation();UI.bankDel('+i+')">删除</span>' : '')
+      + '</div></div>';
   }).join("");
+  var catChips = '<span class="quiz-cat '+(cur?"":"on")+'" onclick="UI.bankCat(\'\')">全部 '+bank.length+'</span>'
+    + cats.map(function(c){ var n=bank.filter(function(q){return (q.cat||"综合")===c;}).length; return '<span class="quiz-cat '+(cur===c?'on':'')+'" onclick="UI.bankCat(\''+c.replace(/'/g,"")+'\')">'+escapeHtml(c)+' '+n+'</span>'; }).join("");
+  var addForm = canManage ? '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>新增题目</h3><span class="sub">自建题会保存到本机，可删除</span></div>'
+      + '<div class="qc-add"><input id="qAddStem" class="mini-in" placeholder="题干，如：立定跳远起跳时应该？">'
+      + '<div class="qc-add-opts">'
+      + '<input id="qAddA" class="mini-in" placeholder="选项A"><input id="qAddB" class="mini-in" placeholder="选项B">'
+      + '<input id="qAddC" class="mini-in" placeholder="选项C"><input id="qAddD" class="mini-in" placeholder="选项D"></div>'
+      + '<div class="row wrap" style="gap:8px;align-items:center">'
+      + '<select id="qAddAns" class="mini-in" style="width:auto"><option value="0">正确答案 A</option><option value="1">正确答案 B</option><option value="2">正确答案 C</option><option value="3">正确答案 D</option></select>'
+      + '<select id="qAddCat" class="mini-in" style="width:auto">'+cats.map(function(c){return '<option>'+escapeHtml(c)+'</option>';}).join("")+'<option>自建题</option></select>'
+      + '<input id="qAddSrc" class="mini-in" style="width:auto;flex:1;min-width:160px" placeholder="出处（可选）">'
+      + '<button class="btn pri" onclick="UI.bankAdd()">'+icon("plus",15)+' 添加题目</button></div></div></div>' : '';
   return filterBar()
-    + tmHead("体测知识小测 · 题库与组卷", "题目来自本地知识库 · 每题可溯源")
-    + '<div class="card mb16"><div class="row wrap" style="gap:10px;align-items:center">'
-      + '<label style="font-size:12.5px;color:var(--text-2);font-weight:600">推送对象</label>'
-      + '<select id="quizTarget" class="mini-in" style="width:auto;min-width:126px">'+tOpts+'</select>'
-      + '<span class="kb-stat" style="margin:0">题库共 <b>'+bank.length+'</b> 题，已选 <b>'+picked.length+'</b> 题</span>'
+    + tmHead("体测知识小测 · 题库与组卷", "共 "+bank.length+" 题 · "+cats.length+" 类 · 每题可溯源")
+    + addForm
+    + '<div class="card mb16"><div class="qc-toolbar">'
+      + '<div class="quiz-cats">'+catChips+'</div>'
+      + '<div class="row" style="gap:8px;align-items:center;flex-wrap:wrap">'
+        + '<input id="quizKw" class="mini-in" style="width:180px" placeholder="搜索题干/选项" value="'+escapeHtml(kw)+'" onkeydown="if(event.key===\'Enter\')UI.bankSearch()">'
+        + '<button class="btn sm" onclick="UI.bankSearch()">检索</button>'
+        + '<label style="font-size:12.5px;color:var(--text-2);font-weight:600">推送对象</label>'
+        + '<select id="quizTarget" class="mini-in" style="width:auto;min-width:126px">'+tOpts+'</select>'
+      + '</div>'
+      + '<div class="qc-stat">当前显示 <b>'+filtered.length+'</b> 题'+(filtered.length>60?'（显示前 60 题）':'')+' · 已选 <b>'+picked.length+'</b> 题</div>'
     + '</div></div>'
     + '<div class="quiz-bank-grid">'+cards+'</div>'
-    + '<div class="row" style="margin-top:14px"><button class="btn pri" onclick="UI.bankPush()">'+icon("send",15)+' 组卷并下发</button></div>'
-    + '</div>';
+    + (filtered.length?'':'<div class="card"><div class="empty">没有匹配的题目，换个分类或关键词试试。</div></div>')
+    + '<div class="qc-float"><span>已选 '+picked.length+' 题</span><button class="btn pri" onclick="UI.bankPush()">'+icon("send",15)+' 组卷并下发</button></div>';
 }
 
-/* 教师⑦：训练课评价 —— 输入课程信息 → AI 生成问卷 → 学生填写 → 查看反馈 */
+
 function renderEvalReview(){
   var ev = Engage.list("evals");
   var surveys = Engage.list("surveys");
@@ -3877,6 +4062,97 @@ function renderEvalReview(){
 }
 
 /* 教师⑧：希沃大屏模式（原创卖点，贴合部署场景） */
+/* 管理员：学生/教师账号导入与管理 */
+function renderAccounts(){
+  if (STATE.role!=="admin"){
+    return tmHead("账号管理","仅管理员可用")
+      + '<div class="card"><div class="empty" style="padding:40px;font-size:16px">账号管理仅管理员可用。请用管理员账号（' + (ACCOUNTS.find(function(a){return a.role==="admin";})||{}).user + '）登录。</div></div></div>';
+  }
+  var custom = CustomAccounts.all();
+  var all = ACCOUNTS.map(function(a){ return {a:a, builtin:true}; })
+    .concat(custom.map(function(a){ return {a:a, builtin:false}; }));
+  var rows = all.map(function(o){
+    var a=o.a;
+    return '<tr><td><b>'+escapeHtml(a.user)+'</b></td><td>'+escapeHtml(a.name||"")+'</td>'
+      + '<td>'+(a.role==="admin"?'<span class="tag t-r">管理员</span>':a.role==="teacher"?'<span class="tag t-b">教师</span>':'<span class="tag t-c">学生</span>')+'</td>'
+      + '<td>'+escapeHtml(a.cls||a.scope||"")+'</td>'
+      + '<td>'+(o.builtin?'<span class="tag t-g">内置</span>':'<button class="btn sm" onclick="UI.acctDel(\''+a.id+'\')">删除</button>')+'</td></tr>';
+  }).join("");
+  var imp = STATE.acctImport;
+  var preview = '';
+  if (imp && imp.rows && imp.rows.length){
+    preview = '<div class="acct-preview"><div class="acct-pv-h">解析到 '+imp.rows.length+' 个账号'+(imp.err&&imp.err.length?' · '+imp.err.length+' 行有问题':'')+'</div>'
+      + '<div class="tbl-wrap"><table><thead><tr><th>账号</th><th>姓名</th><th>密码</th><th>角色</th><th>班级</th><th>绑定学生</th></tr></thead><tbody>'
+      + imp.rows.map(function(r){ return '<tr><td>'+escapeHtml(r.user)+'</td><td>'+escapeHtml(r.name)+'</td><td>'+escapeHtml(r.pwd)+'</td><td>'+(r.role==="teacher"?"教师":"学生")+'</td><td>'+escapeHtml(r.cls)+'</td><td>'+escapeHtml(r.bind||"—")+'</td></tr>'; }).join("")
+      + '</tbody></table></div>'
+      + (imp.err&&imp.err.length?'<div class="acct-err">'+imp.err.map(escapeHtml).join("；")+'</div>':'')
+      + '<div class="row mt12" style="gap:8px;justify-content:flex-end">'
+        + '<button class="btn" onclick="UI.acctCancel()">取消</button>'
+        + '<button class="btn pri" onclick="UI.acctConfirm()">'+icon("check",15)+' 确认导入 '+imp.rows.length+' 个</button></div></div>';
+  }
+  return tmHead("账号管理 · 学生与教师", "模板一键导入 · 平台添加 · 仅管理员可操作")
+    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>导入账号</h3>'
+      + '<span class="sub">支持 CSV / Excel 复制粘贴 · 表头：账号,姓名,密码,角色,班级,绑定学生姓名</span></div>'
+      + '<div class="acct-import">'
+        + '<div class="acct-step"><b>① 下载模板</b><div class="sub">按模板填写账号信息</div>'
+          + '<div class="row mt12" style="gap:8px"><button class="btn" onclick="UI.acctTpl()">'+icon("sheet",15)+' 下载账号模板</button></div>'
+          + '<div class="acct-tip">角色填「教师」或「学生」；学生可填「绑定学生姓名」，登录后即查看该生成绩。</div></div>'
+        + '<div class="acct-step"><b>② 粘贴或选文件</b><div class="sub">粘贴表格内容，或选 CSV / XLSX</div>'
+          + '<textarea id="acctText" class="acct-text" placeholder="账号,姓名,密码,角色,班级,绑定学生姓名&#10;25101,李思远,123456,学生,高一(1)班,李思远&#10;t01,张老师,tea123,教师,高一(1)班,"></textarea>'
+          + '<div class="row mt12" style="gap:8px;flex-wrap:wrap">'
+            + '<button class="btn pri" onclick="UI.acctParseText()">'+icon("check",15)+' 解析粘贴内容</button>'
+            + '<label class="btn" style="cursor:pointer;margin-bottom:0">'+icon("up",15)+' 选择文件'
+            + '<input type="file" accept=".csv,.txt,.xlsx" style="display:none" onchange="UI.acctFile(this)"></label>'
+          + '</div></div>'
+      + '</div>'+preview+'</div>'
+    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>平台手动添加</h3>'
+      + '<span class="sub">逐个添加，立即生效</span></div>'
+      + '<div class="acct-add">'
+        + '<input id="aaUser" class="mini-in" placeholder="账号（学号/工号，唯一）">'
+        + '<input id="aaName" class="mini-in" placeholder="姓名">'
+        + '<input id="aaPwd" class="mini-in" placeholder="密码">'
+        + '<select id="aaRole" class="mini-in"><option value="student">学生</option><option value="teacher">教师</option></select>'
+        + '<input id="aaCls" class="mini-in" placeholder="班级（教师填任教班级）">'
+        + '<input id="aaBind" class="mini-in" placeholder="绑定学生姓名（学生账号用）">'
+        + '<button class="btn pri" onclick="UI.acctAddOne()">'+icon("plus",15)+' 添加账号</button>'
+      + '</div></div>'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>账号列表</h3>'
+      + '<span class="sub">内置 '+ACCOUNTS.length+' 个 · 自定义 '+custom.length+' 个</span></div>'
+      + '<div class="tbl-wrap"><table><thead><tr><th>账号</th><th>姓名</th><th>角色</th><th>班级 / 范围</th><th style="text-align:right">操作</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+}
+
+/* 教师：希沃大屏投放页——推送任务全屏轮播展示 */
+function renderBigTask(){
+  var list = (Engage.list("tasks")||[]).filter(function(t){ return t.channel && t.channel.indexOf("大屏")>=0 || STATE.screenQueue && STATE.screenQueue.indexOf(t.id)>=0; });
+  if (STATE.screenId){
+    var cur = list.find(function(t){return t.id===STATE.screenId;});
+    if (cur) list = [cur].concat(list.filter(function(t){return t.id!==STATE.screenId;}));
+  }
+  var slides = list.map(function(t,i){
+    var media = t.videoName ? '<div class="bt-media">'+icon("cap",40)+'<div style="font-size:20px;margin-top:8px">'+escapeHtml(t.videoName)+'</div><div style="font-size:14px;color:#94a3b8;margin-top:6px">视频见学生端「我的任务」</div></div>' : '';
+    return '<div class="bt-slide '+(i===0?'on':'')+'">'
+      + '<div class="bt-tag">'+escapeHtml(t.channel||"希沃大屏")+' · '+escapeHtml(t.group||"全体学生")+'</div>'
+      + '<div class="bt-title">'+escapeHtml(t.title)+'</div>'
+      + '<div class="bt-desc">'+escapeHtml(t.type||"练习任务")+'</div>'
+      + (t.plan?'<div class="bt-plan">'+escapeHtml(t.plan)+'</div>':'')
+      + media
+      + '</div>';
+  }).join("");
+  var qrUrl = guestUrl();
+  var qr = qrUrl ? qrSvg(qrUrl, 150, 2) : '';
+  return '<div class="bt-wrap">'
+    + '<div class="bt-top"><div><h1>体质健康 · 训练任务投放</h1><div class="bt-sub">江苏省锡山高级中学 · '+TERMS.find(function(t){return t.id===STATE.term;}).name+'</div></div>'
+      + '<div class="bt-ctl"><button class="btn" onclick="UI.screenPrev()">‹ 上一条</button>'
+      + '<button class="btn pri" onclick="UI.screenFull()">'+icon("screen",15)+' 全屏投放（F11）</button>'
+      + '<button class="btn" onclick="UI.screenNext()">下一条 ›</button>'
+      + '<button class="btn" onclick="UI.go(\'taskPush\')">返回</button></div></div>'
+    + '<div class="bt-body">'
+      + '<div class="bt-stage">'+(slides||'<div class="bt-empty">暂无投放任务。请到「训练任务推送」推送，或点记录上的「投到大屏」。</div>')+'</div>'
+      + '<div class="bt-side">'+(qr?'<div class="bt-qr">'+qr+'<div>学生扫码看任务</div></div>':'')
+        + '<div class="bt-tip"><b>如何投到希沃大屏</b><div>1. 点右上「全屏投放」或按 F11 让本页全屏</div><div>2. 用希沃大屏的「屏幕镜像 / 投屏」把电脑画面投上去</div><div>3. 也可直接在本机浏览器全屏展示，大屏即为整屏画面</div><div>4. 点「上一条 / 下一条」切换任务</div></div>'
+      + '</div>'
+    + '</div></div>';
+}
 function renderBigscreen(){
   var st = classStats(STATE.term);
   var weak = ITEMS.slice().sort(function(a,b){return st.partAvg[a.key]-st.partAvg[b.key];})[0];
@@ -3924,18 +4200,17 @@ function renderCoach(){
       + '<div class="chat-in mt12"><textarea id="chatIn" placeholder="输入问题，回车发送" onkeydown="if(event.key===13&&!event.shiftKey){event.preventDefault();UI.send()}"></textarea>'
       + '<button class="btn pri" onclick="UI.send()">'+icon("send",15)+' 发送</button></div>'
     + '</div>'
-    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>本地知识库</h3><span class="sub">'+((typeof KB!=="undefined"&&KB.ready)?(KB.meta.count+' 条 · '+(KB.meta.chars/10000).toFixed(1)+' 万字'):'加载中')+'</span></div>'
-      + '<div class="kb-stat">顾问可检索本地知识库并标注出处，数据可查、答案可溯源。</div>'
-      + '<div class="ck-list">'+kbc+'</div>'
-      + '<div class="row" style="margin-top:12px"><button class="btn pri" onclick="UI.go(\'kb\')">'+icon("book",15)+' 打开知识库</button></div>'
-      + '<div style="border-top:1px solid var(--line);margin-top:18px;padding-top:15px">'
-        + '<div style="font-weight:800;color:#12202f;font-size:14px;margin-bottom:10px">数据速查</div>'
-        + '<div class="grid g2" style="gap:8px">'
-          + '<div class="kpi" style="padding:12px"><div class="kpi-l">班级人数</div><div class="kpi-v">'+STUDENTS.length+'</div></div>'
-          + '<div class="kpi" style="padding:12px"><div class="kpi-l">知识来源</div><div class="kpi-v">'+((typeof KB!=="undefined"&&KB.ready)?KB.meta.sourceCount:0)+' 类</div></div>'
-        + '</div>'
-        + '<div class="q-chips mt12">'+["班级平均分","优良率","班里最弱的项目"].map(function(q){return '<button class="q-chip" onclick="UI.ask(\''+q+'\')">'+q+'</button>';}).join("")+'</div>'
+    + '<div class="card"><div class="card-h"><span class="dot"></span><h3>顾问能为你做什么</h3><span class="sub">直接提问，无需切换页面</span></div>'
+      + '<div class="coach-abilities">'
+        + '<div class="coach-ab"><span class="ab-ico">'+icon("track",17)+'</span><div><b>查个人体质</b><small>说姓名即可查总分、单项与薄弱项</small></div></div>'
+        + '<div class="coach-ab"><span class="ab-ico">'+icon("rx",17)+'</span><div><b>要运动处方</b><small>按本人薄弱项生成个性化练习</small></div></div>'
+        + '<div class="coach-ab"><span class="ab-ico">'+icon("cpu",17)+'</span><div><b>看班级整体</b><small>平均分、优良率、最需提升项目</small></div></div>'
+        + '<div class="coach-ab"><span class="ab-ico">'+icon("book",17)+'</span><div><b>问锻炼知识</b><small>检索本地知识库，逐条标注出处</small></div></div>'
       + '</div>'
+      + '<div class="coach-quick"><div class="cq-title">常用提问</div>'
+        + ["班里哪几项最弱","给我一份跳跃练习处方","膳食怎么安排","某某同学进步了吗"].map(function(q){return '<button class="q-chip" onclick="UI.ask(\''+q+'\')">'+q+'</button>';}).join("")
+      + '</div>'
+      + '<div class="coach-foot">顾问检索本地 '+((typeof KB!=="undefined"&&KB.ready)?(KB.meta.count+' 条 / '+(KB.meta.chars/10000).toFixed(1)+' 万字'):'知识库')+'，答案可溯源。</div>'
     + '</div>'
   + '</div>';
 }
@@ -3967,7 +4242,7 @@ function renderTrack(){
   const up = improve.filter(x=>x.d>0).length;
   var picker = '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>选择学生查看成长曲线</h3>'
     + '<span class="sub">'+(STATE.classFilter||STATE.gradeFilter||"全校")+' · 共 '+visibleStudents().length+' 人</span></div>'
-    + '<div class="track-pick">'+visibleStudents().slice(0,60).map(function(s){
+    + '<div class="track-pick big" onwheel="event.stopPropagation()">'+visibleStudents().slice(0,60).map(function(s){
         var b=getScore(s,STATE.term).total;
         return '<div class="track-chip '+(s.id===STATE.stuId?"on":"")+'" onclick="UI.pick(\''+s.id+'\');UI.go(\'track\')">'+s.name+' · '+b+'</div>';
       }).join("")+'</div></div>';
@@ -4345,7 +4620,8 @@ const UI = {
     const u = ue ? String(ue.value||"").trim() : "";
     const p = pe ? String(pe.value||"") : "";
     const err = document.getElementById("lgErr");
-    const acc = ACCOUNTS.find(a => a.user === u && a.pwd === p);
+    const acc = ACCOUNTS.find(a => a.user === u && a.pwd === p)
+             || (window.CustomAccounts ? CustomAccounts.find(u,p) : null);
     if (!acc){
       if (err) err.textContent = "账号或密码不正确，请重新输入。";
       return;
@@ -4353,7 +4629,8 @@ const UI = {
     STATE.user = acc;
     STATE.role = acc.role;
     if (acc.role === "student"){
-      const me = STUDENTS.find(s=>s.name===STUDENT_SELF) || STUDENTS[0];
+      /* 导入学生账号可绑定姓名，优先看本人；否则用演示身份 */
+      const me = STUDENTS.find(s=>s.name===(acc.bind||acc.name)) || STUDENTS.find(s=>s.name===STUDENT_SELF) || STUDENTS[0];
       STATE.stuId = me.id;
       STATE.genderFilter = "";
     }
@@ -4440,6 +4717,7 @@ const UI = {
   rxEffectPick(sid){
     var s = STUDENTS.find(function(x){return x.id===sid;});
     if (!s) return;
+    STATE.stuId = sid;                 /* 关键：切换闭环对象，否则点击无反应 */
     STATE.rxTarget = s.cls;
     STATE.rxSuggest = this._rxAI(s, "下一阶段专项训练计划");
     this.go("rxEffect");
@@ -4485,17 +4763,32 @@ const UI = {
     if (!String(course).trim()){ alert("请先填写课程主题"); return; }
     STATE.evalCourse = String(course).trim();
     STATE.evalTarget = target;
-    var st = classStats(STATE.term);
-    var weak = ITEMS.slice().sort(function(a,b){return st.partAvg[a.key]-st.partAvg[b.key];})[0];
-    var qs = [
-      "本节课的练习强度是否适合你？",
-      "老师对动作要领的讲解是否清楚？",
-      "本节课的练习内容与你的薄弱项相关吗？",
-      "你在课堂上完成动作的信心如何？",
-      "希望下节课在哪些方面多做指导？（填写时可选）"
+    /* 问卷严格围绕输入的课程主题与练习内容生成，不使用班级薄弱项 */
+    var focus = "";
+    var kmap = [
+      ["立定跳远",["立定跳远","跳远","弹跳","跳跃","蛙跳"]],
+      ["50米跑",["50米","五十米","短跑","速度","起跑","冲刺"]],
+      ["耐力跑",["1000米","800米","耐力","中长跑","长跑","跑步"]],
+      ["引体向上",["引体向上","引体","上肢力量"]],
+      ["仰卧起坐",["仰卧起坐","核心力量","腹肌"]],
+      ["坐位体前屈",["坐位体前屈","柔韧","拉伸"]],
+      ["肺活量",["肺活量","呼吸","吹气"]],
+      ["深蹲",["深蹲","蹲起","下肢力量"]]
     ];
-    /* 问卷题目结合本节课薄弱项，做到"依据课程信息生成" */
-    qs[2] = "本节课围绕"+itemName("M", weak.key)+"的练习，对你有帮助吗？";
+    var allText = course + " " + content;
+    for (var ki=0; ki<kmap.length; ki++){
+      var kw = kmap[ki][1];
+      for (var kj=0; kj<kw.length; kj++){ if (allText.indexOf(kw[kj])>=0){ focus = kmap[ki][0]; break; } }
+      if (focus) break;
+    }
+    if (!focus) focus = course.slice(0,12);
+    var qs = [
+      "本节课「"+focus+"」的练习强度是否适合你？",
+      "老师对「"+focus+"」动作要领的讲解是否清楚？",
+      "通过本节课「"+focus+"」的练习，你的动作是否更规范了？",
+      "你在课堂上完成「"+focus+"」动作的信心如何？",
+      "关于「"+focus+"」，你希望下节课在哪些方面多做指导？（选填）"
+    ];
     Engage.add("surveys", { course:STATE.evalCourse, content:String(content).trim(), target:target, qs:qs, published:true });
     STATE.evalAns = {};
     alert("AI 已生成本节课问卷，并发布到学生端");
@@ -4583,17 +4876,167 @@ const UI = {
     alert("任务已推送到「"+channel+"」· "+group);
     this.go("taskPush");
   },
+  tpChannelHint(){
+    var sel=document.getElementById("tpChannel");
+    var ch=sel?sel.value:"学生端";
+    var el=document.getElementById("tpChannelHint");
+    if (!el) return;
+    var hints={
+      "学生端":"学生扫码登录后，在「我的任务」查看并完成。",
+      "希沃大屏":"推送到希沃大屏：内容进入「大屏投放」页全屏轮播；用希沃大屏的投屏/镜像功能把电脑画面投上去，或直接在电脑浏览器按 F11 全屏展示。",
+      "学生端 + 希沃大屏":"学生端与希沃大屏同时收到：学生扫码在「我的任务」完成，大屏在全屏页轮播展示。"
+    };
+    el.textContent = hints[ch]||hints["学生端"];
+  },
+  taskToScreen(id){
+    STATE.screenId = id;
+    STATE.screenQueue = STATE.screenQueue||[];
+    if (STATE.screenQueue.indexOf(id)<0) STATE.screenQueue.unshift(id);
+    this.go("bigTask");
+  },
+  screenFull(){
+    try {
+      var el=document.documentElement;
+      if (!document.fullscreenElement){ (el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el); }
+      else { (document.exitFullscreen||function(){}).call(document); }
+    } catch(e){ alert("浏览器不支持全屏，请手动按 F11 全屏"); }
+  },
+  screenNext(){ this._screenStep(1); },
+  screenPrev(){ this._screenStep(-1); },
+  _screenStep(dir){
+    var list=(Engage.list("tasks")||[]).filter(function(t){ return t.channel && t.channel.indexOf("大屏")>=0 || STATE.screenQueue && STATE.screenQueue.indexOf(t.id)>=0; });
+    if (!list.length) return;
+    var idx=0;
+    if (STATE.screenId) for (var i=0;i<list.length;i++){ if (list[i].id===STATE.screenId){ idx=i; break; } }
+    idx=(idx+dir+list.length)%list.length;
+    STATE.screenId=list[idx].id;
+    this.go("bigTask");
+  },
   tpAI(){
     var inp=document.getElementById("tpTitle"), pl=document.getElementById("tpPlan");
     var weak = ITEMS.slice().sort(function(a,b){return classStats(STATE.term).partAvg[a.key]-classStats(STATE.term).partAvg[b.key];})[0];
     if (inp) inp.value=""+itemName("M", weak.key)+"专项提升训练（第 3 周）";
     if (pl) pl.value="本周重点练习"+itemName("M", weak.key)+"：每周 3 次、每次 20 分钟，记录每次完成情况。";
   },
+  acctTpl(){
+    var rows=[["账号","姓名","密码","角色","班级","绑定学生姓名"],
+      ["25101","李思远","123456","学生","高一(1)班","李思远"],
+      ["t01","张老师","tea123","教师","高一(1)班",""]];
+    var csv="\uFEFF"+rows.map(function(r){return r.join(",");}).join("\r\n");
+    try{
+      var blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+      var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="账号导入模板.csv";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){try{URL.revokeObjectURL(a.href);}catch(e){}},500);
+    }catch(e){ alert("模板下载失败，请换 Edge/Chrome："+e); }
+  },
+  acctParseText(){
+    var el=document.getElementById("acctText");
+    var txt=el?String(el.value||""):"";
+    if (!txt.trim()){ alert("请先粘贴账号内容"); return; }
+    var r=parseAccountCSV(txt);
+    if (!r.rows.length){ alert("没有解析到有效账号。请按模板填写：账号,姓名,密码,角色,班级,绑定学生姓名"); return; }
+    STATE.acctImport=r; this.go("accounts");
+  },
+  acctFile(input){
+    var f=input&&input.files&&input.files[0];
+    if (!f) return;
+    var isXlsx=/\.xlsx$/i.test(f.name||"");
+    var self=this;
+    var finish=function(text){
+      var r=parseAccountCSV(text);
+      if (!r.rows.length){ alert("文件里没有解析到有效账号"); return; }
+      STATE.acctImport=r; self.go("accounts");
+    };
+    if (isXlsx && typeof readXlsx==="function"){
+      readXlsx(f).then(function(rows){
+        var r=parseAccountCSV(rows.map(function(row){return row.join("\t");}).join("\n"));
+        if (!r.rows.length){ alert("文件里没有解析到有效账号"); return; }
+        STATE.acctImport=r; self.go("accounts");
+      }).catch(function(e){ alert("读取失败："+e); });
+    } else {
+      var reader=new FileReader();
+      reader.onload=function(){ finish(String(reader.result||"")); };
+      reader.readAsText(f,"UTF-8");
+    }
+  },
+  acctCancel(){ STATE.acctImport=null; this.go("accounts"); },
+  acctConfirm(){
+    var imp=STATE.acctImport;
+    if (!imp||!imp.rows.length) return;
+    var r=CustomAccounts.addMany(imp.rows);
+    STATE.acctImport=null;
+    alert("导入完成：新增 "+r.added+" 个，跳过 "+r.skipped+" 个（账号重复或信息不全）");
+    this.go("accounts");
+  },
+  acctAddOne(){
+    var g=function(id){var e=document.getElementById(id);return e?String(e.value||"").trim():"";};
+    var user=g("aaUser"), name=g("aaName"), pwd=g("aaPwd"), role=g("aaRole")||"student", cls=g("aaCls"), bind=g("aaBind");
+    if (!user||!pwd){ alert("请填写账号和密码"); return; }
+    var r=CustomAccounts.addMany([{user:user,name:name||user,pwd:pwd,role:role,cls:cls,bind:bind,scope:role==="teacher"?(cls||"任教班级"):"仅本人"}]);
+    if (!r.added){ alert("账号已存在，换一个账号名"); return; }
+    alert("账号已添加"); this.go("accounts");
+  },
+  acctDel(id){
+    if (!window.confirm("确定删除这个账号吗？")) return;
+    CustomAccounts.remove(id); this.go("accounts");
+  },
+  bankCat(cat){ STATE.quizCat = cat||""; STATE.quizKw = ""; this.go("quizBank"); },
+  bankSearch(){
+    var el=document.getElementById("quizKw");
+    STATE.quizKw = el?String(el.value||"").trim():"";
+    this.go("quizBank");
+  },
+  bankAdd(){
+    var stem=(document.getElementById("qAddStem")||{}).value||"";
+    var A=(document.getElementById("qAddA")||{}).value||"";
+    var B=(document.getElementById("qAddB")||{}).value||"";
+    var C=(document.getElementById("qAddC")||{}).value||"";
+    var D=(document.getElementById("qAddD")||{}).value||"";
+    var ans=+((document.getElementById("qAddAns")||{}).value||"0");
+    var cat=(document.getElementById("qAddCat")||{}).value||"自建题";
+    var src=(document.getElementById("qAddSrc")||{}).value||"教师自建";
+    if (!String(stem).trim() || !String(A).trim() || !String(B).trim() || !String(C).trim() || !String(D).trim()){
+      alert("请填写题干和四个选项"); return;
+    }
+    var custom=[];
+    try { custom=JSON.parse(window.localStorage.getItem("fitness_custom_quiz")||"[]"); } catch(e){}
+    custom.unshift({ id:"q"+Date.now(), q:String(stem).trim(), opts:[String(A).trim(),String(B).trim(),String(C).trim(),String(D).trim()], a:ans, cat:cat, src:String(src).trim() });
+    try { window.localStorage.setItem("fitness_custom_quiz", JSON.stringify(custom)); }
+    catch(e){ alert("本机存储已满，无法保存"); return; }
+    STATE.quizCat=""; STATE.quizKw="";
+    alert("题目已添加"); this.go("quizBank");
+  },
+  bankDel(i){
+    if (!window.confirm("确定删除这道自建题吗？")) return;
+    /* 计算自建题在 custom 数组中的位置：题库=知识库题+自建题（自建题在末尾） */
+    var kbCount=0;
+    try { kbCount=quizBank().filter(function(q){return !q.custom;}).length; } catch(e){}
+    var custom=[];
+    try { custom=JSON.parse(window.localStorage.getItem("fitness_custom_quiz")||"[]"); } catch(e){}
+    var ci=i-kbCount;
+    if (ci>=0 && ci<custom.length){
+      custom.splice(ci,1);
+      try{ window.localStorage.setItem("fitness_custom_quiz",JSON.stringify(custom)); }catch(e){}
+    }
+    STATE.bankPick=STATE.bankPick.filter(function(x){return x!==i;});
+    this.go("quizBank");
+  },
   bankPick(i){
     STATE.bankPick = STATE.bankPick || [];
     var k=STATE.bankPick.indexOf(i);
     if (k>=0) STATE.bankPick.splice(k,1); else STATE.bankPick.push(i);
-    this.go("quizBank");
+    /* 点击即选中，不再整页刷新滚动位置：局部更新当前卡片 */
+    var card = document.querySelector('.quiz-card[onclick="UI.bankPick('+i+')"]');
+    if (card){
+      var on = STATE.bankPick.indexOf(i)>=0;
+      card.classList.toggle('on', on);
+      var tag=card.querySelector('.qc-no');
+      var foot=card.querySelector('.qc-foot span:first-child');
+      if (foot){ foot.textContent = on?'✓ 已选中':'点击卡片选中'; foot.classList.toggle('qc-picked',on); }
+      var fl=document.querySelector('.qc-float span:first-child');
+      if (fl) fl.textContent='已选 '+STATE.bankPick.length+' 题';
+    }
   },
   bankShowAns(i){
     STATE.bankShowAns = STATE.bankShowAns || {};
@@ -4690,6 +5133,8 @@ const UI = {
       else if (id==="quizBank")  html = renderQuizBank();
       else if (id==="evalReview")html = renderEvalReview();
       else if (id==="bigscreen") html = renderBigscreen();
+      else if (id==="bigTask")  html = renderBigTask();
+      else if (id==="accounts") html = renderAccounts();
       /* 学生端板块 */
       else if (id==="s_home")   html = renderSHome();
       else if (id==="s_task")   html = renderSTask();
@@ -5132,6 +5577,19 @@ const UI = {
 
 /* ---------------- 12. 启动 ---------------- */
 (function init(){
+  /* 选择器区域滚轮独立：鼠标在该区域内滚动不带动下方整页 */
+  document.addEventListener("wheel", function(e){
+    var t = e.target;
+    while (t && t !== document.body){
+      if (t.classList && t.classList.contains("track-pick")){
+        var canUp = t.scrollTop > 0;
+        var canDown = t.scrollTop + t.clientHeight < t.scrollHeight - 1;
+        if ((e.deltaY<0 && canUp) || (e.deltaY>0 && canDown)) e.stopPropagation();
+        return;
+      }
+      t = t.parentElement;
+    }
+  }, { passive:true });
   Store.init();
   Checkin.init();
     Engage.init();
