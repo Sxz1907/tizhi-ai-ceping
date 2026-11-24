@@ -754,7 +754,6 @@ body.clean .note-ex{display:none !important}
         </div>
         <div data-page-node-id="9upBMCbpWkMNTGgVHFAlPG">
           <div class="sb-title" data-page-node-id="0XbaF5UFBqQyX1ErTGJPdf">体质健康 AI 测评</div>
-          <div class="sb-sub" data-page-node-id="h3AUz2StGxbvMLvO0INwkw">AI 测评 · 个性化运动处方</div>
           <div class="sb-school">江苏省锡山高级中学</div>
         </div>
       </div>
@@ -770,7 +769,6 @@ body.clean .note-ex{display:none !important}
       <div data-page-node-id="GzlJ3WGV14QQBa830WI0e0">
         <div class="tb-title" id="pgTitle" data-page-node-id="2zBsCuFYOdYJsAv0DzQv6B">系统总览</div>
       </div>
-      <div class="tb-desc" id="pgDesc" data-page-node-id="xI1IIPrhPb2jsdI6EPfVnr"></div>
       <div class="tb-right" data-page-node-id="4BTqBDsmD3jGRSGavygNyj">
         <div id="userChip"></div>
         <div id="saveChip"></div>
@@ -2263,11 +2261,11 @@ function renderHome(){
   const tour = ''
   + '<div class="tour">'
     + '<div class="tour-t">快捷入口 ▸</div>'
-    + '<div class="tour-step" onclick="UI.go(\'capture\')"><span class="tour-n">＋</span><div><b>录入体测数据</b><span>逐项录入 / 批量导入</span></div></div>'
-    + '<div class="tour-step" onclick="UI.go(\'rx\')"><span class="tour-n">✚</span><div><b>生成运动处方</b><span>薄弱项 · 一人一策</span></div></div>'
-    + '<div class="tour-step" onclick="UI.go(\'kb\')"><span class="tour-n">▤</span><div><b>查知识库</b><span>69.7 万字 · 有出处</span></div></div>'
-    + '<div class="tour-step" onclick="UI.go(\'heatmap\')"><span class="tour-n">▦</span><div><b>薄弱项热力图</b><span>全班项目达标率</span></div></div>'
-    + '<div class="tour-step" onclick="UI.openQR()"><span class="tour-n">▣</span><div><b>扫码进入学生端</b><span>希沃大屏课堂使用</span></div></div>'
+    + '<div class="tour-step" onclick="UI.go(\'capture\')"><span class="tour-n">＋</span><div><b>录入体测数据</b></div></div>'
+    + '<div class="tour-step" onclick="UI.go(\'rx\')"><span class="tour-n">✚</span><div><b>生成运动处方</b></div></div>'
+    + '<div class="tour-step" onclick="UI.go(\'kb\')"><span class="tour-n">▤</span><div><b>查知识库</b></div></div>'
+    + '<div class="tour-step" onclick="UI.go(\'heatmap\')"><span class="tour-n">▦</span><div><b>薄弱项热力图</b></div></div>'
+    + '<div class="tour-step" onclick="UI.openQR()"><span class="tour-n">▣</span><div><b>扫码进入学生端</b></div></div>'
   + '</div>';
 
   return ''
@@ -3219,9 +3217,7 @@ function renderScore(){
     + '</div>'
     + '<div class="card"><div class="card-h"><span class="dot"></span><h3>评分过程可视化</h3></div>'
       + '<div style="display:flex;justify-content:center;padding:6px 0 12px">'+radar(sc.parts ? Object.keys(sc.parts).reduce((a,k)=>{a[k]=sc.parts[k].score;return a;},{}) : {}, 280)+'</div>'
-      + '<div class="note note-ex purple"><b>这套公式解决了什么</b>：过去每项得分要人工对照国标表格逐项翻查，一个班 336 次查表；现在录入即出分，教师重复劳动被压缩为一次录入，且不会查错行。</div>'
-      + '<div class="note note-ex amber mt12"><b>但总分会掩盖短板</b>：BMI 正常的学生在这一项上白拿 15% 权重，即使耐力项目几乎不得分，总分也不至于难看。<b>只看总分排名，很容易漏掉单项严重不足的学生</b>。这也是本系统坚持保留各分项得分、并用雷达图呈现的原因——下一步的运动处方，正是建立在「分项定位」而非「总分排序」之上。</div>'
-    + '</div>'
+      + '</div>'
   + '</div>';
 }
 
@@ -3942,7 +3938,7 @@ function renderRxEffectBody(skipHead){
   var targets = ["全体学生"].concat(classNamesOf(STATE.gradeFilter||DEFAULT_GRADE));
   var tOpts = targets.map(function(g){return '<option'+(STATE.rxTarget===g?' selected':'')+'>'+g+'</option>';}).join("");
 
-  return (skipHead ? '' : filterBar() + tmHead("处方效果追踪", (STATE.gradeFilter||"全校")+" · "+students.length+" 人 · 复测闭环"))
+  return (skipHead ? '' : filterBar() + tmHead("处方效果追踪", (STATE.gradeFilter||"全校")+" · "+students.length+" 人"))
     + '<div class="mini-kpi mb16">'
       + '<div class="mk"><div class="l">追踪人数</div><div class="v">'+students.length+'</div></div>'
       + '<div class="mk"><div class="l">平均提升</div><div class="v" style="color:'+(avg>=0?'var(--ok)':'var(--bad)')+'">'+(avg>=0?'+':'')+avg+'<span style="font-size:13px"> 分</span></div></div>'
@@ -4006,7 +4002,7 @@ function renderAskReviewBody(skipHead){
             + '<button class="btn pri" onclick="UI.arSend(\''+a.id+'\')">'+icon("send",15)+' 审核通过并推送学生</button></div>')
       + '</div></div>';
   };
-  return (skipHead ? '' : tmHead("体测答疑审核", (STATE.gradeFilter||"全校")+" · AI 起草 · 教师审核后发放"))
+  return (skipHead ? '' : tmHead("体测答疑审核", (STATE.gradeFilter||"全校")))
     + '<div class="grid g3 mb16">'
       + '<div class="kpi"><div class="kpi-l">待审核</div><div class="kpi-v" style="color:var(--warn)">'+pending.length+'</div></div>'
       + '<div class="kpi"><div class="kpi-l">已回复</div><div class="kpi-v" style="color:var(--ok)">'+done.length+'</div></div>'
@@ -4028,7 +4024,7 @@ function renderHealthBody(skipHead){
         :'<div class="row" style="margin-top:8px"><input id="hp_'+a.id+'" class="mini-in" style="flex:1" placeholder="输入回复..."><button class="btn pri" onclick="UI.hpReply(\''+a.id+'\')">回复</button></div>')
       + '</div>';
   }).join("");
-  return (skipHead ? '' : tmHead("运动健康档案", "学生运动损伤/营养上报与跟进"))
+  return (skipHead ? '' : tmHead("运动健康档案"))
     + '<div class="note">共 <b>'+all.length+'</b> 条上报。上报数据仅存本机、脱敏展示；处理后可回复学生。</div>'
     + '<div style="margin-top:10px">'+(rows||'<div class="empty">暂无上报记录。学生端提交后这里实时可见。</div>')+'</div>'
     + (skipHead ? '' : '</div>');
@@ -4058,7 +4054,7 @@ function renderTaskPush(){
       + '<div class="hint mt12">视频以本地文件播放，推送后学生在「我的任务」中可打开学习；不上传外网。</div></div>'
     : '<div class="tp-preview"><div class="vp-empty">未选择视频。选择「训练视频课」时，可点下方按钮从本机上传视频。</div></div>';
   return filterBar()
-    + tmHead("训练任务推送", "按体测薄弱项分组 · 针对性练习 · 视频本地上传")
+    + tmHead("训练任务推送")
     + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>新建推送任务</h3>'
       + '<span class="sub">按体测薄弱项分组 · 针对性练习</span></div>'
       + '<div class="tp-form">'
@@ -4140,7 +4136,7 @@ function renderKB(){
   var body = (tab === "coach") ? renderCoachBody()
            : (tab === "manage" && isAdminUser()) ? renderKBManage()
            : kbSearchUI();
-  return tmHead("体测知识库", "本地检索 · 逐条溯源 · 服务教学与答疑")
+  return tmHead("体测知识库")
     + segTabs("kb", tabs, tab) + body + '</div>';
 }
 /* 管理员专属：知识库维护台 */
@@ -4268,7 +4264,7 @@ function renderQuizBank(){
       + '<input id="qAddSrc" class="mini-in" style="width:auto;flex:1;min-width:160px" placeholder="出处（可选）">'
       + '<button class="btn pri" onclick="UI.bankAdd()">'+icon("plus",15)+' 添加题目</button></div></div></div>' : '';
   return filterBar()
-    + tmHead("体测知识小测 · 题库与组卷", "共 "+bank.length+" 题 · "+cats.length+" 类 · 每题可溯源")
+    + tmHead("体测知识小测 · 题库与组卷", "共 "+bank.length+" 题 · "+cats.length+" 类")
     + addForm
     + '<div class="card mb16"><div class="qc-toolbar">'
       + '<div class="quiz-cats">'+catChips+'</div>'
@@ -4344,7 +4340,7 @@ function renderEvalReview(){
   feedbackCard += '</div>';
 
   return filterBar()
-    + tmHead("训练课评价", (STATE.gradeFilter||"全校")+" · 课程信息 → AI 问卷 → 学生反馈")
+    + tmHead("训练课评价", (STATE.gradeFilter||"全校"))
     + step + inputCard + surveyCard + feedbackCard;
 }
 
@@ -4598,7 +4594,7 @@ function renderTrackBody(skipHead){
 function renderTrack(){
   var tab = STATE.tabs.track || "growth";
   return filterBar()
-    + tmHead("成长追踪", "跨学期对比 · 一人一策效果验证")
+    + tmHead("成长追踪")
     + segTabs("track", [["成长曲线","growth"],["处方效果闭环","effect"]], tab)
     + (tab==="effect" ? renderRxEffectBody(true) : renderTrackBody(true))
     + '<div class="mt16">'+renderExecCard()+'</div>';
@@ -4606,7 +4602,7 @@ function renderTrack(){
 /* 合并后的统一入口：答疑审核 / 健康上报审核 */
 function renderAskReview(){
   var tab = STATE.tabs.askReview || "ask";
-  return tmHead("互动审核台", "答疑与健康上报 · AI 起草 · 教师审核后发放")
+  return tmHead("互动审核台")
     + segTabs("askReview", [["体测答疑审核","ask"],["健康上报审核","health"]], tab)
     + (tab==="health" ? renderHealthBody(true) : renderAskReviewBody(true))
     + '</div>';
@@ -5431,7 +5427,7 @@ const UI = {
     nav.innerHTML = '<div class="sb-cap">'+cap+'</div>' + PAGES.filter(p=>pageAllowed(p.id)).map(p=>
       '<div class="nav-item '+(STATE.page===p.id?"on":"")+'" onclick="UI.go(\''+p.id+'\')">'
       + '<span class="nav-ico">'+icon(p.ico)+'</span><span>'+p.name+'</span>'
-      + (p.badge?'<span class="nav-badge">'+p.badge+'</span>':'') + '</div>'
+      + '</div>'
     ).join("");
   },
   roles(){
@@ -5556,9 +5552,7 @@ const UI = {
     STATE.page = id;
     const p = PAGES.find(x=>x.id===id);
     const t = document.getElementById("pgTitle");
-    const d = document.getElementById("pgDesc");
     if (t) t.textContent = p.name;
-    if (d) d.textContent = p.desc;
     this.nav();
     const view = document.getElementById("view");
     if (!view) return;
