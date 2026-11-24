@@ -2359,7 +2359,6 @@ function panelField(noteId){
       + '<tbody>'+rows+'</tbody></table></div>'
     + '<div class="note note-ex cyan mt12"><b>演示建议</b>：把某位同学的「50 米」改慢 1 秒（例如 8.3 → 9.3），右侧总分与等级会立刻变化——因为 50 米权重 20%，是七个项目里权重最高的两项之一。<br>'
       + 'BMI 一栏是<b>无法直接编辑</b>的，它由身高体重实时算出（"+重量/身高²" 后按国标区间判定），这正是人工环节最容易算错、也最值得交给机器的地方。</div>'
-    + (noteId ? '<div class="note note-ex amber mt12">刚刚改动的行已高亮。<b>本次改动只存在于当前页面的内存中</b>，刷新浏览器即恢复初始数据，不会写入任何文件。</div>' : '')
     + '</div>';
 }
 
@@ -3497,7 +3496,7 @@ function renderRx(){
             + '<div class="kpi-v" style="font-size:23px;color:'+scoreColor(p.score)+'">'+p.score+'</div>'
             + '<div class="kpi-s">'+(p.score<72?'<span class="tag t-r" style="padding:1px 6px;font-size:10px">薄弱</span>':'达标')+'</div></div>'; }).join("")
       + '</div>'
-      + '<div class="row"><button class="btn pri" onclick="UI.rxGenerate(\''+stu.id+'\')">'+icon("bulb",15)+' 依据该生成成 AI 处方初稿</button>'
+      + '<div class="row"><button class="btn pri" onclick="UI.rxGenerate(\''+stu.id+'\')">'+icon("bulb",15)+' 依据该生生成 AI 处方初稿</button>'
       + '<span class="hint">生成后可逐字编辑，教师审核通过才可推送</span></div></div>';
   } else {
     var text = isEditing ? STATE.rxDraftText : pushed.plan;
@@ -5091,9 +5090,9 @@ const UI = {
     if (!String(txt).trim()){ alert("请先生成或填写建议内容"); return; }
     var grp=(document.getElementById("rxTarget")||{}).value||"全体学生";
     var type=(document.getElementById("rxPlanType")||{}).value||"下一阶段专项训练计划";
-    Engage.add("tasks", { type:type, group:grp, title:String(txt).trim().slice(0,60), plan:String(txt).trim(), pushed:true });
+    Engage.add("tasks", { type:type, group:grp, title:String(txt).trim().slice(0,60), plan:String(txt).trim(), channel:"学生端 + 希沃大屏", pushed:true });
     STATE.rxSuggest = String(txt).trim();
-    alert("训练计划已推送到「"+grp+"」的学生端");
+    alert("训练计划已推送到「"+grp+"」的学生端与大屏");
     this.go("rxEffect");
   },
   /* —— 训练课评价：课程信息 → AI 问卷 → 学生填写 → 反馈推送 —— */
