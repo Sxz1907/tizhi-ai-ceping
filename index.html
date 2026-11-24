@@ -693,6 +693,18 @@ body.clean .note-ex{display:none !important}
 .quiz-card .qc-opts span{display:block}
 .quiz-card .qc-ans{font-size:11.8px;color:#15803d;background:#e7f6ed;border-radius:6px;padding:5px 9px;margin-top:auto}
 .quiz-card button{margin-top:10px;align-self:flex-start}
+/* 知识库维护台 */
+.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 16px}
+.form-grid .mini-in{width:100%}
+.kbm-row{display:flex;gap:14px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:#fff}
+.kbm-row.hidden{opacity:.55;background:#f6f8fb}
+.kbm-main{flex:1;min-width:0}
+.kbm-t{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.kbm-t b{font-size:14px;color:var(--text)}
+.kbm-body{margin-top:5px;font-size:12.5px;color:var(--text-2);line-height:1.55;word-break:break-all}
+.kbm-meta{margin-top:4px;font-size:11.5px;color:var(--muted)}
+.kbm-act{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:900px){.form-grid{grid-template-columns:1fr 1fr}.kbm-row{flex-direction:column}.kbm-act{justify-content:flex-start}}
 
 /* ============ 六轮改造：简洁主控式布局 ============ */
 /* 主辅分栏：左侧学生列表 + 右侧当前学生详情，点击即联动，不跳顶 */
@@ -819,7 +831,7 @@ body.clean .note-ex{display:none !important}
 
 /* =====================================================================
    10-A 本地知识库检索引擎（KB）
-   数据源：kb_data.js（window.KB_DOCS / KB_META），1814 条 / 66 万字 / 16 类权威来源。
+   数据源：kb_data.js（window.KB_DOCS / KB_META），2119 条 / 69.7 万字 / 16 类权威来源。
    设计：中文 bigram 分词 + 字段加权打分 + 分类别名映射 + 出处回溯。
    全部在本机计算，不联网、不调用外部模型；每条命中都可追溯到来源。
    ===================================================================== */
@@ -924,9 +936,128 @@ const KB = (function(){
     }
     return true;
   }
+  /* 管理员自建/修改/隐藏的知识条目覆盖层：始终基于原始 kb_data.js 重建，不累积重复 */
+  function applyCustom(data){
+    var base = (window.KB_DOCS && window.KB_DOCS.length) ? window.KB_DOCS : DOCS;
+    var hidden = {}, ov = (data && data.overrides) || {}, added = (data && data.added) || [];
+    ((data && data.hidden) || []).forEach(function(id){ hidden[id]=1; });
+    var out = [];
+    function put(d){
+      if (!d || hidden[d.id]) return;
+      var e = d;
+      if (ov[d.id]){
+        e = {};
+        Object.keys(d).forEach(function(k){ e[k]=d[k]; });
+        Object.keys(ov[d.id]).forEach(function(k){ e[k]=ov[d.id][k]; });
+      }
+      out.push(e);
+    }
+    base.forEach(put);
+    added.forEach(put);
+    DOCS = out;
+    META.count = out.length;
+    var chars=0;
+    out.forEach(function(d){ chars += String(d.body||"").length; });
+    META.chars = chars;
+    return true;
+  }
   return { all:function(){return DOCS;}, meta:META, search:search, byItem:byItem, byCat:byCat, categories:categories,
-           aliases:ITEM_ALIAS, load:load, get ready(){ return DOCS.length>0; } };
+           aliases:ITEM_ALIAS, load:load, applyCustom:applyCustom, get ready(){ return DOCS.length>0; } };
 })();
+
+/* ---------------- 10-B 知识库自定义覆盖层（管理员可编辑） ----------------
+   只存差量到 localStorage：新增条目 / 对内置条目的修改 / 隐藏条目。
+   原始 kb_data.js 不被改写，任何修改都可通过「恢复默认」一键撤销。          */
+var KB_CUSTOM_KEY = "fitness_kb_custom_v1";
+var KBEdit = {
+  ok: false,
+  data: { added:[], overrides:{}, hidden:[] },
+  init(){
+    var raw = null;
+    try { raw = window.localStorage.getItem(KB_CUSTOM_KEY); this.ok = true; } catch(e){ this.ok = false; }
+    if (raw){
+      try {
+        var d = JSON.parse(raw);
+        if (d && d.v === 1){
+          this.data.added = Array.isArray(d.added) ? d.added : [];
+          this.data.overrides = (d.overrides && typeof d.overrides === "object") ? d.overrides : {};
+          this.data.hidden = Array.isArray(d.hidden) ? d.hidden : [];
+        }
+      } catch(e){ this.data = { added:[], overrides:{}, hidden:[] }; }
+    }
+    this.apply();
+  },
+  apply(){ if (typeof KB !== "undefined" && KB.applyCustom) KB.applyCustom(this.data); },
+  flush(){
+    if (!this.ok) return false;
+    try {
+      window.localStorage.setItem(KB_CUSTOM_KEY, JSON.stringify({
+        v:1, added:this.data.added, overrides:this.data.overrides, hidden:this.data.hidden
+      }));
+      return true;
+    } catch(e){ this.ok = false; return false; }
+  },
+  add(doc){
+    doc.id = doc.id || ("custom_" + Date.now().toString(36) + Math.floor(Math.random()*1000).toString(36));
+    doc.kind = doc.kind || "知识卡";
+    this.data.added.push(doc);
+    this.flush(); this.apply();
+    return doc.id;
+  },
+  update(id, patch){
+    var d = this.data.added.find(function(x){ return x.id === id; });
+    if (d){
+      Object.keys(patch).forEach(function(k){ d[k] = patch[k]; });
+    } else {
+      var o = this.data.overrides[id] || {};
+      Object.keys(patch).forEach(function(k){ o[k] = patch[k]; });
+      this.data.overrides[id] = o;
+    }
+    this.flush(); this.apply();
+  },
+  remove(id){
+    var i = this.data.added.findIndex(function(d){ return d.id === id; });
+    if (i >= 0) this.data.added.splice(i, 1);
+    delete this.data.overrides[id];
+    var h = this.data.hidden.indexOf(id);
+    if (h >= 0) this.data.hidden.splice(h, 1);
+    this.flush(); this.apply();
+  },
+  hide(id){
+    if (this.data.hidden.indexOf(id) < 0) this.data.hidden.push(id);
+    this.flush(); this.apply();
+  },
+  unhide(id){
+    var i = this.data.hidden.indexOf(id);
+    if (i >= 0) this.data.hidden.splice(i, 1);
+    this.flush(); this.apply();
+  },
+  isHidden(id){ return this.data.hidden.indexOf(id) >= 0; },
+  isCustom(id){ return this.data.added.some(function(d){ return d.id === id; }); },
+  isEdited(id){ return !!this.data.overrides[id]; },
+  stats(){
+    return { added:this.data.added.length, edited:Object.keys(this.data.overrides).length, hidden:this.data.hidden.length };
+  },
+  exportJson(){
+    return JSON.stringify({ v:1, exportedAt:new Date().toISOString(),
+      added:this.data.added, overrides:this.data.overrides, hidden:this.data.hidden }, null, 2);
+  },
+  importJson(text){
+    var d = JSON.parse(text);
+    if (!d || d.v !== 1) throw new Error("文件格式不符");
+    var self = this;
+    (d.added || []).forEach(function(x){
+      if (!self.data.added.some(function(y){ return y.id === x.id; })) self.data.added.push(x);
+    });
+    Object.keys(d.overrides || {}).forEach(function(k){ self.data.overrides[k] = d.overrides[k]; });
+    (d.hidden || []).forEach(function(k){ if (self.data.hidden.indexOf(k) < 0) self.data.hidden.push(k); });
+    this.flush(); this.apply();
+  },
+  reset(){
+    this.data = { added:[], overrides:{}, hidden:[] };
+    this.flush(); this.apply();
+  }
+};
 
 /* ---------------- 1. 国标评分表（2014修订 · 高中一年级） ---------------- */
 // 键为单项得分，值为该档对应的达标成绩
@@ -1021,6 +1152,15 @@ function scoreOne(gender, rec, gradeName){
     strength: { score: lookupScore(T.strength, rec.strength, "high"), raw: Number(rec.strength)||0, better:"high" },
     endur:    { score: lookupScore(T.endur, rec.endur, "low"),   raw: Number(rec.endur)||0,    better:"low"  }
   };
+
+  /* 单项评级：与总分同档口径，供报告与各项明细展示（BMI 保留其专属结论，不覆盖） */
+  ITEMS.forEach(function(it){
+    var p = parts[it.key];
+    if (p && !p.grade){
+      var sc = p.score;
+      p.grade = sc >= 90 ? "优秀" : sc >= 80 ? "良好" : sc >= 60 ? "及格" : "不及格";
+    }
+  });
 
   let total = 0, done = 0;
   ITEMS.forEach(it=>{
@@ -1568,21 +1708,17 @@ const PAGES = [
   { id:"score",   name:"国标测评",     ico:"score", desc:"按 2014 修订国标自动评分与评级", roles:"tm" },
   { id:"heatmap", name:"薄弱项热力图", ico:"cpu",   desc:"全班各体测项目达标率热力可视化", roles:"tm", badge:"新" },
   { id:"rx",      name:"AI 运动处方",  ico:"rx",    desc:"薄弱项识别与一人一策处方生成", roles:"tm" },
-  { id:"rxEffect",name:"处方效果追踪", ico:"track", desc:"开方后体质变化追踪，验证 AI 处方有效性", roles:"tm", badge:"新" },
-  { id:"askReview",name:"答疑审核",    ico:"chat",  desc:"审核 AI 基于体测数据给出的建议并反馈学生", roles:"tm" },
-  { id:"health",  name:"运动健康档案", ico:"users", desc:"学生运动损伤/营养上报与关联档案", roles:"tm" },
+  { id:"askReview",name:"互动审核台",  ico:"chat",  desc:"答疑与健康上报审核 · AI 起草 · 教师审核后发放", roles:"tm" },
   { id:"taskPush",name:"训练任务推送", ico:"send",  desc:"按体测薄弱项智能分组，推送针对性练习", roles:"tm" },
-  { id:"kb",      name:"体测知识库",   ico:"book",  desc:"66 万字本地知识库 · 按项目分类检索 · 逐条标注出处", roles:"tm", badge:"核心" },
+  { id:"kb",      name:"体测知识库",   ico:"book",  desc:"69.7 万字本地知识库 · 可自主编辑 · 逐条标注出处", roles:"tm", badge:"核心" },
   { id:"quizBank",name:"体测知识小测", ico:"sheet", desc:"围绕测试方法/国标标准组建随堂小测", roles:"tm" },
   { id:"evalReview",name:"训练课评价", ico:"bulb",  desc:"学生对体测训练课的评价汇总与反馈", roles:"tm" },
   { id:"track",   name:"成长追踪",     ico:"track", desc:"跨学期纵向对比与趋势", roles:"tm" },
-  { id:"coach",   name:"处方顾问",     ico:"chat",  desc:"追问式体测数据问答（教师备课助手）", roles:"tm" },
   { id:"bigTask", name:"大屏投放",     ico:"screen", desc:"推送任务投到希沃大屏全屏展示", roles:"tm" },
   { id:"accounts",name:"账号管理",     ico:"users",  desc:"学生/教师账号模板导入与平台添加", roles:"tm" },
   /* —— 学生端（扫码进入，只看自己）—— */
   { id:"s_home",  name:"我的体质",     ico:"home",  desc:"我的体测画像与关键指标", roles:"s" },
   { id:"s_task",  name:"我的任务",     ico:"sheet", desc:"待测项目、补测提醒与录入进度", roles:"s" },
-  { id:"s_report",name:"我的体测报告", ico:"score", desc:"国标评分、评级与薄弱项", roles:"s" },
   { id:"s_rx",    name:"我的运动处方", ico:"rx",    desc:"一人一策的个性化处方", roles:"s" },
   { id:"s_ask",   name:"体测答疑",     ico:"chat",  desc:"AI 基于我的体测数据答疑", roles:"s", badge:"核心" },
   { id:"s_health",name:"健康上报",     ico:"users", desc:"运动损伤/营养情况脱敏上报", roles:"s" },
@@ -1590,6 +1726,22 @@ const PAGES = [
   { id:"s_quiz",  name:"体测小测",     ico:"sheet", desc:"体测知识与运动常识小测", roles:"s" },
   { id:"s_track", name:"成长曲线",     ico:"track", desc:"我的跨学期体质趋势", roles:"s" }
 ];
+
+/* 合并板块的路由别名：旧入口自动落到宿主页对应 Tab，保证所有既有跳转继续有效 */
+const TAB_ALIAS = {
+  rxEffect:{page:"track", tab:"effect"},
+  health:{page:"askReview", tab:"health"},
+  coach:{page:"kb", tab:"coach"},
+  s_report:{page:"s_home", tab:"report"}
+};
+/* 通用分段切换：items = [[显示名, key], ...] */
+function segTabs(page, items, cur){
+  return '<div class="seg mb16" style="width:max-content;max-width:100%;flex-wrap:wrap">'
+    + items.map(function(it){
+        return '<button class="'+(cur===it[1]?'on':'')+'" onclick="UI.setTab(\''+page+'\',\''+it[1]+'\')">'+it[0]+'</button>';
+      }).join("")
+    + '</div>';
+}
 
 const ROLES = [
   { id:"teacher", name:"教师" },
@@ -1599,6 +1751,7 @@ const ROLES = [
 
 const STATE = {
   page: "home",
+  tabs: { track:"growth", askReview:"ask", kb:"search", s_home:"overview" },
   role: "teacher",
   term: TERM_CURRENT,
   stuId: STUDENTS[0].id,
@@ -2012,6 +2165,7 @@ const STUDENT_SELF = "李思远";
 /* 权限以「当前视图角色」为准：顶部切换角色即切换权限，登录只决定进门身份 */
 function isStudent(){ return STATE.role === "student"; }
 function canEdit(){ return STATE.role === "teacher" || STATE.role === "admin"; }
+function isAdminUser(){ return !!(STATE.user && STATE.user.role === "admin"); }
 /* 可见学生：学生角色仅本人；教师/管理者按年级+班级+性别筛选 */
 function gradeClassList(){ return CLASS_PER_GRADE; }
 function classNamesOf(grade){
@@ -2111,7 +2265,7 @@ function renderHome(){
     + '<div class="tour-t">快捷入口 ▸</div>'
     + '<div class="tour-step" onclick="UI.go(\'capture\')"><span class="tour-n">＋</span><div><b>录入体测数据</b><span>逐项录入 / 批量导入</span></div></div>'
     + '<div class="tour-step" onclick="UI.go(\'rx\')"><span class="tour-n">✚</span><div><b>生成运动处方</b><span>薄弱项 · 一人一策</span></div></div>'
-    + '<div class="tour-step" onclick="UI.go(\'kb\')"><span class="tour-n">▤</span><div><b>查知识库</b><span>66 万字 · 有出处</span></div></div>'
+    + '<div class="tour-step" onclick="UI.go(\'kb\')"><span class="tour-n">▤</span><div><b>查知识库</b><span>69.7 万字 · 有出处</span></div></div>'
     + '<div class="tour-step" onclick="UI.go(\'heatmap\')"><span class="tour-n">▦</span><div><b>薄弱项热力图</b><span>全班项目达标率</span></div></div>'
     + '<div class="tour-step" onclick="UI.openQR()"><span class="tour-n">▣</span><div><b>扫码进入学生端</b><span>希沃大屏课堂使用</span></div></div>'
   + '</div>';
@@ -3405,7 +3559,7 @@ function stuHead(title, sub){
 }
 
 /* 学生端①：我的体质（画像总览） */
-function renderSHome(){
+function renderSHomeBody(skipHead){
   var s=myStu(), sc=myScore(), weak=weakItems(s,sc);
   var parts=ITEMS.map(function(it){ var p=sc.parts[it.key]; return {k:it.key,name:itName(it.key,s.gender),score:p?p.score:0}; });
   var radarObj = {}; parts.forEach(function(p){ radarObj[p.k]=p.score; });
@@ -3415,7 +3569,7 @@ function renderSHome(){
     var p=sc.parts[it.key], v=p?p.score:0;
     return hbarRow(itName(it.key,s.gender), v, scoreColor(v), (p&&p.grade)||"");
   }).join("");
-  return stuHead("我的体质健康画像")
+  return (skipHead ? '' : stuHead("我的体质健康画像"))
     + '<div class="grid g2" style="align-items:center"><div>'
     + '<div class="kpi"><div class="kpi-l">综合得分</div><div class="kpi-v" style="color:'+scoreColor(sc.total)+'">'+sc.total+'</div><div class="kpi-s">评级 <b>'+sc.level+'</b></div></div>'
     + '<div class="row" style="margin-top:12px;gap:10px;flex-wrap:wrap">'
@@ -3432,7 +3586,7 @@ function renderSHome(){
       + '<button class="btn pri" onclick="UI.go(\'s_report\')">查看体测报告</button>'
       + '<button class="btn" onclick="UI.go(\'s_rx\')">我的运动处方</button>'
       + '<button class="btn" onclick="UI.go(\'s_ask\')">我有问题要问</button>'
-    + '</div></div>';
+    + '</div>'+(skipHead ? '' : '</div>');
 }
 function itName(key, gender){
   var it = ITEMS.find(function(x){return x.key===key;});
@@ -3502,7 +3656,7 @@ function renderSTask(){
 }
 
 /* 学生端③：我的体测报告 */
-function renderSReport(){
+function renderSReportBody(skipHead){
   var s=myStu(), sc=myScore();
   var rows = ITEMS.map(function(it){
     var p=sc.parts[it.key];
@@ -3513,7 +3667,7 @@ function renderSReport(){
     var lvTxt = p ? (p.grade||"—") : "—";
     return '<tr><td>'+itName(it.key,s.gender)+'</td><td>'+(val||"—")+' '+unit+'</td><td style="color:'+scoreColor(p?p.score:0)+';font-weight:700">'+(p?p.score:"—")+'</td><td>'+lvTxt+'</td></tr>';
   }).join("");
-  return stuHead("我的体测报告")
+  return (skipHead ? '' : stuHead("我的体测报告"))
     + '<div class="grid g3" style="margin-bottom:12px">'
       + '<div class="kpi"><div class="kpi-l">综合得分</div><div class="kpi-v" style="color:'+scoreColor(sc.total)+'">'+sc.total+'</div></div>'
       + '<div class="kpi"><div class="kpi-l">评级</div><div class="kpi-v">'+sc.level+'</div></div>'
@@ -3521,7 +3675,7 @@ function renderSReport(){
     + '</div>'
     + '<div class="tbl-wrap"><table><thead><tr><th>项目</th><th>成绩</th><th>得分</th><th>评级</th></tr></thead><tbody>'+rows+'</tbody></table></div>'
     + '<div class="note" style="margin-top:12px">依据《国家学生体质健康标准（2014 年修订）》评分。数据为脱敏演示示例。</div>'
-    + '</div>';
+    + (skipHead ? '' : '</div>');
 }
 
 /* 学生端④：我的运动处方（显示教师审核后推送的版本） */
@@ -3732,7 +3886,7 @@ function renderHeatmap(){
 
 /* 教师②：处方效果追踪（跨学期复测 + 建议推送）——逐步闭环 */
 /* 教师②：处方效果追踪——主辅式：左学生清单 + 右该生复测闭环（点击联动，不跳顶） */
-function renderRxEffect(){
+function renderRxEffectBody(skipHead){
   var students = visibleStudents();
   var stu = STUDENTS.find(function(x){return x.id===STATE.stuId;}) || students[0] || STUDENTS[0];
   var logs = rxLogsOf(stu.id);
@@ -3789,8 +3943,7 @@ function renderRxEffect(){
   var targets = ["全体学生"].concat(classNamesOf(STATE.gradeFilter||DEFAULT_GRADE));
   var tOpts = targets.map(function(g){return '<option'+(STATE.rxTarget===g?' selected':'')+'>'+g+'</option>';}).join("");
 
-  return filterBar()
-    + tmHead("处方效果追踪", (STATE.gradeFilter||"全校")+" · "+students.length+" 人 · 复测闭环")
+  return (skipHead ? '' : filterBar() + tmHead("处方效果追踪", (STATE.gradeFilter||"全校")+" · "+students.length+" 人 · 复测闭环"))
     + '<div class="mini-kpi mb16">'
       + '<div class="mk"><div class="l">追踪人数</div><div class="v">'+students.length+'</div></div>'
       + '<div class="mk"><div class="l">平均提升</div><div class="v" style="color:'+(avg>=0?'var(--ok)':'var(--bad)')+'">'+(avg>=0?'+':'')+avg+'<span style="font-size:13px"> 分</span></div></div>'
@@ -3830,10 +3983,10 @@ function renderRxEffect(){
             + '<button class="btn pri" onclick="UI.rxPushPlan()">'+icon("send",15)+' 推送训练计划到学生端</button>'
           + '</div></div>'
       + '</div>'
-    + '</div>';
+    + (skipHead ? '' : '</div>');
 }
 /* 教师③：答疑审核（对接学生端体测答疑）——大屏可读排版 */
-function renderAskReview(){
+function renderAskReviewBody(skipHead){
   var all = Engage.list("asks");
   var pending = all.filter(function(a){return a.status!=="done";});
   var done = all.filter(function(a){return a.status==="done";});
@@ -3854,7 +4007,7 @@ function renderAskReview(){
             + '<button class="btn pri" onclick="UI.arSend(\''+a.id+'\')">'+icon("send",15)+' 审核通过并推送学生</button></div>')
       + '</div></div>';
   };
-  return tmHead("体测答疑审核", (STATE.gradeFilter||"全校")+" · AI 起草 · 教师审核后发放")
+  return (skipHead ? '' : tmHead("体测答疑审核", (STATE.gradeFilter||"全校")+" · AI 起草 · 教师审核后发放"))
     + '<div class="grid g3 mb16">'
       + '<div class="kpi"><div class="kpi-l">待审核</div><div class="kpi-v" style="color:var(--warn)">'+pending.length+'</div></div>'
       + '<div class="kpi"><div class="kpi-l">已回复</div><div class="kpi-v" style="color:var(--ok)">'+done.length+'</div></div>'
@@ -3867,7 +4020,7 @@ function renderAskReview(){
 }
 
 /* 教师④：运动健康档案 */
-function renderHealth(){
+function renderHealthBody(skipHead){
   var all = Engage.list("health");
   var rows = all.map(function(a){
     return '<div class="card" style="margin-bottom:8px"><div class="card-h"><h3>'+escapeHtml(a.name||"学生")+' · '+a.type+'</h3><span class="sub">'+fmtStamp(a.ts)+'</span></div>'
@@ -3876,10 +4029,10 @@ function renderHealth(){
         :'<div class="row" style="margin-top:8px"><input id="hp_'+a.id+'" class="mini-in" style="flex:1" placeholder="输入回复..."><button class="btn pri" onclick="UI.hpReply(\''+a.id+'\')">回复</button></div>')
       + '</div>';
   }).join("");
-  return tmHead("运动健康档案", "学生运动损伤/营养上报与跟进")
+  return (skipHead ? '' : tmHead("运动健康档案", "学生运动损伤/营养上报与跟进"))
     + '<div class="note">共 <b>'+all.length+'</b> 条上报。上报数据仅存本机、脱敏展示；处理后可回复学生。</div>'
     + '<div style="margin-top:10px">'+(rows||'<div class="empty">暂无上报记录。学生端提交后这里实时可见。</div>')+'</div>'
-    + '</div>';
+    + (skipHead ? '' : '</div>');
 }
 
 /* 教师⑤：训练任务推送（按薄弱项分组 · 支持本地视频上传） */
@@ -3980,10 +4133,93 @@ function kbSearchUI(){
   html += list ? list : '<div class="kb-empty">没有找到相关条目，试试其他关键词或切换到"全部"分类。</div>';
   return html;
 }
-/* 教师/管理者端：体测知识库 */
+/* 教师/管理者端：体测知识库（检索 / AI顾问 / 管理员维护） */
 function renderKB(){
+  var tab = STATE.tabs.kb || "search";
+  var tabs = [["知识检索","search"],["AI 顾问问答","coach"]];
+  if (isAdminUser()) tabs.push(["知识库管理","manage"]);
+  var body = (tab === "coach") ? renderCoachBody()
+           : (tab === "manage" && isAdminUser()) ? renderKBManage()
+           : kbSearchUI();
   return tmHead("体测知识库", "本地检索 · 逐条溯源 · 服务教学与答疑")
-    + kbSearchUI() + '</div>';
+    + segTabs("kb", tabs, tab) + body + '</div>';
+}
+/* 管理员专属：知识库维护台 */
+function renderKBManage(){
+  if (!isAdminUser()) return '<div class="card"><div class="empty">仅管理员可维护知识库。</div></div>';
+  var st = KBEdit.stats();
+  var kw = STATE.kbMgrKw || "", cat = STATE.kbMgrCat || "";
+  var cats = KB.categories();
+  var editing = STATE.kbEditId || "";
+  var cur = editing ? KB.all().find(function(d){ return d.id === editing; }) : null;
+  var val = function(k, def){ return cur ? (cur[k] !== undefined ? cur[k] : (def||"")) : (def||""); };
+  var all = KB.all();
+  var filtered = all.filter(function(d){
+    var okKw = !kw || (String(d.title||"") + String(d.body||"") + String((d.tags||[]).join(" "))).indexOf(kw) >= 0;
+    var okCat = !cat || d.cat === cat || d.sub === cat;
+    return okKw && okCat;
+  });
+  var rows = filtered.slice(0, 50).map(function(d){
+    var custom = KBEdit.isCustom(d.id), edited = KBEdit.isEdited(d.id), hidden = KBEdit.isHidden(d.id);
+    return '<div class="kbm-row'+(hidden?' hidden':'')+'">'
+      + '<div class="kbm-main"><div class="kbm-t"><b>'+escapeHtml(d.title||"")+'</b>'
+        + '<span class="tag '+(custom?'t-g':'t-b')+'">'+(custom?'自建':'内置')+'</span>'
+        + (edited?'<span class="tag t-a">已修改</span>':'')+(hidden?'<span class="tag t-r">已隐藏</span>':'')
+        + '</div><div class="kbm-body">'+escapeHtml(String(d.body||"").slice(0,150))+(String(d.body||"").length>150?'…':'')+'</div>'
+        + '<div class="kbm-meta">'+escapeHtml(d.cat||"")+' · '+escapeHtml(d.kind||"")+' · '+escapeHtml(d.src||"")+'</div></div>'
+      + '<div class="kbm-act">'
+        + '<button class="btn sm" onclick="UI.kbMgrEdit(\''+d.id+'\')">编辑</button>'
+        + (hidden ? '<button class="btn sm" onclick="UI.kbMgrUnhide(\''+d.id+'\')">恢复</button>'
+                  : '<button class="btn sm" onclick="UI.kbMgrHide(\''+d.id+'\')">隐藏</button>')
+        + (custom ? '<button class="btn sm del" onclick="UI.kbMgrDel(\''+d.id+'\')">删除</button>' : '')
+      + '</div></div>';
+  }).join("");
+
+  var catOpts = cats.map(function(c){ return '<option'+(val("cat")===c.name?' selected':'')+'>'+escapeHtml(c.name)+'</option>'; }).join("");
+  var kinds = ["知识卡","专项知识","问答","误区辨析","场景建议"];
+  var kindOpts = kinds.map(function(k){ return '<option'+(val("kind","知识卡")===k?' selected':'')+'>'+k+'</option>'; }).join("");
+
+  return '<div class="grid g4 mb16">'
+      + '<div class="kpi"><div class="kpi-l">内置条目</div><div class="kpi-v">'+(KB.meta.count-st.added)+'</div></div>'
+      + '<div class="kpi"><div class="kpi-l">我新增</div><div class="kpi-v" style="color:var(--ok)">'+st.added+'</div></div>'
+      + '<div class="kpi"><div class="kpi-l">我修改</div><div class="kpi-v" style="color:var(--warn)">'+st.edited+'</div></div>'
+      + '<div class="kpi"><div class="kpi-l">我隐藏</div><div class="kpi-v">'+st.hidden+'</div></div>'
+    + '</div>'
+    + (STATE.kbMgrMsg ? '<div class="note cyan mb16">'+escapeHtml(STATE.kbMgrMsg)+'</div>' : '')
+    + '<div class="card mb16"><div class="card-h"><span class="dot"></span><h3>'+(editing?'编辑知识条目':'新增知识条目')+'</h3>'
+      + '<span class="sub">保存后立即进入检索 · 不会改写原始知识库文件</span></div>'
+      + '<div class="form-grid">'
+        + '<div><div class="ck-label">标题 *</div><input id="kbmTitle" class="mini-in" value="'+escapeHtml(val("title"))+'" placeholder="如：立定跳远起跳角度怎么控制"></div>'
+        + '<div><div class="ck-label">分类</div><select id="kbmCat" class="mini-in"><option value="">综合</option>'+catOpts+'</select></div>'
+        + '<div><div class="ck-label">类型</div><select id="kbmKind" class="mini-in">'+kindOpts+'</select></div>'
+        + '<div><div class="ck-label">标签（逗号分隔）</div><input id="kbmTags" class="mini-in" value="'+escapeHtml((val("tags")||[]).join("，"))+'" placeholder="立定跳远，爆发力"></div>'
+        + '<div><div class="ck-label">出处类型</div><input id="kbmSrcType" class="mini-in" value="'+escapeHtml(val("srcType","权威资料"))+'" placeholder="如：《运动训练学》"></div>'
+        + '<div><div class="ck-label">出处（可留空）</div><input id="kbmSrc" class="mini-in" value="'+escapeHtml(val("src"))+'" placeholder="书名 / 指南 / 国标"></div>'
+      + '</div>'
+      + '<div class="ck-label mt12">正文 *</div>'
+      + '<textarea id="kbmBody" class="rx-suggest" style="min-height:110px" placeholder="填写可核验的知识内容，写明原理与做法">'+escapeHtml(val("body"))+'</textarea>'
+      + '<div class="row mt12" style="gap:8px;flex-wrap:wrap">'
+        + '<button class="btn pri" onclick="UI.kbMgrSave()">'+icon("plus",15)+' '+(editing?'保存修改':'添加知识条目')+'</button>'
+        + (editing?'<button class="btn" onclick="UI.kbMgrCancel()">取消编辑</button>':'')
+      + '</div></div>'
+    + '<div class="card mb16"><div class="qc-toolbar">'
+      + '<div class="row" style="gap:8px;align-items:center;flex-wrap:wrap">'
+        + '<input id="kbmKw" class="mini-in" style="width:220px" placeholder="搜索标题 / 正文 / 标签" value="'+escapeHtml(kw)+'" onkeydown="if(event.key===\'Enter\')UI.kbMgrSearch()">'
+        + '<button class="btn sm" onclick="UI.kbMgrSearch()">检索</button>'
+        + '<select id="kbmCatFilter" class="mini-in" style="width:auto;min-width:130px" onchange="UI.kbMgrCat(this.value)">'
+          + '<option value="">全部分类</option>'
+          + cats.map(function(c){ return '<option'+(cat===c.name?' selected':'')+'>'+escapeHtml(c.name)+'</option>'; }).join("")
+        + '</select>'
+        + '<span class="sub">共 '+filtered.length+' 条，显示前 '+Math.min(filtered.length,50)+' 条</span>'
+      + '</div>'
+      + '<div class="row" style="gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px">'
+        + '<button class="btn sm" onclick="UI.kbMgrExport()">导出备份</button>'
+        + '<button class="btn sm" onclick="document.getElementById(\'kbmFile\').click()">导入备份</button>'
+        + '<input type="file" id="kbmFile" accept=".json,application/json" style="display:none" onchange="UI.kbMgrImport(this)">'
+        + '<button class="btn sm del" onclick="UI.kbMgrReset()">恢复默认</button>'
+      + '</div>'
+    + '</div></div>'
+    + '<div class="card">'+(rows||'<div class="empty">没有匹配的条目。</div>')+'</div>';
 }
 /* 学生端：健康知识库 */
 function renderSKb(){
@@ -4241,7 +4477,7 @@ function renderBigscreen(){
     + '</div>';
 }
 
-function renderCoach(){
+function renderCoachBody(){
   const msgs = STATE.chat.length ? STATE.chat.map(m=>
       '<div class="msg '+(m.who==="me"?"me":"ai")+'">'+(m.who==="ai"?'<div class="msg-who">体测顾问</div>':'')+m.text+'</div>'
     ).join("")
@@ -4276,7 +4512,7 @@ function renderCoach(){
   + '</div>';
 }
 
-function renderTrack(){
+function renderTrackBody(skipHead){
   var students = visibleStudents();
   var stu = STUDENTS.find(function(s){return s.id===STATE.stuId;}) || students[0] || STUDENTS[0];
   var scores = TERMS.map(function(t){return getScore(stu, t.id).total;});
@@ -4351,15 +4587,40 @@ function renderTrack(){
         + '</tbody></table></div></div>'
     + '</div></div>';
 
-  return filterBar()
+  return (skipHead ? '' : filterBar())
     + '<div class="gmd">'
       + '<div class="card"><div class="card-h"><span class="dot"></span><h3>选择学生</h3><span class="sub">共 '+students.length+' 人</span></div>'
         + '<div class="md-list">'+list+'</div></div>'
       + '<div>'+studentPanel+'</div>'
     + '</div>'
-    + classPanel
+    + classPanel;
+}
+/* 合并后的统一入口：成长曲线 / 处方效果闭环 */
+function renderTrack(){
+  var tab = STATE.tabs.track || "growth";
+  return filterBar()
+    + tmHead("成长追踪", "跨学期对比 · 一人一策效果验证")
+    + segTabs("track", [["成长曲线","growth"],["处方效果闭环","effect"]], tab)
+    + (tab==="effect" ? renderRxEffectBody(true) : renderTrackBody(true))
     + '<div class="mt16">'+renderExecCard()+'</div>';
 }
+/* 合并后的统一入口：答疑审核 / 健康上报审核 */
+function renderAskReview(){
+  var tab = STATE.tabs.askReview || "ask";
+  return tmHead("互动审核台", "答疑与健康上报 · AI 起草 · 教师审核后发放")
+    + segTabs("askReview", [["体测答疑审核","ask"],["健康上报审核","health"]], tab)
+    + (tab==="health" ? renderHealthBody(true) : renderAskReviewBody(true))
+    + '</div>';
+}
+/* 学生端合并入口：体质画像 / 体测报告明细 */
+function renderSHome(){
+  var tab = STATE.tabs.s_home || "overview";
+  return stuHead("我的体质健康画像")
+    + segTabs("s_home", [["体质画像","overview"],["体测报告明细","report"]], tab)
+    + (tab==="report" ? renderSReportBody(true) : renderSHomeBody(true))
+    + '</div>';
+}
+
 /* 成长追踪页：训练打卡执行率卡片（仅教师/管理员可见，学生视图不展示） */
 function renderExecCard(){
   const term = STATE.term;
@@ -5182,10 +5443,115 @@ const UI = {
   isAdmin(){
     return !!(STATE.user && STATE.user.role === "admin");
   },
+  setTab(page, tab){
+    if (!STATE.tabs) STATE.tabs = {};
+    STATE.tabs[page] = tab;
+    this.go(page, true);
+  },
+  /* —— 知识库维护（仅管理员）—— */
+  _kbmReload(msg){
+    if (msg !== undefined) STATE.kbMgrMsg = msg;
+    this.go("kb", true);
+    var el = document.getElementById("kbmTitle");
+    if (el && typeof el.scrollIntoView === "function"){
+      try { el.scrollIntoView({block:"center", behavior:"smooth"}); } catch(e){}
+    }
+  },
+  kbMgrSave(){
+    if (!isAdminUser()) return;
+    var get = function(id){ var e = document.getElementById(id); return e ? e.value : ""; };
+    var title = get("kbmTitle").trim(), body = get("kbmBody").trim();
+    if (!title || !body){ STATE.kbMgrMsg = "请填写标题和正文。"; this.go("kb", true); return; }
+    var patch = {
+      title:title, body:body,
+      cat:get("kbmCat") || "综合", sub:get("kbmCat") || "综合",
+      kind:get("kbmKind") || "知识卡",
+      tags:get("kbmTags").split(/[,，、]/).map(function(x){return x.trim();}).filter(Boolean),
+      srcType:get("kbmSrcType") || "权威资料", src:get("kbmSrc").trim()
+    };
+    var id = STATE.kbEditId || "";
+    if (id) KBEdit.update(id, patch); else KBEdit.add(patch);
+    STATE.kbEditId = "";
+    this._kbmReload((id ? "已更新" : "已新增") + "知识条目，检索与 AI 建议已同步生效。");
+  },
+  kbMgrEdit(id){
+    if (!isAdminUser()) return;
+    STATE.kbEditId = id;
+    STATE.kbMgrMsg = "正在编辑内置条目，保存后会覆盖原内容；可用「恢复默认」撤销。";
+    this._kbmReload();
+  },
+  kbMgrCancel(){
+    STATE.kbEditId = "";
+    this._kbmReload("已取消编辑。");
+  },
+  kbMgrHide(id){
+    if (!isAdminUser()) return;
+    KBEdit.hide(id);
+    this._kbmReload("条目已隐藏，不再参与检索与 AI 建议。");
+  },
+  kbMgrUnhide(id){
+    if (!isAdminUser()) return;
+    KBEdit.unhide(id);
+    this._kbmReload("条目已恢复。");
+  },
+  kbMgrDel(id){
+    if (!isAdminUser()) return;
+    if (!window.confirm("确认删除这条自建知识？删除后不可恢复。")) return;
+    KBEdit.remove(id);
+    this._kbmReload("自建条目已删除。");
+  },
+  kbMgrSearch(){
+    var e = document.getElementById("kbmKw");
+    STATE.kbMgrKw = e ? e.value.trim() : "";
+    this.go("kb", true);
+  },
+  kbMgrCat(c){
+    STATE.kbMgrCat = c || "";
+    this.go("kb", true);
+  },
+  kbMgrExport(){
+    if (!isAdminUser()) return;
+    try {
+      var blob = new Blob([KBEdit.exportJson()], {type:"application/json;charset=utf-8"});
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "知识库自建内容_" + new Date().toISOString().slice(0,10) + ".json";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+      STATE.kbMgrMsg = "备份已导出，请妥善保存该文件。";
+      this.go("kb", true);
+    } catch(e){ STATE.kbMgrMsg = "导出失败：" + String(e); this.go("kb", true); }
+  },
+  kbMgrImport(input){
+    if (!isAdminUser()) return;
+    var f = input && input.files && input.files[0];
+    if (!f) return;
+    var self = this;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try {
+        KBEdit.importJson(String(reader.result));
+        STATE.kbMgrMsg = "导入成功，新增内容已并入检索。";
+      } catch(e){ STATE.kbMgrMsg = "导入失败：" + String(e); }
+      self.go("kb", true);
+    };
+    reader.onerror = function(){ STATE.kbMgrMsg = "读取文件失败。"; self.go("kb", true); };
+    reader.readAsText(f, "utf-8");
+    input.value = "";
+  },
+  kbMgrReset(){
+    if (!isAdminUser()) return;
+    if (!window.confirm("确认恢复官方知识库？你新增、修改和隐藏的内容都会被清除。")) return;
+    KBEdit.reset();
+    STATE.kbEditId = "";
+    this._kbmReload("已恢复官方知识库原始内容。");
+  },
   go(id, keepScroll){
     var _st = 0;
     if (keepScroll){ var _v = document.getElementById("view"); _st = _v ? _v.scrollTop : 0; }
     if (STATE.feedTimer){ clearInterval(STATE.feedTimer); STATE.feedTimer = null; STATE.feedAfter = 0; }
+    /* 被合并页面的旧 id 自动转到宿主页并切换 Tab，避免任何跳转失灵 */
+    if (TAB_ALIAS[id]){ var _alias = TAB_ALIAS[id]; STATE.tabs[_alias.page] = _alias.tab; id = _alias.page; }
     if (!PAGES.some(p=>p.id===id)) return;
     if (!pageAllowed(id)) id = defaultPage();
     STATE.page = id;
@@ -5203,24 +5569,19 @@ const UI = {
       else if (id==="capture") html = renderCapture();
       else if (id==="score")   html = renderScore();
       else if (id==="rx")      html = renderRx();
-      else if (id==="coach")   html = renderCoach();
       else if (id==="track")   html = renderTrack();
       /* 教师端新增板块 */
       else if (id==="heatmap")   html = renderHeatmap();
-      else if (id==="rxEffect")  html = renderRxEffect();
       else if (id==="askReview") html = renderAskReview();
-      else if (id==="health")    html = renderHealth();
       else if (id==="taskPush")  html = renderTaskPush();
       else if (id==="kb")        html = renderKB();
       else if (id==="quizBank")  html = renderQuizBank();
       else if (id==="evalReview")html = renderEvalReview();
-      else if (id==="bigscreen") html = renderBigscreen();
       else if (id==="bigTask")  html = renderBigTask();
       else if (id==="accounts") html = renderAccounts();
       /* 学生端板块 */
       else if (id==="s_home")   html = renderSHome();
       else if (id==="s_task")   html = renderSTask();
-      else if (id==="s_report") html = renderSReport();
       else if (id==="s_rx")     html = renderSRx();
       else if (id==="s_ask")    html = renderSAsk();
       else if (id==="s_health") html = renderSHealth();
@@ -5679,6 +6040,7 @@ const UI = {
     }
   }, { passive:true });
   Store.init();
+  KBEdit.init();
   Checkin.init();
   Engage.init();
   /* 知识库后台异步装载：先让登录页秒开，2.8MB 数据在后台下载解析完成后再激活检索 */
@@ -5686,6 +6048,7 @@ const UI = {
     function activate(){
       if (typeof KB!=="undefined" && window.KB_DOCS && window.KB_DOCS.length){
         KB.load(window.KB_DOCS, window.KB_META);
+        KBEdit.apply();       /* 原始库装载完成后，重新叠加管理员的自建/修改/隐藏内容 */
         STATE.kbLoaded = true;
         /* 若当前停留的页面依赖知识库，装载完成后就地重渲染一次 */
         var p = STATE.page;
